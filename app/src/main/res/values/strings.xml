@@ -9,4 +9,13 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="benvenuto">Benvenuto !</string>
+    <string name="family">Family</string>
+    <string name="without_account">Non hai ancora un account ? </string>
+    <string name="usr_img">user_img</string>
+    <string name="psw_img">password_img</string>
+    <string name="btn_description">LOGIN</string>
+    <string name="sign_up">REGISTRATI</string>
+    <string name="aesthetic">image</string>
+    <string name="logo">logo</string>
 </resources>
