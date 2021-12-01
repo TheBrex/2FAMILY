@@ -5,31 +5,29 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:background="@color/white"
     tools:context=".ui.login.LoginActivity"
     tools:layout_editor_absoluteX="-1dp"
     tools:layout_editor_absoluteY="343dp">
 
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/benvenuto"
         android:layout_width="285dp"
         android:layout_height="38dp"
-        android:layout_marginTop="24dp"
         android:fontFamily="@font/montserrat_extrabold"
         android:text="@string/benvenuto"
         android:textColor="#0079A7"
         android:textSize="23sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.194"
+        app:layout_constraintHorizontal_bias="0.148"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.493"
         tools:ignore="MissingConstraints" />
 
     <ProgressBar
@@ -51,7 +49,6 @@
         android:id="@+id/username"
         android:layout_width="285dp"
         android:layout_height="48dp"
-        android:layout_marginStart="2dp"
         android:autofillHints="@string/prompt_email"
         android:fontFamily="@font/montserrat_regular"
         android:hint="@string/prompt_email"
@@ -59,16 +56,16 @@
         android:selectAllOnFocus="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.443"
+        app:layout_constraintHorizontal_bias="0.425"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.576"
+        app:layout_constraintVertical_bias="0.584"
         tools:text="@tools:sample/full_names" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/notAnAccount"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="76dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="95dp"
@@ -77,7 +74,7 @@
         android:text="@string/without_account"
         android:textColor="#707070"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintBottom_toTopOf="@+id/singUP"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login"
@@ -91,10 +88,10 @@
         android:contentDescription="@string/usr_img"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/username"
-        app:layout_constraintHorizontal_bias="0.56"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.888"
+        app:layout_constraintStart_toStartOf="@+id/benvenuto"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.571"
+        app:layout_constraintVertical_bias="0.58"
         app:srcCompat="@drawable/ic_baseline_person_outline_24"
         tools:ignore="ContentDescription,MissingConstraints" />
 
@@ -103,35 +100,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="2dp"
+        android:contentDescription="@string/psw_img"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/password"
-        app:layout_constraintHorizontal_bias="0.608"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.869"
+        app:layout_constraintStart_toStartOf="@+id/imageView10"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.638"
+        app:layout_constraintVertical_bias="0.655"
         app:srcCompat="@drawable/ic_outline_lock_24"
-        tools:ignore="MissingConstraints"
-        android:contentDescription="@string/psw_img" />
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/login"
         android:layout_width="285dp"
         android:layout_height="48dp"
         android:layout_gravity="start"
+        android:backgroundTint="#0079A7"
         android:enabled="true"
         android:fontFamily="@font/montserrat_regular"
-        android:textColor="@color/white"
         android:text="@string/btn_description"
-        android:backgroundTint="#0079A7"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.481"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.047"
+        app:layout_constraintStart_toEndOf="@+id/imageView11"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.739" />
+        app:layout_constraintVertical_bias="0.752" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/singUP"
         android:layout_width="87dp"
         android:layout_height="22dp"
         android:layout_marginTop="584dp"
@@ -160,53 +157,53 @@
         android:selectAllOnFocus="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.435"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/username"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.652"
+        app:layout_constraintVertical_bias="0.661"
         tools:text="@tools:sample/cities" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/singleBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:contentDescription="@string/aesthetic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.046"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/benvenuto"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.452"
+        app:layout_constraintVertical_bias="0.472"
         app:srcCompat="@drawable/linea_4"
-        tools:ignore="MissingConstraints"
-        android:contentDescription="@string/aesthetic" />
+        tools:ignore="MissingConstraints" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/familyImage"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
+        android:layout_marginBottom="260dp"
+        android:contentDescription="@string/aesthetic"
+        app:layout_constraintBottom_toTopOf="@+id/notAnAccount"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.54"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/family"
-        android:contentDescription="@string/aesthetic" />
+        app:layout_constraintVertical_bias="0.825"
+        app:srcCompat="@drawable/family" />
 
     <ImageView
         android:id="@+id/imageView6"
         android:layout_width="97dp"
         android:layout_height="31dp"
+        android:contentDescription="@string/logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.067"
+        app:layout_constraintHorizontal_bias="0.013"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/text2"
-        tools:ignore="MissingConstraints"
-        android:contentDescription="@string/logo" />
+        tools:ignore="MissingConstraints" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
