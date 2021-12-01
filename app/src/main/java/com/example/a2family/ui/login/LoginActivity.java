@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); //setta i parametri della window in full screen
-        Objects.requireNonNull(getSupportActionBar()).hide(); //nasconde barra dellapplicazione se questa è presente
+        //getSupportActionBar()).hide(); //nasconde barra dellapplicazione se questa è presente
 
 
 

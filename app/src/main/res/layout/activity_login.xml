@@ -120,6 +120,7 @@
         android:layout_gravity="start"
         android:enabled="true"
         android:fontFamily="@font/montserrat_regular"
+        android:textColor="@color/white"
         android:text="@string/btn_description"
         android:backgroundTint="#0079A7"
         app:layout_constraintBottom_toBottomOf="parent"
