@@ -37,8 +37,6 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); //setta i parametri della window in full screen
-
         setContentView(R.layout.activity_sign_up);
 
         //firebase inititialization
@@ -104,13 +102,26 @@ public class SignUpActivity extends AppCompatActivity {
 
                     if (task.isSuccessful()) {
                         User user = new User(name, surname, address, email);
-                        Toast.makeText(SignUpActivity.this, "La registrazione è andata a buon fine", Toast.LENGTH_LONG).show();
+                        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    Toast.makeText(SignUpActivity.this, "La registrazione è andata a buon fine", Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    Toast.makeText(SignUpActivity.this, "La registrazione NON è andata a buon fine", Toast.LENGTH_LONG).show();
+                                }
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        });
+
                         //se la registrazione va buon fine ritorna nella pagina di login
                         finish();
 
                     } else {
                         Toast.makeText(SignUpActivity.this, "La registrazione NON è andata a buon fine", Toast.LENGTH_LONG).show();
-                        progressBar.setVisibility(View.GONE);
+
                     }
                 }
             });

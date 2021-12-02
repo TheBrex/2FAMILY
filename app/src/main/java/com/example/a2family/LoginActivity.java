@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText username;
     private EditText psw;
     private ProgressBar progressBar;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,8 @@ public class LoginActivity extends AppCompatActivity {
         username = (EditText) findViewById(R.id.username);
         psw= (EditText) findViewById(R.id.password);
         progressBar=(ProgressBar) findViewById(R.id.loading);
+
+        mAuth = FirebaseAuth.getInstance();
 
 
         // listener on LOGIN button
@@ -60,5 +63,11 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(mAuth.getCurrentUser()!= null){
+            //utente già loggato
+        }
+    }
 }
