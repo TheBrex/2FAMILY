@@ -26,24 +26,30 @@ import com.example.a2family.R;
 import com.example.a2family.SignUpActivity;
 import com.example.a2family.databinding.ActivityLoginBinding;
 
+
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
+
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
 
         super.onCreate(savedInstanceState);
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); //setta i parametri della window in full screen
-        //getSupportActionBar()).hide(); //nasconde barra dellapplicazione se questa è presente
+        //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); //setta i parametri della window in full screen
+        //getSupportActionBar().hide(); //nasconde barra dellapplicazione se questa è presente
 
 
 
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
 
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
@@ -122,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // listener sul button LOGIN
+        // listener on LOGIN button
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,6 +138,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        //listener on REGISTRATI text
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
