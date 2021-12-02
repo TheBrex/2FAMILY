@@ -8,6 +8,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -25,7 +26,8 @@ public class SignUpActivity extends AppCompatActivity {
     //firebase inititialization
     private FirebaseAuth mAuth;
     private EditText editName, editSurname , editAddress, editPassword, editPasswordConfirm, editEmail;
-    private  TextView backButton, signUpButton;
+    private TextView backButton;
+    private Button signUpButton;
     private ProgressBar progressBar;
 
 
@@ -52,7 +54,7 @@ public class SignUpActivity extends AppCompatActivity {
         this.editPasswordConfirm= (EditText) findViewById(R.id.password_signUpConfirm);
         this.editEmail= (EditText) findViewById(R.id.email);
         this.backButton = (TextView) findViewById(R.id.backLogin);
-        this.signUpButton = (TextView) findViewById(R.id.signup);
+        this.signUpButton = (Button) findViewById(R.id.signup);
         this.progressBar=(ProgressBar) findViewById(R.id.loading);
 
 
