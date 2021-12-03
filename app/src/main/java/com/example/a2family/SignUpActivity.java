@@ -18,33 +18,43 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
 public class SignUpActivity extends AppCompatActivity {
 
-    //firebase inititialization
-    private FirebaseAuth mAuth;
+
     private EditText editName, editSurname , editAddress, editPassword, editPasswordConfirm, editEmail;
     private TextView backButton;
     private Button signUpButton;
     private ProgressBar progressBar;
+
+    // creating a variable for our
+    // Firebase Database.
+    private FirebaseAuth mAuth;
+
+    private FirebaseDatabase firebaseDatabase;
+
+    // creating a variable for our Database
+    // Reference for Firebase.
+    DatabaseReference databaseReference;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_sign_up);
 
         //firebase inititialization
         mAuth = FirebaseAuth.getInstance();
+        firebaseDatabase=FirebaseDatabase.getInstance();
 
 
-
-        //initialize variables registration form
+        //inizializza campi con gli specifici elementi grafici definiti attraverso l'id nel file xml
+        //del layout del'activity corrente
         this.editName= (EditText) findViewById(R.id.name_signUp);
         this.editSurname= (EditText) findViewById(R.id.surname);
         this.editAddress= (EditText) findViewById(R.id.address);
@@ -68,7 +78,6 @@ public class SignUpActivity extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 signUpUser();
             }
         });
@@ -77,15 +86,15 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void signUpUser() {
 
-        //trim() get name inside form and remove all spaces inside
+        //trim() prende il valore nel campo del form e rimuove gli spazi nella stringa
         String name= editName.getText().toString().trim();
         String surname = editSurname.getText().toString().trim();
-        String address=editAddress.getText().toString().trim();
         String password= editPassword.getText().toString().trim();
         String passwordConfirm=editPasswordConfirm.getText().toString().trim();
+        String address=editAddress.getText().toString();//la stringa indirizzo contiene eventualmente spazi
         String email= editEmail.getText().toString().trim();
 
-        //check field validity
+        //controlla che i campi siano correttamente inseriti, in caso contrario ritorna errore
         int error;
         error=checkField(name, editName);
         error=checkField(surname, editSurname);
@@ -93,33 +102,47 @@ public class SignUpActivity extends AppCompatActivity {
         int emailError=checkEmail(email, editEmail);
         int pswError=checkPassword(password,passwordConfirm, editPassword, editPasswordConfirm);
 
-        //controlla che email o password non abbiano generato errori per poi procedere alla registrazione
+        //controlla che email o password non abbiano generato errori specifici per poi procedere alla registrazione
         if(emailError == 1 && pswError==1) {
             progressBar.setVisibility(View.VISIBLE);
+
+            //crea l'utente per l'autenticazione con email e password
+            //Il listener onComplete è utlizzato per verificare l'esito dell'operazione e agire di conseguenza
+            //Se l'operazione va a buon fine allora possiamo procedere ad inserire i dati utente nel realTime database
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
 
                     if (task.isSuccessful()) {
                         User user = new User(name, surname, address, email);
-                        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user)
+
+                        // riferimento a Users nel realTime database
+                        databaseReference = firebaseDatabase.getReference("Users");
+
+                        //inserisce nela database una nuova voce in Users con l'id Univoco usato per l'autenticazione, e tutti i suoi campi extra all'interno
+                        //il listener onComplete è utilizzato per verificare l'esito dell'operazione e agire di conseguenza
+                        databaseReference.child(mAuth.getCurrentUser().getUid()).setValue(user)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
+                                    //mostra messaggio di avvenuta registrazione
                                     Toast.makeText(SignUpActivity.this, "La registrazione è andata a buon fine", Toast.LENGTH_LONG).show();
                                 }
                                 else{
+                                    //mostra messaggio di registrazione fallita
                                     Toast.makeText(SignUpActivity.this, "La registrazione NON è andata a buon fine", Toast.LENGTH_LONG).show();
                                 }
+                                //la progress bar(l'icona di caricamento) viene rimosso
                                 progressBar.setVisibility(View.GONE);
                             }
                         });
 
-                        //se la registrazione va buon fine ritorna nella pagina di login
+                        //se la registrazione va buon fine ritorna nella pagina di login con finish() termina l'activity corrente
                         finish();
 
                     } else {
+                        //se la registrazione per l'autenticazione non va a buon fine mostra messaggio di errore
                         Toast.makeText(SignUpActivity.this, "La registrazione NON è andata a buon fine", Toast.LENGTH_LONG).show();
 
                     }
@@ -128,7 +151,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-    //method for checking emptyness of a field
+    //il metodo controlla che i campi non siano vuoti, se vuoti ritorna 0, 1 altrimenti
     private int checkField(String field, EditText xField){
 
         if(field.isEmpty()){
@@ -142,7 +165,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
-    //method for checking email format
+    //metodo controlla il formato dell'email, se scorretto ritorna 0, 1 altrimenti
     private int checkEmail(String field, EditText xField){
 
         checkField(field, xField);
@@ -157,7 +180,8 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-    //method for checking password format
+    //metodo controlla che la password sia lunga almeno 6 char, e i due campi password
+    //contengano la stessa stringa, ritorna 0 se non rispettano le condizioni, 1 altrimenti
     private  int checkPassword(String field, String field1, EditText xField, EditText yField){
 
         //controlla che i campi non siano vuoti
