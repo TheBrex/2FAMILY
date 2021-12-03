@@ -22,7 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-public class SignUpActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity implements FieldChecker {
 
 
     private EditText editName, editSurname , editAddress, editPassword, editPasswordConfirm, editEmail;
@@ -50,7 +50,10 @@ public class SignUpActivity extends AppCompatActivity {
 
         //firebase inititialization
         mAuth = FirebaseAuth.getInstance();
+        //istanza del database
         firebaseDatabase=FirebaseDatabase.getInstance();
+        //riferimento alla root
+        databaseReference=firebaseDatabase.getReference().getRoot();
 
 
         //inizializza campi con gli specifici elementi grafici definiti attraverso l'id nel file xml
@@ -116,15 +119,18 @@ public class SignUpActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         User user = new User(name, surname, address, email);
 
-                        // riferimento a Users nel realTime database
+                        // riferimento a "Users" nel realTime database
                         databaseReference = firebaseDatabase.getReference("Users");
+                        //estrapolo l'id univoco di autenticazione dell'utente e lo uso come "chiave" per effettuare l'inserimento in "Users"
+                        String userKey= mAuth.getCurrentUser().getUid();
 
-                        //inserisce nela database una nuova voce in Users con l'id Univoco usato per l'autenticazione, e tutti i suoi campi extra all'interno
+                        //inserisce nela database una nuova voce in "Users" con l'id Univoco usato per l'autenticazione, e tutti i suoi campi extra all'interno
                         //il listener onComplete è utilizzato per verificare l'esito dell'operazione e agire di conseguenza
-                        databaseReference.child(mAuth.getCurrentUser().getUid()).setValue(user)
+                        databaseReference.child(userKey).setValue(user)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
+                                //se l'operazione va a buon fine
                                 if(task.isSuccessful()){
                                     //mostra messaggio di avvenuta registrazione
                                     Toast.makeText(SignUpActivity.this, "La registrazione è andata a buon fine", Toast.LENGTH_LONG).show();
@@ -151,59 +157,6 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-    //il metodo controlla che i campi non siano vuoti, se vuoti ritorna 0, 1 altrimenti
-    private int checkField(String field, EditText xField){
-
-        if(field.isEmpty()){
-            xField.setError("Il campo è Richiesto ! ");
-            xField.requestFocus();
-            return 0;
-        }
-        else{
-            return 1;
-        }
-
-    }
-
-    //metodo controlla il formato dell'email, se scorretto ritorna 0, 1 altrimenti
-    private int checkEmail(String field, EditText xField){
-
-        checkField(field, xField);
-
-        if(! Patterns.EMAIL_ADDRESS.matcher(field).matches()){
-            xField.setError("Formato email non corretto ! ");
-            xField.requestFocus();
-            return 0;
-        }
-        else{
-            return 1;
-        }
-    }
-
-    //metodo controlla che la password sia lunga almeno 6 char, e i due campi password
-    //contengano la stessa stringa, ritorna 0 se non rispettano le condizioni, 1 altrimenti
-    private  int checkPassword(String field, String field1, EditText xField, EditText yField){
-
-        //controlla che i campi non siano vuoti
-        checkField(field, xField);
-        checkField(field1, yField);
-
-        //controlla che la lunghezza della password sia di almeno 6 caratter
-        if(field.length() < 6 ){
-            xField.setError("Lunghezza minima 6 caratteri ! ");
-            xField.requestFocus();
-            return 0;
-        }
-        //controlla che la stringa in conferma password sia uguale a quella su password
-        if(!field1.equals(field)){
-            yField.setError("Le password non sono uguali !");
-            yField.requestFocus();
-            return 0;
-        }
-        else{
-            return 1;
-        }
-    }
 
 
 }

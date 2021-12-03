@@ -53,7 +53,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/username"
+        app:layout_constraintStart_toStartOf="@+id/email"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.685"
         tools:text="@tools:sample/cities" />
@@ -79,7 +79,7 @@
         android:layout_marginEnd="2dp"
         android:contentDescription="@string/usr_img"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/username"
+        app:layout_constraintEnd_toStartOf="@+id/email"
         app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toStartOf="@+id/benvenuto"
         app:layout_constraintTop_toTopOf="parent"
@@ -156,7 +156,7 @@
         app:layout_constraintVertical_bias="0.96" />
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/email"
         android:layout_width="285dp"
         android:layout_height="48dp"
         android:autofillHints="@string/prompt_email"
