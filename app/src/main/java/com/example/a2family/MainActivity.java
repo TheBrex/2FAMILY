@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                joinGroup();
+                //TODO: funzione per l'unione ad un gruppo
             }
         });
 
@@ -60,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 createGroup();
             }
         });
@@ -78,6 +79,69 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
         });
     }
 
+    private void joinGroup() {
+
+        //String familycode = "-Mq5e6HNKVitXPvEMEJY";
+        String familycode = editFamilyCode.getText().toString().trim();
+        int error= checkField(familycode, editFamilyCode);
+        progressBar.setVisibility(View.VISIBLE);
+        String userKey=mAuth.getCurrentUser().getUid();
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        databaseReference.child("Users").child(userKey).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful()) {
+                    User u = task.getResult().getValue(User.class);
+                    databaseReference.child("Families").child(familycode).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            //controlla che esista effetivamente un gruppo con quel codice
+                            if(task.getResult().getValue() == null){
+                                Toast.makeText(MainActivity.this, "Non esiste un gruppo con questo codice", Toast.LENGTH_LONG).show();
+                                editFamilyCode.requestFocus();
+                            }
+                            else {
+                                //creo l'oggetto famiglia corrispondente al child nel database con il codice "familycode"
+                                Family f = task.getResult().getValue(Family.class);
+                                System.out.println(f.getMembers().toString());
+                                //aggiungo il nuovo membro all'Oggetto famiglia f
+                                //se l'inserimento va a buon fine
+                                if (f.addMember(u, userKey) == 1) {
+                                    databaseReference.child("Families").child(familycode).setValue(f).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(MainActivity.this, "Ti sei unito al gruppo", Toast.LENGTH_LONG).show();
+                                             /*
+                                             TODO: reindirizzare l'utente nella pagina del gruppo famiglia dopo essersi unito
+                                              ...
+                                              ...
+                                              ...
+                                            */
+                                            } else {
+                                                Toast.makeText(MainActivity.this, "Non è stato possibile unirsi al gruppo", Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    Toast.makeText(MainActivity.this, "Non è stato possibile unirsi al gruppo", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    });
+                }
+                else{
+                    Toast.makeText(MainActivity.this, "Non è stato possibile unirsi al gruppo", Toast.LENGTH_LONG).show();
+                }
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+
+    }
+
     private void createGroup() {
         //getta il numero di componenti massimo decisi per la creazione del gruppo e lo parsa ad intero
         String familyMember = editFamilyNumber.getText().toString().trim();
@@ -93,46 +157,57 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
 
             progressBar.setVisibility(View.VISIBLE);
 
-            databaseReference.child("Users").child(userKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            databaseReference.child("Users").child(userKey).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    //crea un'istanza della classe User con l'oggetto snapshot trovato a cui corrisponde la userKey
-                    User u = snapshot.getValue(User.class);
-                    System.out.println(u.toString());
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if(task.isSuccessful()) {
+                        //crea un'istanza della classe User con l'oggetto snapshot trovato a cui corrisponde la userKey
+                        User u = task.getResult().getValue(User.class);
 
-                    // TODO: inserire utente nella famiglia e creare gruppo sul database (COMPLETED)
-                    //crea un oggetto famiglia il cui nome rappresentato dal cognome del creatore, e il numero di conmponenti inseriti
-                    //in fase di creazione
-                    Family f = new Family(u.getSurname(), intFamilyMember );
-                    //aggiungo l'utente che sta creando la famiglia al gruppo
-                    f.addMember(u,mAuth.getCurrentUser().getUid());
-                    //metto il riferimento alla voce Families nel DB
-                    databaseReference = firebaseDatabase.getReference("Families");
-                    //inserisco il gruppo famiglia con la funzione push() che genera un idUnivoco per il gruppo e setValue setta i campi
-                    databaseReference.push().setValue(f).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
-                                Toast.makeText(MainActivity.this, "Creazione Gruppo completata", Toast.LENGTH_LONG).show();
-                                progressBar.setVisibility(View.GONE);
-                                /*
-                                 TODO: reindirizzare l'utente nella pagina del gruppo famiglia
-                                  ...
-                                  ...
-                                  ...
-                                */
-                            }
+                        // TODO: inserire utente nella famiglia e creare gruppo sul database (COMPLETED)
+                        //crea un oggetto famiglia il cui nome rappresentato dal cognome del creatore, e il numero di conmponenti inseriti
+                        //in fase di creazione
+                        Family f = new Family(u.getSurname(), intFamilyMember);
+                        //aggiungo l'utente che sta creando la famiglia al gruppo
+                        if(f.addMember(u, mAuth.getCurrentUser().getUid()) == 1) {
+                            //metto il riferimento alla voce Families nel DB
+                            databaseReference = firebaseDatabase.getReference("Families");
+                            //inserisco il gruppo famiglia con la funzione push() che genera un idUnivoco per il gruppo e setValue setta i campi
+                            databaseReference.push().setValue(f).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        //messaggio che mi comunica che la creazione è andata a buon fine
+                                        Toast.makeText(MainActivity.this, "Creazione Gruppo completata", Toast.LENGTH_LONG).show();
+                                        /*
+                                         TODO: reindirizzare l'utente nella pagina del gruppo famiglia
+                                          ...
+                                          ...
+                                          ...
+                                        */
+                                    } else {
+                                        //messaggio che mi comunica che la creazione NON è andata a buon fine
+                                        Toast.makeText(MainActivity.this, "Creazione Gruppo fallita, Riprovare", Toast.LENGTH_LONG).show();
+                                    }
+
+                                }
+                            });
                         }
-                    });
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+                        else{
+                            Toast.makeText(MainActivity.this, "Creazione Gruppo fallita, Riprovare", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    else{
+                        Toast.makeText(MainActivity.this, "Creazione Gruppo fallita, Riprovare", Toast.LENGTH_LONG).show();
+                    }
+                    progressBar.setVisibility(View.GONE);
                 }
             });
 
 
         }
     }
+
+
 }
 
