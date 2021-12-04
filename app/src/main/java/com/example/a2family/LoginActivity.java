@@ -116,6 +116,7 @@ public class LoginActivity extends AppCompatActivity implements FieldChecker {
                     else{
                         //se il login Fallisce riporta un messaggio d'errore
                         Toast.makeText(LoginActivity.this, "Login Fallito, Riprovare", Toast.LENGTH_LONG).show();
+                        progressBar.setVisibility(View.GONE);
                     }
                 }
             });

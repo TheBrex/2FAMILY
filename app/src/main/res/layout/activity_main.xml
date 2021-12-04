@@ -180,7 +180,7 @@
         android:layout_height="48dp"
         android:fontFamily="@font/montserrat_regular"
         android:hint="@string/component_number"
-        android:inputType="text"
+        android:inputType="text|number"
         android:selectAllOnFocus="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

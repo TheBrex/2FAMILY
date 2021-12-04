@@ -1,4 +1,4 @@
-package com.example.a2family;
+package com.example.a2family.Users;
 
 public class User {
 
@@ -11,7 +11,10 @@ public class User {
         this.email = email;
     }
 
-    public User(){
+    public User() {
+    }
+
+    public User(String mario, String rossi){
 
     }
 
@@ -45,5 +48,15 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", address='" + address + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
