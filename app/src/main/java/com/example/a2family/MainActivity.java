@@ -49,33 +49,6 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
         this.logout=(TextView) findViewById(R.id.logout);
         this.progressBar=(ProgressBar) findViewById(R.id.loading_logout);
 
-        /*
-        TODO: inizializzare un oggetto UniqueGenerator e inserirci dentro tutti gli id dei gruppi già
-         esistenti nel database per non creare un nuovo gruppo con un id uguale a uno di quelli esistenti
-         ...
-         ...
-         ...
-
-        Family f = new Family("Rossi", 4);
-        User user1= new User("Mario", "Rossi", "mariorossi@email.com","via");
-        User user2=new User("Marioe", "Rosdsfsi", "mariordsfssi@email.com","eweia");
-        f.addMember(user1, mAuth.getCurrentUser().getUid());
-        f.addMember(user2,"5445ty45rgetw5gt");
-        databaseReference = firebaseDatabase.getReference("Families");
-        databaseReference.push().setValue(f);
-        databaseReference.child("Families").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        */
         //listener sul bottone "unisciti"
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
                     User u = snapshot.getValue(User.class);
                     System.out.println(u.toString());
 
-                    // TODO: inserire utente nella famiglia e creare gruppo sul database
+                    // TODO: inserire utente nella famiglia e creare gruppo sul database (COMPLETED)
                     //crea un oggetto famiglia il cui nome rappresentato dal cognome del creatore, e il numero di conmponenti inseriti
                     //in fase di creazione
                     Family f = new Family(u.getSurname(), intFamilyMember );
@@ -158,9 +131,6 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
                 }
             });
 
-            //Family f = new Family(mAuth.getCurrentUser());
-
-            //firebaseDatabase.getReference("familyGroups").setValue()
 
         }
     }
