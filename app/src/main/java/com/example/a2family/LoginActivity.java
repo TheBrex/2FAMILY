@@ -111,6 +111,7 @@ public class LoginActivity extends AppCompatActivity implements FieldChecker {
                         //se il Login funziona vai alla MainActivity
                         Intent mainPage = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(mainPage);
+                        progressBar.setVisibility(View.GONE);
                     }
                     else{
                         //se il login Fallisce riporta un messaggio d'errore

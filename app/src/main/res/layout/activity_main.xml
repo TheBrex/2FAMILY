@@ -6,4 +6,242 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="match_parent"
+        android:layout_height="176dp"
+        android:background="@drawable/_9"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/_9"
+        android:contentDescription="@string/family" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="match_parent"
+        android:layout_height="177dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.47"
+        app:srcCompat="@drawable/_220" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_extrabold"
+        android:text="Unisciti al tuo gruppo FAMIGLIA"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.263"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.273" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="52dp"
+        android:layout_height="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.028"
+        app:srcCompat="@drawable/linea_4" />
+
+    <TextView
+
+        android:id="@+id/cod_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="CODICE FAMIGLIA"
+        android:textColor="@color/black"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imageView8"
+        app:layout_constraintTop_toBottomOf="@+id/imageView8"
+        app:layout_constraintVertical_bias="0.026" />
+
+    <EditText
+        android:id="@+id/family_code"
+        android:layout_width="284dp"
+        android:layout_height="48dp"
+        android:autofillHints="@string/prompt_address"
+        android:fontFamily="@font/montserrat_regular"
+        android:hint="@string/family_code"
+        android:inputType="text"
+        android:selectAllOnFocus="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/cod_desc"
+        app:layout_constraintTop_toBottomOf="@+id/cod_desc"
+        app:layout_constraintVertical_bias="0.018" />
+
+    <Button
+        android:id="@+id/join_group"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_gravity="start"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#0079A7"
+        android:enabled="true"
+        android:fontFamily="@font/montserrat_extrabold"
+        android:text="UNISCITI"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/family_code"
+        app:layout_constraintTop_toBottomOf="@+id/family_code"
+        app:layout_constraintVertical_bias="0.062" />
+
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/join_group"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/join_group"
+        app:layout_constraintTop_toBottomOf="@+id/join_group"
+        app:layout_constraintVertical_bias="0.047"
+        app:srcCompat="@drawable/linea_9" />
+
+    <TextView
+        android:id="@+id/new_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_extrabold"
+        android:text="@string/crea_tuo_gruppo_famiglia"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.132"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.622" />
+
+    <ImageView
+        android:id="@+id/imageView12"
+        android:layout_width="52dp"
+        android:layout_height="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/new_group"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.507"
+        app:srcCompat="@drawable/linea_4" />
+
+    <TextView
+
+        android:id="@+id/comp_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="n° COMPONENTI"
+        android:textColor="@color/black"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imageView12"
+        app:layout_constraintTop_toBottomOf="@+id/imageView12"
+        app:layout_constraintVertical_bias="0.043" />
+
+    <EditText
+        android:id="@+id/max_component"
+        android:layout_width="284dp"
+        android:layout_height="48dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:hint="@string/component_number"
+        android:inputType="text"
+        android:selectAllOnFocus="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/comp_desc"
+        app:layout_constraintTop_toBottomOf="@+id/comp_desc"
+        app:layout_constraintVertical_bias="0.047" />
+
+    <Button
+        android:id="@+id/create_group"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_gravity="start"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#0079A7"
+        android:enabled="true"
+        android:fontFamily="@font/montserrat_extrabold"
+        android:text="CREA GRUPPO"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/max_component"
+        app:layout_constraintTop_toBottomOf="@+id/max_component"
+        app:layout_constraintVertical_bias="0.191" />
+
+    <TextView
+        android:id="@+id/logout_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/logout_desc"
+        android:textColor="#707070"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/create_group"
+        app:layout_constraintTop_toBottomOf="@+id/create_group" />
+
+    <TextView
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/montserrat_extrabold"
+        android:text="@string/logut"
+        android:textColor="#0079A7"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/logout_desc"
+        app:layout_constraintTop_toBottomOf="@+id/create_group" />
+
+    <ProgressBar
+        android:id="@+id/loading_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.988" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

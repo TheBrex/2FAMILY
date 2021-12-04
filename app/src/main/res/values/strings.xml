@@ -23,4 +23,9 @@
     <string name="aesthetic">image</string>
     <string name="logo">logo</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="crea_tuo_gruppo_famiglia">Crea tuo gruppo FAMIGLIA</string>
+    <string name="logout_desc">Desideri cambiare account ?</string>
+    <string name="logut">LOGOUT</string>
+    <string name="component_number">numero componenti</string>
+    <string name="family_code">codice</string>
 </resources>
