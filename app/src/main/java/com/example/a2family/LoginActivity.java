@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
@@ -42,6 +44,9 @@ public class LoginActivity extends AppCompatActivity implements FieldChecker {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        //se l'utente è loggato lo riporta nella pagina di creazione o unione ad un gruppo
+        onStart();
+
         setContentView(R.layout.activity_login);
         
         mAuth = FirebaseAuth.getInstance();
@@ -50,7 +55,7 @@ public class LoginActivity extends AppCompatActivity implements FieldChecker {
         
         //metodo che controlla se l'utente è gia' autenticato, se lo è
         //lancia la MainActvity
-        onStart();
+
         
         
         //setta i campi con gli oggetti di riferimento nel layout XML attraverso l'id
@@ -59,8 +64,6 @@ public class LoginActivity extends AppCompatActivity implements FieldChecker {
         editEmail = (EditText) findViewById(R.id.email);
         editPsw= (EditText) findViewById(R.id.password);
         progressBar=(ProgressBar) findViewById(R.id.loading);
-
-        
 
 
         // listener on LOGIN button
@@ -108,6 +111,14 @@ public class LoginActivity extends AppCompatActivity implements FieldChecker {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     //controlla se il task va a buon fine
                     if(task.isSuccessful()){
+
+                        //salvo l'id dell'utente loggato nel file Settings accessibile esclusivamente dall'app
+                        //in questo modo non c'è la necessità di passare per il database
+                        SharedPreferences preferences = getSharedPreferences("Settings",MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("familyId",mAuth.getCurrentUser().getUid());
+                        editor.apply();
+
                         //se il Login funziona vai alla MainActivity
                         Intent mainPage = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(mainPage);
@@ -127,7 +138,7 @@ public class LoginActivity extends AppCompatActivity implements FieldChecker {
     @Override
     protected void onStart() {
         super.onStart();
-        if(mAuth.getCurrentUser()!= null){
+        if (mAuth.getCurrentUser() != null) {
             Intent mainPage = new Intent(LoginActivity.this, MainActivity.class); //volontà di aprire la pagina di registrazione
             startActivity(mainPage); //lancia l'activity
         }

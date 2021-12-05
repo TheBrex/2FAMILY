@@ -20,6 +20,10 @@ public class Family {
     private HashMap<String,User> members = new HashMap<>();
 
 
+    //private HashMap<String, item> shoppingList = new HashMap<>();
+    //private HashMap<String, task> taskList = new HashMap();
+    //private HashMap<String, payment> paymentList = new HashMap<>();
+
 
     public Family(String name, int maxNumberComponents) {
 

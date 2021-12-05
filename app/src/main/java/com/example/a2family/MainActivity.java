@@ -3,7 +3,9 @@ package com.example.a2family;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import android.content.SharedPreferences;
 
 public class MainActivity extends AppCompatActivity implements FieldChecker {
 
@@ -38,8 +41,11 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //richiama la funzione onStart che verifica se l'utente fa già parte di un
+        //gruppo famiglia, se lo è lo riporta nella pagina del gruppo
+        onStart();
 
+        setContentView(R.layout.activity_main);
 
         //setta i campi con gli oggetti di riferimento nel layout XML attraverso l'id
         this.editFamilyCode=(EditText) findViewById(R.id.family_code);
@@ -54,7 +60,11 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
             @Override
             public void onClick(View view) {
                 joinGroup();
-                //TODO: funzione per l'unione ad un gruppo
+
+                /*
+                 TODO: salvare la stringa dell'id dell'utente loggato e del gruppo famiglia in un file protetto
+                  per potervi accedere senza passare ogni volta per il database
+                 */
             }
         });
 
@@ -105,7 +115,6 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
                             else {
                                 //creo l'oggetto famiglia corrispondente al child nel database con il codice "familycode"
                                 Family f = task.getResult().getValue(Family.class);
-                                System.out.println(f.getMembers().toString());
                                 //aggiungo il nuovo membro all'Oggetto famiglia f
                                 //se l'inserimento va a buon fine
                                 if (f.addMember(u, userKey) == 1) {
@@ -114,12 +123,28 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
                                                 Toast.makeText(MainActivity.this, "Ti sei unito al gruppo", Toast.LENGTH_LONG).show();
-                                             /*
-                                             TODO: reindirizzare l'utente nella pagina del gruppo famiglia dopo essersi unito
+
+                                                //salvo nel file Settings una voce che memorizza l'id dell gruppo famiglia di cui l'utente fa parte
+                                                //in questo modo non devo ricercare ogni volta il gruppo a cui appartiene l'utente
+                                                SharedPreferences preferences = getSharedPreferences("Settings",MODE_PRIVATE);
+                                                SharedPreferences.Editor editor = preferences.edit();
+                                                editor.putString("familyId",familycode);
+                                                editor.apply();
+
+                                                /*
+                                             TODO: reindirizzare l'utente nella pagina del gruppo famiglia dopo essersi unito (completed)
                                               ...
                                               ...
                                               ...
-                                            */
+                                               */
+                                                //creo l'oggetto intent che mi porta alla pagina principale del gruppo
+                                                Intent groupPage=new Intent(MainActivity.this, GroupPageActivity.class);
+                                                //passo il codice famiglia alla nuova activity che sto lanciando, in questo modo non c'è bisogno
+                                                //di rileggerlo dal file
+                                                groupPage.putExtra("familyId", familycode);
+                                                startActivity(groupPage);
+
+
                                             } else {
                                                 Toast.makeText(MainActivity.this, "Non è stato possibile unirsi al gruppo", Toast.LENGTH_LONG).show();
                                             }
@@ -172,13 +197,31 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
                         if(f.addMember(u, mAuth.getCurrentUser().getUid()) == 1) {
                             //metto il riferimento alla voce Families nel DB
                             databaseReference = firebaseDatabase.getReference("Families");
-                            //inserisco il gruppo famiglia con la funzione push() che genera un idUnivoco per il gruppo e setValue setta i campi
+                            //salvo la chiave che viene generata attraverso il push sul database senza effettivamente modificare il database
+                            String familyCode=databaseReference.push().getKey();
+                            //ora inserisco il gruppo famiglia con la funzione push() che genera un idUnivoco per il gruppo e setValue setta i campi
                             databaseReference.push().setValue(f).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
                                         //messaggio che mi comunica che la creazione è andata a buon fine
                                         Toast.makeText(MainActivity.this, "Creazione Gruppo completata", Toast.LENGTH_LONG).show();
+
+                                        //salvo l'id del gruppo all'interno del file Settings
+                                        SharedPreferences preferences = getSharedPreferences("Settings",MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = preferences.edit();
+                                        editor.putString("familyId",familyCode);
+                                        editor.apply();
+
+                                        //creo l'oggetto intent che mi porta alla pagina principale del gruppo
+                                        Intent groupPage=new Intent(MainActivity.this, GroupPageActivity.class);
+                                        //passo il codice famiglia alla nuova activity che sto lanciando, in questo modo non c'è bisogno
+                                        //di rileggerlo dal file nella prossima activity
+                                        groupPage.putExtra("familyId", familyCode);
+                                        startActivity(groupPage);
+                                        startActivity(groupPage);
+
+
                                         /*
                                          TODO: reindirizzare l'utente nella pagina del gruppo famiglia
                                           ...
@@ -208,6 +251,21 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
+        String userId = preferences.getString("userId", "defaultvalue");
+        String familyId = preferences.getString("familyId", "defaultvalue");
+
+        if(familyId!="defaultvalue"){
+            Intent groupPage=new Intent(MainActivity.this, GroupPageActivity.class);
+            //se l'utente fa gia parte di un gruppo passo il suo valore alla nuova activity
+            groupPage.putExtra("familyId",familyId);
+            startActivity(groupPage);
+        }
+        //TODO: se l'utente appartiene già ad un gruppo lancia l'activity GroupPage
+    }
 
 }
 

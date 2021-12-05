@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.2FAMILY">
         <activity
+            android:name=".GroupPageActivity"
+            android:exported="true" />
+        <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
@@ -31,7 +34,6 @@
             android:name=".SignUpActivity"
             android:exported="true"
             android:label="@string/title_activity_sign_up" />
-
     </application>
 
 </manifest>

@@ -28,4 +28,5 @@
     <string name="logut">LOGOUT</string>
     <string name="component_number">numero componenti</string>
     <string name="family_code">codice</string>
+    <string name="family_desc">LA TUA FAMIGLIA</string>
 </resources>
