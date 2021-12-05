@@ -45,9 +45,8 @@ public class LoginActivity extends AppCompatActivity implements FieldChecker {
 
         super.onCreate(savedInstanceState);
         //se l'utente è loggato lo riporta nella pagina di creazione o unione ad un gruppo
-        onStart();
 
-        setContentView(R.layout.activity_login);
+
         
         mAuth = FirebaseAuth.getInstance();
         //istanza del database
@@ -55,8 +54,8 @@ public class LoginActivity extends AppCompatActivity implements FieldChecker {
         
         //metodo che controlla se l'utente è gia' autenticato, se lo è
         //lancia la MainActvity
-
-        
+        onStart();
+        setContentView(R.layout.activity_login);
         
         //setta i campi con gli oggetti di riferimento nel layout XML attraverso l'id
         loginButton= (Button) findViewById(R.id.login);
@@ -141,6 +140,7 @@ public class LoginActivity extends AppCompatActivity implements FieldChecker {
         if (mAuth.getCurrentUser() != null) {
             Intent mainPage = new Intent(LoginActivity.this, MainActivity.class); //volontà di aprire la pagina di registrazione
             startActivity(mainPage); //lancia l'activity
+            finish();
         }
     }
 

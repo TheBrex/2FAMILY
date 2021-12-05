@@ -19,10 +19,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import android.content.SharedPreferences;
 
 public class MainActivity extends AppCompatActivity implements FieldChecker {
@@ -44,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
         //richiama la funzione onStart che verifica se l'utente fa già parte di un
         //gruppo famiglia, se lo è lo riporta nella pagina del gruppo
         onStart();
-
         setContentView(R.layout.activity_main);
 
         //setta i campi con gli oggetti di riferimento nel layout XML attraverso l'id
@@ -263,6 +260,7 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
             //se l'utente fa gia parte di un gruppo passo il suo valore alla nuova activity
             groupPage.putExtra("familyId",familyId);
             startActivity(groupPage);
+            finish();
         }
         //TODO: se l'utente appartiene già ad un gruppo lancia l'activity GroupPage
     }
