@@ -1,12 +1,6 @@
 package com.example.a2family.Families;
 
-import com.example.a2family.Users.User;
-
-import java.lang.reflect.Member;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
 
 public class Family {
 

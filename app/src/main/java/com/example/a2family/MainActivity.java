@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a2family.Families.Family;
-import com.example.a2family.Users.User;
+import com.example.a2family.Families.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,7 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import android.content.SharedPreferences;
 
-public class MainActivity extends AppCompatActivity implements FieldChecker {
+public class MainActivity extends AppCompatActivity implements HelperInterface {
 
     private EditText editFamilyCode;
     private EditText editFamilyNumber;
@@ -39,9 +38,9 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //richiama la funzione onStart che verifica se l'utente fa già parte di un
+        //richiama la funzione redirect che verifica se l'utente fa già parte di un
         //gruppo famiglia, se lo è lo riporta nella pagina del gruppo
-        onStart();
+        redirect();
         setContentView(R.layout.activity_main);
 
         //setta i campi con gli oggetti di riferimento nel layout XML attraverso l'id
@@ -58,10 +57,6 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
             public void onClick(View view) {
                 joinGroup();
 
-                /*
-                 TODO: salvare la stringa dell'id dell'utente loggato e del gruppo famiglia in un file protetto
-                  per potervi accedere senza passare ogni volta per il database
-                 */
             }
         });
 
@@ -78,17 +73,30 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
 
             @Override
             public void onClick(View view) {
-                progressBar.setVisibility(View.VISIBLE);
-                mAuth.signOut();
-                progressBar.setVisibility(View.GONE);
-                finish();
+                signOut();
             }
         });
     }
 
+    public void signOut() {
+        progressBar.setVisibility(View.VISIBLE);
+        mAuth.signOut();
+        /*
+          TODO: pulire il file Settings
+        */
+        SharedPreferences preferences = getSharedPreferences("Settings",MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear().commit();
+
+        progressBar.setVisibility(View.GONE);
+        //vado alla pagina di login
+        Intent loginPage=new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(loginPage);
+        finish();
+    }
+
     private void joinGroup() {
 
-        //String familycode = "-Mq5e6HNKVitXPvEMEJY";
         String familycode = editFamilyCode.getText().toString().trim();
         int error= checkField(familycode, editFamilyCode);
         progressBar.setVisibility(View.VISIBLE);
@@ -109,30 +117,35 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
                                 Toast.makeText(MainActivity.this, "Non esiste un gruppo con questo codice", Toast.LENGTH_LONG).show();
                                 editFamilyCode.requestFocus();
                             }
+                            //se esiste
                             else {
                                 //creo l'oggetto famiglia corrispondente al child nel database con il codice "familycode"
                                 Family f = task.getResult().getValue(Family.class);
                                 //aggiungo il nuovo membro all'Oggetto famiglia f
                                 //se l'inserimento va a buon fine
                                 if (f.addMember(u, userKey) == 1) {
+
                                     databaseReference.child("Families").child(familycode).setValue(f).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
                                                 Toast.makeText(MainActivity.this, "Ti sei unito al gruppo", Toast.LENGTH_LONG).show();
 
+                                                //TODO: 3) creare un nuovo elemento nel db che tiene traccia dell'id dell'utente e del gruppo a cui appartiene
+                                                databaseReference.child("TrackFamily").child(userKey).child("Family").setValue(familycode);
+
+                                                /*
+                                                TODO:salvare l'id famiglia dell'utente nel file Setting per non dover
+                                                 passare ogni volta per il database ( COMPLETED )
+                                                 */
                                                 //salvo nel file Settings una voce che memorizza l'id dell gruppo famiglia di cui l'utente fa parte
                                                 //in questo modo non devo ricercare ogni volta il gruppo a cui appartiene l'utente
                                                 SharedPreferences preferences = getSharedPreferences("Settings",MODE_PRIVATE);
                                                 SharedPreferences.Editor editor = preferences.edit();
                                                 editor.putString("familyId",familycode);
                                                 editor.apply();
-
                                                 /*
-                                             TODO: reindirizzare l'utente nella pagina del gruppo famiglia dopo essersi unito (completed)
-                                              ...
-                                              ...
-                                              ...
+                                                TODO: reindirizzare l'utente nella pagina del gruppo famiglia dopo essersi unito ( COMPLETED )
                                                */
                                                 //creo l'oggetto intent che mi porta alla pagina principale del gruppo
                                                 Intent groupPage=new Intent(MainActivity.this, GroupPageActivity.class);
@@ -147,6 +160,8 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
                                             }
                                         }
                                     });
+
+
                                 } else {
                                     Toast.makeText(MainActivity.this, "Non è stato possibile unirsi al gruppo", Toast.LENGTH_LONG).show();
                                 }
@@ -194,37 +209,35 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
                         if(f.addMember(u, mAuth.getCurrentUser().getUid()) == 1) {
                             //metto il riferimento alla voce Families nel DB
                             databaseReference = firebaseDatabase.getReference("Families");
-                            //salvo la chiave che viene generata attraverso il push sul database senza effettivamente modificare il database
+                            //salvo la chiave univoca che viene generata attraverso il push sul database senza effettivamente modificare il database
                             String familyCode=databaseReference.push().getKey();
-                            //ora inserisco il gruppo famiglia con la funzione push() che genera un idUnivoco per il gruppo e setValue setta i campi
-                            databaseReference.push().setValue(f).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            //ora inserisco il gruppo famiglia con l'id ricavato attraverso push().getKey() che genera un ID univoco con il timestamp setValue setta i campi
+                            databaseReference.child(familyCode).setValue(f).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
                                         //messaggio che mi comunica che la creazione è andata a buon fine
                                         Toast.makeText(MainActivity.this, "Creazione Gruppo completata", Toast.LENGTH_LONG).show();
-
+                                        //TODO: creare un nuovo elemento nel db che tiene traccia dell'id dell'utente e del gruppo a cui appartiene ( COMPLETED )
+                                        databaseReference=firebaseDatabase.getReference("TrackFamily");
+                                        databaseReference.child(userKey).child("Family").setValue(familyCode);
                                         //salvo l'id del gruppo all'interno del file Settings
                                         SharedPreferences preferences = getSharedPreferences("Settings",MODE_PRIVATE);
                                         SharedPreferences.Editor editor = preferences.edit();
                                         editor.putString("familyId",familyCode);
                                         editor.apply();
 
+                                        /*
+                                         TODO: reindirizzare l'utente nella pagina del gruppo famiglia ( COMPLETED )
+                                        */
                                         //creo l'oggetto intent che mi porta alla pagina principale del gruppo
                                         Intent groupPage=new Intent(MainActivity.this, GroupPageActivity.class);
                                         //passo il codice famiglia alla nuova activity che sto lanciando, in questo modo non c'è bisogno
                                         //di rileggerlo dal file nella prossima activity
                                         groupPage.putExtra("familyId", familyCode);
                                         startActivity(groupPage);
-                                        startActivity(groupPage);
+                                        finish();
 
-
-                                        /*
-                                         TODO: reindirizzare l'utente nella pagina del gruppo famiglia
-                                          ...
-                                          ...
-                                          ...
-                                        */
                                     } else {
                                         //messaggio che mi comunica che la creazione NON è andata a buon fine
                                         Toast.makeText(MainActivity.this, "Creazione Gruppo fallita, Riprovare", Toast.LENGTH_LONG).show();
@@ -248,22 +261,23 @@ public class MainActivity extends AppCompatActivity implements FieldChecker {
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+
+    public void redirect() {
+
         SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
         String userId = preferences.getString("userId", "defaultvalue");
         String familyId = preferences.getString("familyId", "defaultvalue");
 
-        if(familyId!="defaultvalue"){
-            Intent groupPage=new Intent(MainActivity.this, GroupPageActivity.class);
+        if (familyId != "defaultvalue") {
+            Intent groupPage = new Intent(MainActivity.this, GroupPageActivity.class);
             //se l'utente fa gia parte di un gruppo passo il suo valore alla nuova activity
-            groupPage.putExtra("familyId",familyId);
+            groupPage.putExtra("familyId", familyId);
             startActivity(groupPage);
             finish();
         }
-        //TODO: se l'utente appartiene già ad un gruppo lancia l'activity GroupPage
+        //TODO: se l'utente appartiene già ad un gruppo lancia l'activity GroupPage(COMPLETED)
     }
+
 
 }
 

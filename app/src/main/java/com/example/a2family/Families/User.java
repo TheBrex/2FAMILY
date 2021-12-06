@@ -1,4 +1,4 @@
-package com.example.a2family.Users;
+package com.example.a2family.Families;
 
 public class User {
 

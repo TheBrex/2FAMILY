@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="match_parent"
-        android:layout_height="363dp"
+        android:layout_width="410dp"
+        android:layout_height="326dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -39,7 +39,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView3"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="0.047"
         app:srcCompat="@drawable/text2"
         tools:ignore="MissingConstraints" />
 
@@ -55,13 +55,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView6"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.005" />
+
+    <TextView
+        android:id="@+id/logout_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="60dp"
+        android:fontFamily="@font/montserrat_extrabold"
+        android:text="@string/logut"
+        android:textColor="#0079A7"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/member_list"
+        app:layout_constraintVertical_bias="0.09" />
 
     <ListView
         android:id="@+id/member_list"
-        android:layout_width="match_parent"
-        android:layout_height="662dp"
-        android:layout_marginTop="25dp"
+        android:layout_width="429dp"
+        android:layout_height="291dp"
         android:divider="@null"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -69,7 +83,34 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.06999999"
+        app:layout_constraintVertical_bias="0.00999999"
         tools:listitem="@layout/list_item" />
+
+    <ProgressBar
+        android:id="@+id/loading_logoutgroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.998" />
+
+    <TextView
+        android:id="@+id/logout_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/logout_desc"
+        android:textColor="#707070"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/member_list"
+        app:layout_constraintTop_toBottomOf="@+id/member_list"
+        app:layout_constraintVertical_bias="0.107" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

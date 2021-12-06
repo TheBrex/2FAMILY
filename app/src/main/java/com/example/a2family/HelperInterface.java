@@ -3,7 +3,7 @@ package com.example.a2family;
 import android.util.Patterns;
 import android.widget.EditText;
 
-public interface FieldChecker {
+public interface HelperInterface {
 
 
     //il metodo controlla che i campi non siano vuoti, se vuoti ritorna 0, 1 altrimenti
@@ -59,5 +59,6 @@ public interface FieldChecker {
             return 1;
         }
     }
+
 
 }
