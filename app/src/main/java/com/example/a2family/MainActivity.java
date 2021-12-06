@@ -98,85 +98,86 @@ public class MainActivity extends AppCompatActivity implements HelperInterface {
     private void joinGroup() {
 
         String familycode = editFamilyCode.getText().toString().trim();
-        int error= checkField(familycode, editFamilyCode);
-        progressBar.setVisibility(View.VISIBLE);
         String userKey=mAuth.getCurrentUser().getUid();
 
-        progressBar.setVisibility(View.VISIBLE);
 
-        databaseReference.child("Users").child(userKey).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.isSuccessful()) {
-                    User u = task.getResult().getValue(User.class);
-                    databaseReference.child("Families").child(familycode).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                            //controlla che esista effetivamente un gruppo con quel codice
-                            if(task.getResult().getValue() == null){
-                                Toast.makeText(MainActivity.this, "Non esiste un gruppo con questo codice", Toast.LENGTH_LONG).show();
-                                editFamilyCode.requestFocus();
-                            }
-                            //se esiste
-                            else {
-                                //creo l'oggetto famiglia corrispondente al child nel database con il codice "familycode"
-                                Family f = task.getResult().getValue(Family.class);
-                                //aggiungo il nuovo membro all'Oggetto famiglia f
-                                //se l'inserimento va a buon fine
-                                if (f.addMember(u, userKey) == 1) {
+        if((checkField(familycode, editFamilyCode))==0){
+            return;
+        }
+        else {
+            progressBar.setVisibility(View.VISIBLE);
+            databaseReference.child("Users").child(userKey).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        User u = task.getResult().getValue(User.class);
+                        databaseReference.child("Families").child(familycode).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                //controlla che esista effetivamente un gruppo con quel codice
+                                if (task.getResult().getValue() == null) {
+                                    Toast.makeText(MainActivity.this, "Non esiste un gruppo con questo codice", Toast.LENGTH_LONG).show();
+                                    editFamilyCode.requestFocus();
+                                }
+                                //se esiste
+                                else {
+                                    //creo l'oggetto famiglia corrispondente al child nel database con il codice "familycode"
+                                    Family f = task.getResult().getValue(Family.class);
+                                    //aggiungo il nuovo membro all'Oggetto famiglia f
+                                    //se l'inserimento va a buon fine
+                                    if (f.addMember(u, userKey) == 1) {
 
-                                    databaseReference.child("Families").child(familycode).setValue(f).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                Toast.makeText(MainActivity.this, "Ti sei unito al gruppo", Toast.LENGTH_LONG).show();
+                                        databaseReference.child("Families").child(familycode).setValue(f).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(MainActivity.this, "Ti sei unito al gruppo", Toast.LENGTH_LONG).show();
 
-                                                //TODO: 3) creare un nuovo elemento nel db che tiene traccia dell'id dell'utente e del gruppo a cui appartiene
-                                                databaseReference.child("TrackFamily").child(userKey).child("Family").setValue(familycode);
+                                                    //TODO: 3) creare un nuovo elemento nel db che tiene traccia dell'id dell'utente e del gruppo a cui appartiene
+                                                    databaseReference.child("TrackFamily").child(userKey).child("Family").setValue(familycode);
 
                                                 /*
                                                 TODO:salvare l'id famiglia dell'utente nel file Setting per non dover
                                                  passare ogni volta per il database ( COMPLETED )
                                                  */
-                                                //salvo nel file Settings una voce che memorizza l'id dell gruppo famiglia di cui l'utente fa parte
-                                                //in questo modo non devo ricercare ogni volta il gruppo a cui appartiene l'utente
-                                                SharedPreferences preferences = getSharedPreferences("Settings",MODE_PRIVATE);
-                                                SharedPreferences.Editor editor = preferences.edit();
-                                                editor.putString("familyId",familycode);
-                                                editor.apply();
+                                                    //salvo nel file Settings una voce che memorizza l'id dell gruppo famiglia di cui l'utente fa parte
+                                                    //in questo modo non devo ricercare ogni volta il gruppo a cui appartiene l'utente
+                                                    SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
+                                                    SharedPreferences.Editor editor = preferences.edit();
+                                                    editor.putString("familyId", familycode);
+                                                    editor.apply();
                                                 /*
                                                 TODO: reindirizzare l'utente nella pagina del gruppo famiglia dopo essersi unito ( COMPLETED )
                                                */
-                                                //creo l'oggetto intent che mi porta alla pagina principale del gruppo
-                                                Intent groupPage=new Intent(MainActivity.this, GroupPageActivity.class);
-                                                //passo il codice famiglia alla nuova activity che sto lanciando, in questo modo non c'è bisogno
-                                                //di rileggerlo dal file
-                                                groupPage.putExtra("familyId", familycode);
-                                                startActivity(groupPage);
+                                                    //creo l'oggetto intent che mi porta alla pagina principale del gruppo
+                                                    Intent groupPage = new Intent(MainActivity.this, GroupPageActivity.class);
+                                                    //passo il codice famiglia alla nuova activity che sto lanciando, in questo modo non c'è bisogno
+                                                    //di rileggerlo dal file
+                                                    groupPage.putExtra("familyId", familycode);
+                                                    startActivity(groupPage);
 
 
-                                            } else {
-                                                Toast.makeText(MainActivity.this, "Non è stato possibile unirsi al gruppo", Toast.LENGTH_LONG).show();
+                                                } else {
+                                                    Toast.makeText(MainActivity.this, "Non è stato possibile unirsi al gruppo", Toast.LENGTH_LONG).show();
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
 
 
-                                } else {
-                                    Toast.makeText(MainActivity.this, "Non è stato possibile unirsi al gruppo", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        Toast.makeText(MainActivity.this, "Non è stato possibile unirsi al gruppo", Toast.LENGTH_LONG).show();
+                                    }
                                 }
+                                progressBar.setVisibility(View.GONE);
                             }
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    });
+                        });
+                    } else {
+                        Toast.makeText(MainActivity.this, "Non è stato possibile unirsi al gruppo", Toast.LENGTH_LONG).show();
+                    }
+                    progressBar.setVisibility(View.GONE);
                 }
-                else{
-                    Toast.makeText(MainActivity.this, "Non è stato possibile unirsi al gruppo", Toast.LENGTH_LONG).show();
-                }
-                progressBar.setVisibility(View.GONE);
-            }
-        });
-
+            });
+        }
     }
 
     private void createGroup() {
