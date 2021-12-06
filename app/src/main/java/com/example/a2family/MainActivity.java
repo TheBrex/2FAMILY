@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements HelperInterface {
         super.onCreate(savedInstanceState);
         //richiama la funzione redirect che verifica se l'utente fa già parte di un
         //gruppo famiglia, se lo è lo riporta nella pagina del gruppo
-        redirect();
         setContentView(R.layout.activity_main);
 
         //setta i campi con gli oggetti di riferimento nel layout XML attraverso l'id
@@ -136,16 +135,17 @@ public class MainActivity extends AppCompatActivity implements HelperInterface {
                                                     //TODO: 3) creare un nuovo elemento nel db che tiene traccia dell'id dell'utente e del gruppo a cui appartiene
                                                     databaseReference.child("TrackFamily").child(userKey).child("Family").setValue(familycode);
 
-                                                /*
-                                                TODO:salvare l'id famiglia dell'utente nel file Setting per non dover
-                                                 passare ogni volta per il database ( COMPLETED )
-                                                 */
+                                                    /*
+                                                    TODO:salvare l'id famiglia dell'utente nel file Setting per non dover
+                                                     passare ogni volta per il database ( COMPLETED )
+                                                     */
                                                     //salvo nel file Settings una voce che memorizza l'id dell gruppo famiglia di cui l'utente fa parte
                                                     //in questo modo non devo ricercare ogni volta il gruppo a cui appartiene l'utente
                                                     SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
                                                     SharedPreferences.Editor editor = preferences.edit();
                                                     editor.putString("familyId", familycode);
                                                     editor.apply();
+
                                                 /*
                                                 TODO: reindirizzare l'utente nella pagina del gruppo famiglia dopo essersi unito ( COMPLETED )
                                                */
@@ -260,23 +260,6 @@ public class MainActivity extends AppCompatActivity implements HelperInterface {
 
 
         }
-    }
-
-
-    public void redirect() {
-
-        SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
-        String userId = preferences.getString("userId", "defaultvalue");
-        String familyId = preferences.getString("familyId", "defaultvalue");
-
-        if (familyId != "defaultvalue") {
-            Intent groupPage = new Intent(MainActivity.this, GroupPageActivity.class);
-            //se l'utente fa gia parte di un gruppo passo il suo valore alla nuova activity
-            groupPage.putExtra("familyId", familyId);
-            startActivity(groupPage);
-            finish();
-        }
-        //TODO: se l'utente appartiene già ad un gruppo lancia l'activity GroupPage(COMPLETED)
     }
 
 

@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="410dp"
-        android:layout_height="326dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -44,7 +44,7 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/your_family"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_semibold"
@@ -62,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="124dp"
         android:fontFamily="@font/montserrat_extrabold"
         android:text="@string/logut"
         android:textColor="#0079A7"
@@ -70,11 +70,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/member_list"
-        app:layout_constraintVertical_bias="0.09" />
+        app:layout_constraintVertical_bias="0.1" />
 
     <ListView
         android:id="@+id/member_list"
-        android:layout_width="429dp"
+        android:layout_width="match_parent"
         android:layout_height="291dp"
         android:divider="@null"
         android:scrollbars="vertical"
@@ -82,7 +82,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/your_family"
         app:layout_constraintVertical_bias="0.00999999"
         tools:listitem="@layout/list_item" />
 

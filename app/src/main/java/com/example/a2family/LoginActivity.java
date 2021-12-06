@@ -50,9 +50,6 @@ public class LoginActivity extends AppCompatActivity implements HelperInterface 
         
         //metodo che controlla se l'utente è gia' autenticato, se lo è
         //lancia la MainActvity
-        SharedPreferences preferences = getSharedPreferences("Settings",MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.clear().commit();
         onStart();
         setContentView(R.layout.activity_login);
         
@@ -138,12 +135,14 @@ public class LoginActivity extends AppCompatActivity implements HelperInterface 
                                         finish();
 
                                     }
+                                    else{
+                                        //la voce TrackFamily non esiste ancora oppure non è stato trovato l'id dell'utente in "TrackFamily"
+                                        //significa che l'utente non appartiene ancora ad un gruppo famiglia
+                                        Intent mainPage = new Intent(LoginActivity.this, MainActivity.class);
+                                        startActivity(mainPage);
+                                        finish();
+                                    }
                                 }
-                                //la voce TrackFamily non esiste ancora oppure non è stato trovato l'id dell'utente in "TrackFamily"
-                                //significa che l'utente non appartiene ancora ad un gruppo famiglia
-                                Intent mainPage = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(mainPage);
-                                finish();
                             }
                         });
 
@@ -164,10 +163,19 @@ public class LoginActivity extends AppCompatActivity implements HelperInterface 
     @Override
     public void onStart() {
         super.onStart();
-        if (mAuth.getCurrentUser() != null) {
-            Intent mainPage = new Intent(LoginActivity.this, MainActivity.class); //volontà di aprire la pagina di registrazione
-            startActivity(mainPage); //lancia l'activity
+
+        SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
+        String userId = preferences.getString("userId", "defaultvalue");
+        String familyId = preferences.getString("familyId", "defaultvalue");
+
+        if (!familyId.equals("defaultvalue") && !userId.equals("default")) {
+            Intent groupPage = new Intent(LoginActivity.this, GroupPageActivity.class);
+            //se l'utente fa gia parte di un gruppo passo il suo valore alla nuova activity
+            groupPage.putExtra("familyId", familyId);
+            startActivity(groupPage);
+            finish();
         }
+
     }
 
 
