@@ -150,36 +150,36 @@ public class ExitFragment extends BottomSheetDialogFragment {
                                 startActivity(mainPage, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle());
                                 //controllo se nel gruppo sono presenti 0 o piu componenti
                                 //se i membri sono 0 procedo ad eliminare il gruppo
-                                if (familyComponents - 1 <= 0) {
-                                    databaseReference.getParent().removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            Log.d("Info", "Eliminazione gruppo completata");
-                                            //TODO : rimuovere il riferimento dell'utente da "trackFamily" e rimuove l'id dal file
-                                            firebaseDatabase.getReference().getRoot().child("TrackFamily").child(userId).removeValue();
-                                            ((GroupPageActivity)activity).removeUserIdFromFile();
-                                            ((GroupPageActivity)activity).removeFamilyIdFromFile();
-                                            activity.finish();
-                                        }
-                                    });
-                                }
-                                //se i membri sono > 0 aggiorno il valore dei componenti attuali
-                                else {
-                                    Log.d("Info", "Rimozione utente completata");
-                                    ((GroupPageActivity)activity).removeUserIdFromFile();
-                                    ((GroupPageActivity)activity).removeFamilyIdFromFile();
-                                    firebaseDatabase.getReference().getRoot().child("TrackFamily").child(userId).removeValue();
-                                    int fc= familyComponents-1;
-                                    //TODO: set value non funziona
-                                    System.out.println(databaseReference.get().toString());
-                                    databaseReference.setValue(fc);
-                                    //TODO : rimuovere il riferimento dell'utente da "trackFamily" e rimuove l'id dal file
-                                    activity.finish();
-
-                                }
-
                             }
                         });
+
+                        if (familyComponents - 1 <= 0) {
+                            databaseReference.getParent().removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Log.d("Info", "Eliminazione gruppo completata");
+                                    //TODO : rimuovere il riferimento dell'utente da "trackFamily" e rimuove l'id dal file
+                                    firebaseDatabase.getReference().getRoot().child("TrackFamily").child(userId).removeValue();
+                                    ((GroupPageActivity)activity).removeUserIdFromFile();
+                                    ((GroupPageActivity)activity).removeFamilyIdFromFile();
+                                    activity.finish();
+                                }
+                            });
+                        }
+                        //se i membri sono > 0 aggiorno il valore dei componenti attuali
+                        else {
+                            Log.d("Info", "Rimozione utente completata");
+                            ((GroupPageActivity)activity).removeUserIdFromFile();
+                            ((GroupPageActivity)activity).removeFamilyIdFromFile();
+                            firebaseDatabase.getReference().getRoot().child("TrackFamily").child(userId).removeValue();
+                            int fc= familyComponents-1;
+                            //TODO: set value non funziona
+                            System.out.println(databaseReference.get().toString());
+                            currentData.setValue(fc);
+                            //TODO : rimuovere il riferimento dell'utente da "trackFamily" e rimuove l'id dal file
+                            activity.finish();
+
+                        }
                     }
                     return Transaction.success(currentData);
                 }
