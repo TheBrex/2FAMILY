@@ -1,8 +1,9 @@
-package com.example.a2family;
+package com.example.a2family.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.a2family.Interfaces.HelperInterface;
+import com.example.a2family.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -21,7 +24,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class LoginActivity extends AppCompatActivity implements HelperInterface {
+public class LoginActivity extends BaseActivity implements HelperInterface {
 
     private Button loginButton;
     private TextView editSignUp;
@@ -29,20 +32,12 @@ public class LoginActivity extends AppCompatActivity implements HelperInterface 
     private EditText editPsw;
     private ProgressBar progressBar;
 
-    // creating a variable for our
-    // Firebase Database.
-    private FirebaseAuth mAuth;
-    private FirebaseDatabase firebaseDatabase;
-    // creating a variable for our Database
-    // Reference for Firebase.
-    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         //se l'utente è loggato lo riporta nella pagina di creazione o unione ad un gruppo
-
 
         mAuth = FirebaseAuth.getInstance();
         //istanza del database
@@ -74,7 +69,7 @@ public class LoginActivity extends AppCompatActivity implements HelperInterface 
             @Override
             public void onClick(View view) {
                 Intent open_signUp_page = new Intent(LoginActivity.this, SignUpActivity.class); //volontà di aprire la pagina di registrazione
-                startActivity(open_signUp_page); //lancia l'activity
+                startActivity(open_signUp_page, ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this).toBundle()); //lancia l'activity
 
             }
         });
@@ -107,10 +102,8 @@ public class LoginActivity extends AppCompatActivity implements HelperInterface 
 
                         //salvo l'id dell'utente loggato nel file Settings accessibile esclusivamente dall'app
                         //in questo modo non c'è la necessità di passare per il database
-                        SharedPreferences preferences = getSharedPreferences("Settings",MODE_PRIVATE);
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString("userId",mAuth.getCurrentUser().getUid());
-                        editor.apply();
+                        putUserIdIntoFile(mAuth.getCurrentUser().getUid());
+
 
                         //TODO: se l'utente è già in un gruppo famiglia, redirectarlo alla pagina del gruppo ( COMPLETED )
                         //TODO: fix Trackfamily "Family" value different from familyId when create familygroup ( COMPLETED )
@@ -126,12 +119,12 @@ public class LoginActivity extends AppCompatActivity implements HelperInterface 
                                         //salvo l'id dell'utente loggato nel file Settings accessibile esclusivamente dall'app
                                         //in questo modo non c'è la necessità di passare per il database per recuperarlo
                                         //salvo la stringa corrispondente all'id della famiglia trovato nel db nel fire "Settings"
-                                        editor.putString("familyId",task.getResult().child("Family").getValue(String.class));
-                                        editor.apply();
+                                        String familyId = task.getResult().child("Family").getValue(String.class);
+                                        putFamilyIdIntoFile(familyId);
 
                                         //reindirizzo nella pagina del gruppo
                                         Intent groupPage = new Intent(LoginActivity.this, GroupPageActivity.class);
-                                        startActivity(groupPage);
+                                        startActivity(groupPage,ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this).toBundle());
                                         finish();
 
                                     }
@@ -139,7 +132,7 @@ public class LoginActivity extends AppCompatActivity implements HelperInterface 
                                         //la voce TrackFamily non esiste ancora oppure non è stato trovato l'id dell'utente in "TrackFamily"
                                         //significa che l'utente non appartiene ancora ad un gruppo famiglia
                                         Intent mainPage = new Intent(LoginActivity.this, MainActivity.class);
-                                        startActivity(mainPage);
+                                        startActivity(mainPage,ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this).toBundle());
                                         finish();
                                     }
                                 }
@@ -164,15 +157,15 @@ public class LoginActivity extends AppCompatActivity implements HelperInterface 
     public void onStart() {
         super.onStart();
 
-        SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
-        String userId = preferences.getString("userId", "defaultvalue");
-        String familyId = preferences.getString("familyId", "defaultvalue");
+
+        String userId = getUserIdFromFile();
+        String familyId = getFamilyIdFromFile();
 
         if (!familyId.equals("defaultvalue") && !userId.equals("default")) {
             Intent groupPage = new Intent(LoginActivity.this, GroupPageActivity.class);
             //se l'utente fa gia parte di un gruppo passo il suo valore alla nuova activity
             groupPage.putExtra("familyId", familyId);
-            startActivity(groupPage);
+            startActivity(groupPage,ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this).toBundle());
             finish();
         }
 

@@ -1,8 +1,9 @@
-package com.example.a2family;
+package com.example.a2family.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,8 +13,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a2family.Families.Family;
-import com.example.a2family.Families.User;
+import com.example.a2family.Classes.Family;
+import com.example.a2family.Classes.User;
+import com.example.a2family.Interfaces.HelperInterface;
+import com.example.a2family.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,7 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import android.content.SharedPreferences;
 
-public class MainActivity extends AppCompatActivity implements HelperInterface {
+public class MainActivity extends BaseActivity implements HelperInterface {
 
     private EditText editFamilyCode;
     private EditText editFamilyNumber;
@@ -31,9 +34,6 @@ public class MainActivity extends AppCompatActivity implements HelperInterface {
     private TextView logout;
     private ProgressBar progressBar;
 
-    private FirebaseAuth mAuth=FirebaseAuth.getInstance();
-    private FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
-    private DatabaseReference databaseReference=firebaseDatabase.getReference().getRoot();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,22 +77,6 @@ public class MainActivity extends AppCompatActivity implements HelperInterface {
         });
     }
 
-    public void signOut() {
-        progressBar.setVisibility(View.VISIBLE);
-        mAuth.signOut();
-        /*
-          TODO: pulire il file Settings
-        */
-        SharedPreferences preferences = getSharedPreferences("Settings",MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.clear().commit();
-
-        progressBar.setVisibility(View.GONE);
-        //vado alla pagina di login
-        Intent loginPage=new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(loginPage);
-        finish();
-    }
 
     private void joinGroup() {
 
@@ -141,10 +125,7 @@ public class MainActivity extends AppCompatActivity implements HelperInterface {
                                                      */
                                                     //salvo nel file Settings una voce che memorizza l'id dell gruppo famiglia di cui l'utente fa parte
                                                     //in questo modo non devo ricercare ogni volta il gruppo a cui appartiene l'utente
-                                                    SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
-                                                    SharedPreferences.Editor editor = preferences.edit();
-                                                    editor.putString("familyId", familycode);
-                                                    editor.apply();
+                                                    putFamilyIdIntoFile(familycode);
 
                                                 /*
                                                 TODO: reindirizzare l'utente nella pagina del gruppo famiglia dopo essersi unito ( COMPLETED )
@@ -154,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements HelperInterface {
                                                     //passo il codice famiglia alla nuova activity che sto lanciando, in questo modo non c'è bisogno
                                                     //di rileggerlo dal file
                                                     groupPage.putExtra("familyId", familycode);
-                                                    startActivity(groupPage);
+                                                    startActivity(groupPage,ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
 
 
                                                 } else {
@@ -223,10 +204,7 @@ public class MainActivity extends AppCompatActivity implements HelperInterface {
                                         databaseReference=firebaseDatabase.getReference("TrackFamily");
                                         databaseReference.child(userKey).child("Family").setValue(familyCode);
                                         //salvo l'id del gruppo all'interno del file Settings
-                                        SharedPreferences preferences = getSharedPreferences("Settings",MODE_PRIVATE);
-                                        SharedPreferences.Editor editor = preferences.edit();
-                                        editor.putString("familyId",familyCode);
-                                        editor.apply();
+                                        putFamilyIdIntoFile(familyCode);
 
                                         /*
                                          TODO: reindirizzare l'utente nella pagina del gruppo famiglia ( COMPLETED )
@@ -236,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements HelperInterface {
                                         //passo il codice famiglia alla nuova activity che sto lanciando, in questo modo non c'è bisogno
                                         //di rileggerlo dal file nella prossima activity
                                         groupPage.putExtra("familyId", familyCode);
-                                        startActivity(groupPage);
+                                        startActivity(groupPage,ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
                                         finish();
 
                                     } else {

@@ -1,4 +1,4 @@
-package com.example.a2family;
+package com.example.a2family.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +12,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a2family.Families.User;
+import com.example.a2family.Classes.User;
+import com.example.a2family.Interfaces.HelperInterface;
+import com.example.a2family.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -21,23 +23,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-public class SignUpActivity extends AppCompatActivity implements HelperInterface {
+public class SignUpActivity extends BaseActivity implements HelperInterface {
 
 
     private EditText editName, editSurname , editAddress, editPassword, editPasswordConfirm, editEmail;
     private TextView backButton;
     private Button signUpButton;
     private ProgressBar progressBar;
-
-    // creating a variable for our
-    // Firebase Database.
-    private FirebaseAuth mAuth;
-
-    private FirebaseDatabase firebaseDatabase;
-
-    // creating a variable for our Database
-    // Reference for Firebase.
-    DatabaseReference databaseReference;
 
 
     @Override
@@ -46,13 +38,6 @@ public class SignUpActivity extends AppCompatActivity implements HelperInterface
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_sign_up);
-
-        //firebase inititialization
-        mAuth = FirebaseAuth.getInstance();
-        //istanza del database
-        firebaseDatabase=FirebaseDatabase.getInstance();
-        //riferimento alla root
-        databaseReference=firebaseDatabase.getReference().getRoot();
 
 
         //inizializza campi con gli specifici elementi grafici definiti attraverso l'id nel file xml

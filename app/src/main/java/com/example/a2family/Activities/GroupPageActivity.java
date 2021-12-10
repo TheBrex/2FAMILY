@@ -1,20 +1,25 @@
-package com.example.a2family;
+package com.example.a2family.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.a2family.Families.User;
+import com.example.a2family.Fragment.ExitFragment;
+import com.example.a2family.Fragment.NavigationFragment;
+import com.example.a2family.R;
+import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -23,26 +28,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 
-public class GroupPageActivity extends AppCompatActivity {
+public class GroupPageActivity extends BaseActivity {
 
     private ListView member;
     private TextView logOut;
 
-    // creating a variable for our
-    // Firebase Database.
-    private FirebaseAuth mAuth=FirebaseAuth.getInstance();
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+
     private ListView listView;
     private ArrayList<String> memberList=new ArrayList<>();
     //array che contiene gli item della listview
     private ArrayAdapter<String> adapter;
 
-    // creating a variable for our Database
-    // Reference for Firebase.
-    private DatabaseReference databaseReference=firebaseDatabase.getReference().getRoot();
     private ProgressBar progressBar;
 
     @Override
@@ -50,10 +48,12 @@ public class GroupPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_page);
 
+        bottMenu();
+        exitMenu();
 
-        SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
-        String userId = preferences.getString("userId", "defaultvalue");
-        String familyId = preferences.getString("familyId", "defaultvalue");
+
+        String userId = getUserIdFromFile();
+        String familyId = getFamilyIdFromFile();
         System.out.println(familyId);
         //recupero l'id della famiglia
         //String familyId = getIntent().getStringExtra("familyId");
@@ -66,8 +66,6 @@ public class GroupPageActivity extends AppCompatActivity {
 
         initializeList(familyId);
 
-
-
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,6 +73,7 @@ public class GroupPageActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void initializeList(String familyId) {
         this.adapter=new ArrayAdapter<String>(this, R.layout.list_item, R.id.member_name ,this.memberList);
@@ -115,19 +114,8 @@ public class GroupPageActivity extends AppCompatActivity {
     }
 
 
-    private void signOut() {
-        progressBar.setVisibility(View.VISIBLE);
-        mAuth.signOut();
-        progressBar.setVisibility(View.GONE);
 
 
-        SharedPreferences preferences = getSharedPreferences("Settings",MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.clear().commit();
 
-        //vado alla pagina di login
-        Intent loginPage=new Intent(GroupPageActivity.this, LoginActivity.class);
-        startActivity(loginPage);
-        finish();
-    }
+
 }

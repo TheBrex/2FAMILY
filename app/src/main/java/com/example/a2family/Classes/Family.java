@@ -1,4 +1,4 @@
-package com.example.a2family.Families;
+package com.example.a2family.Classes;
 
 import java.util.HashMap;
 

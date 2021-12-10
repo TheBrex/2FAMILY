@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/home"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="Home"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/account"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_account_circle_24"
+        app:showAsAction="ifRoom"
+        android:title="Account"/>
+
+    <item
+        android:id="@+id/exit"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_exit_to_app_24"
+        app:showAsAction="ifRoom"
+        android:title="Exit"/>
+
+</menu>
