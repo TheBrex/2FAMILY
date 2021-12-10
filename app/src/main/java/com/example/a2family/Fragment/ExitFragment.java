@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.a2family.Activities.BaseActivity;
@@ -145,9 +146,7 @@ public class ExitFragment extends BottomSheetDialogFragment {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 Toast.makeText(activity, "Sei uscito dal Gruppo", Toast.LENGTH_LONG).show();
-                                //avvio intanto la mainActivity ma lo faccio prima di controllare il nuovo numero dei componenti
-                                Intent mainPage = new Intent(activity, MainActivity.class);
-                                startActivity(mainPage, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle());
+
                                 //controllo se nel gruppo sono presenti 0 o piu componenti
                                 //se i membri sono 0 procedo ad eliminare il gruppo
                             }
@@ -162,7 +161,6 @@ public class ExitFragment extends BottomSheetDialogFragment {
                                     firebaseDatabase.getReference().getRoot().child("TrackFamily").child(userId).removeValue();
                                     ((GroupPageActivity)activity).removeUserIdFromFile();
                                     ((GroupPageActivity)activity).removeFamilyIdFromFile();
-                                    activity.finish();
                                 }
                             });
                         }
@@ -177,7 +175,6 @@ public class ExitFragment extends BottomSheetDialogFragment {
                             System.out.println(databaseReference.get().toString());
                             currentData.setValue(fc);
                             //TODO : rimuovere il riferimento dell'utente da "trackFamily" e rimuove l'id dal file
-                            activity.finish();
 
                         }
                     }
@@ -185,7 +182,13 @@ public class ExitFragment extends BottomSheetDialogFragment {
                 }
                 @Override
                 public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
-                        System.out.println("COMPLETED");
+                    ProgressBar progressBar= (ProgressBar)activity.findViewById(R.id.loading_logoutgroup);
+                    progressBar.setVisibility(View.VISIBLE);
+                    //avvio intanto la mainActivity ma lo faccio prima di controllare il nuovo numero dei componenti
+                    Intent mainPage = new Intent(activity, MainActivity.class);
+                    startActivity(mainPage, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle());
+                    activity.finish();
+                    progressBar.setVisibility(View.GONE);
                 }
             });
         }

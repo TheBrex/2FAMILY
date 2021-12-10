@@ -136,7 +136,7 @@ public class MainActivity extends BaseActivity implements HelperInterface {
                                                     //di rileggerlo dal file
                                                     groupPage.putExtra("familyId", familycode);
                                                     startActivity(groupPage,ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
-
+                                                    finish();
 
                                                 } else {
                                                     Toast.makeText(MainActivity.this, "Non è stato possibile unirsi al gruppo", Toast.LENGTH_LONG).show();
