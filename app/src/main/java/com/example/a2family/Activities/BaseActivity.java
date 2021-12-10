@@ -1,9 +1,12 @@
 package com.example.a2family.Activities;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -76,8 +79,9 @@ public class BaseActivity extends AppCompatActivity {
 
         //vado alla pagina di login
         Intent loginPage=new Intent(BaseActivity.this, LoginActivity.class);
-        startActivity(loginPage);
+        startActivity(loginPage, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
         finish();
+        Toast.makeText(this,"Logout avvenuto con successo", Toast.LENGTH_LONG).show();
     }
 
     public void putFamilyIdIntoFile(String ID){
@@ -110,6 +114,18 @@ public class BaseActivity extends AppCompatActivity {
         String userId = preferences.getString("userId", "defaultvalue");
         return userId;
     }
+
+    public void removeUserIdFromFile(){
+        SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
+        preferences.edit().remove("userId").apply();
+    }
+
+    public void removeFamilyIdFromFile(){
+        SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
+        preferences.edit().remove("familyId").apply();
+    }
+
+
 
 
 

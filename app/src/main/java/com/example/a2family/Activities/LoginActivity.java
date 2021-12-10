@@ -152,7 +152,6 @@ public class LoginActivity extends BaseActivity implements HelperInterface {
     }
 
 
-
     @Override
     public void onStart() {
         super.onStart();
