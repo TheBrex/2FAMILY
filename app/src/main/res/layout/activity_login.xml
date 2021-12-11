@@ -57,7 +57,6 @@
         android:selectAllOnFocus="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/email"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/email"
         app:layout_constraintTop_toBottomOf="@+id/email"
         app:layout_constraintVertical_bias="0.0"
@@ -100,16 +99,16 @@
         android:layout_width="285dp"
         android:layout_height="0dp"
         android:layout_gravity="start"
-        android:layout_marginBottom="224dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="#0079A7"
         android:enabled="true"
         android:fontFamily="@font/montserrat_regular"
         android:text="@string/btn_description"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/password"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/password" />
+        app:layout_constraintStart_toStartOf="@+id/password"
+        app:layout_constraintTop_toBottomOf="@+id/password" />
 
     <ProgressBar
         android:id="@+id/loading"

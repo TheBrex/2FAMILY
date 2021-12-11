@@ -30,8 +30,8 @@
 
     <ListView
         android:id="@+id/member_list"
-        android:layout_width="469dp"
-        android:layout_height="291dp"
+        android:layout_width="471dp"
+        android:layout_height="288dp"
         android:divider="@null"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -41,18 +41,18 @@
         app:layout_constraintVertical_bias="0.071"
         tools:listitem="@layout/list_item" />
 
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/montserrat_semibold"
         android:text="Codice famiglia : "
         android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/member_list"
         app:layout_constraintTop_toBottomOf="@+id/member_list" />
-
 
     <TextView
         android:id="@+id/familyId"
@@ -71,12 +71,12 @@
         android:id="@+id/copyCode"
         android:layout_width="38dp"
         android:layout_height="31dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintEnd_toEndOf="@+id/familyId"
-        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="@+id/familyId"
         app:layout_constraintTop_toBottomOf="@+id/familyId"
         app:srcCompat="@drawable/ic_baseline_content_copy_24" />
@@ -90,10 +90,9 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/include"
         app:layout_constraintEnd_toEndOf="@+id/member_list"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/member_list"
         app:layout_constraintTop_toBottomOf="@+id/member_list"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.965" />
 
     <ImageView
         android:id="@+id/imageView6"
