@@ -4,11 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.a2family.R;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -20,7 +27,8 @@ public class GroupPageActivity extends BaseActivity {
 
     private ListView member;
     private TextView logOut;
-
+    private TextView family;
+    private ImageView copy;
 
     private ListView listView;
     private ArrayList<String> memberList=new ArrayList<>();
@@ -34,6 +42,7 @@ public class GroupPageActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_page);
 
+        //richiamo i fragment per i submenu
         bottMenu();
         exitMenu();
 
@@ -46,9 +55,24 @@ public class GroupPageActivity extends BaseActivity {
         this.member =(ListView) findViewById(R.id.member_list);
         this.progressBar=(ProgressBar) findViewById(R.id.loading_logoutgroup);
         this.listView= (ListView) findViewById(R.id.member_list);
-        //inizializzo l'array di stringhe dove gli elementi hanno il layot definito in list_item.xml
+        this.family = (TextView) findViewById(R.id.familyId);
+        this.family.setText(familyId);
+        this.copy=(ImageView) findViewById(R.id.copyCode);
 
+        //inizializzo l'array di stringhe dove gli elementi hanno il layot definito in list_item.xml
         initializeList(familyId);
+
+        //imposto il listener sull'immagine per procedere a copiare il codice famiglia per condividerlo piu facilmente
+        copy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("Family Code", familyId);
+                clipboardManager.setPrimaryClip(clipData);
+                Toast.makeText(GroupPageActivity.this, "Family ID copiato negli appunti", Toast.LENGTH_LONG).show();
+            }
+        });
+
 
     }
 
