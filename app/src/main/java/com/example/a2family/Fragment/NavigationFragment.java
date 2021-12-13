@@ -1,5 +1,7 @@
 package com.example.a2family.Fragment;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,7 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.a2family.Fragment.ExitFragment;
+import com.example.a2family.Activities.LoginActivity;
+import com.example.a2family.Activities.MapsActivity;
 import com.example.a2family.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -45,7 +48,7 @@ public class NavigationFragment extends BottomSheetDialogFragment {
      */
     // TODO: Rename and change types and number of parameters
     public static ExitFragment newInstance(String param1, String param2) {
-        ExitFragment fragment = new ExitFragment();
+        ExitFragment fragment = new ExitFragment(null, null);
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -82,6 +85,12 @@ public class NavigationFragment extends BottomSheetDialogFragment {
                     case R.id.family_chat:
                         break;
                     case R.id.family_tracking:
+                        if(!(getActivity() instanceof MapsActivity)) {
+                            startActivity(new Intent(getActivity(), MapsActivity.class), ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+                            if (navigationView.isShown()) {
+                                dismiss();
+                            }
+                        }
                         break;
             }
             return false;

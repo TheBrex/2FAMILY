@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.example.a2family.Activities.BaseActivity;
 import com.example.a2family.Activities.GroupPageActivity;
-import com.example.a2family.Activities.LoginActivity;
 import com.example.a2family.Activities.MainActivity;
 import com.example.a2family.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -59,7 +58,7 @@ public class ExitFragment extends BottomSheetDialogFragment {
     protected DatabaseReference databaseReference=firebaseDatabase.getReference().getRoot();
 
 
-    public ExitFragment() {
+    public ExitFragment(Object o, Object o1) {
         // Required empty public constructor
     }
 
@@ -73,7 +72,7 @@ public class ExitFragment extends BottomSheetDialogFragment {
      */
     // TODO: Rename and change types and number of parameters
     public static ExitFragment newInstance(String param1, String param2) {
-        ExitFragment fragment = new ExitFragment();
+        ExitFragment fragment = new ExitFragment(null, null);
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -106,8 +105,8 @@ public class ExitFragment extends BottomSheetDialogFragment {
                         break;
                     case R.id.exit_account:
                         Activity activity = getActivity();
-                        if(activity instanceof GroupPageActivity){
-                            ((GroupPageActivity)activity).signOut();
+                        if(activity instanceof BaseActivity){
+                            ((BaseActivity)activity).signOut();
                         }
                         break;
                 }
@@ -164,8 +163,8 @@ public class ExitFragment extends BottomSheetDialogFragment {
                         else {
                             Log.d("Info", "Rimozione utente completata");
                             //rimuovo id utente e id famiglia dal file
-                            ((GroupPageActivity)activity).removeUserIdFromFile();
-                            ((GroupPageActivity)activity).removeFamilyIdFromFile();
+                            ((BaseActivity)activity).removeUserIdFromFile();
+                            ((BaseActivity)activity).removeFamilyIdFromFile();
                             //rimuovo l'utente dal gruppo famiglia
                             firebaseDatabase.getReference().getRoot().child("TrackFamily").child(userId).removeValue();
                             int fc= familyComponents-1;
@@ -179,13 +178,10 @@ public class ExitFragment extends BottomSheetDialogFragment {
                 }
                 @Override
                 public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
-                    ProgressBar progressBar= (ProgressBar)activity.findViewById(R.id.loading_logoutgroup);
-                    progressBar.setVisibility(View.VISIBLE);
                     //avvio intanto la mainActivity
                     Intent mainPage = new Intent(activity, MainActivity.class);
                     startActivity(mainPage, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle());
                     activity.finish();
-                    progressBar.setVisibility(View.GONE);
                 }
             });
         }

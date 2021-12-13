@@ -1,14 +1,20 @@
 package com.example.a2family.Classes;
 
+import android.location.Location;
+
 public class User {
 
     private String name, surname, address, email;
+    private Position position;
+
 
     public User(String name, String surname, String address, String email) {
         this.name = name;
         this.surname = surname;
         this.address = address;
         this.email = email;
+        this.position = new Position(0,0);
+
     }
 
     public User() {
@@ -50,6 +56,14 @@ public class User {
         this.email = email;
     }
 
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -57,6 +71,7 @@ public class User {
                 ", surname='" + surname + '\'' +
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
+                ", position=" + position +
                 '}';
     }
 }

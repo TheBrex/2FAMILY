@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,6 +44,7 @@ public class BaseActivity extends AppCompatActivity {
                 bottomNavFragment.show(getSupportFragmentManager(), "TAG");
             }
         });
+
     }
 
     public void exitMenu() {
@@ -60,9 +60,15 @@ public class BaseActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.exit:
-                        ExitFragment bottomNavFragment = new ExitFragment();
+                        ExitFragment bottomNavFragment = new ExitFragment(null, null);
                         bottomNavFragment.show(getSupportFragmentManager(), "TAG");
                         break;
+                    case R.id.home:
+                        //se non mi trovo nell'activity principale e faccio tap su HOME, termina l'activity corrente
+                        if(!(BaseActivity.this instanceof GroupPageActivity)){
+                            finish();
+                            //TODO aggiungere animazione
+                        }
                 }
                 return false;
             }
