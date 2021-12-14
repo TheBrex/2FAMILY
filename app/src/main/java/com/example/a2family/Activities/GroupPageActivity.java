@@ -44,7 +44,7 @@ public class GroupPageActivity extends BaseActivity {
 
         //richiamo i fragment per i submenu
         bottMenu();
-        exitMenu();
+        bottoMenu();
 
         String userId = getUserIdFromFile();
         String familyId = getFamilyIdFromFile();

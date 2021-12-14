@@ -2,13 +2,13 @@ package com.example.a2family.Classes;
 
 public class Position {
 
-    protected float latidude;
-    protected float longitude;
+    protected double latidude;
+    protected double longitude;
 
     public Position() {
     }
 
-    public Position(float latidude, float longitude) {
+    public Position(double latidude, double longitude) {
         this.latidude = latidude;
         this.longitude = longitude;
     }
@@ -21,13 +21,19 @@ public class Position {
         this.longitude = longitude;
     }
 
-    public float getLatidude() {
+    public double getLatidude() {
         return latidude;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-
+    @Override
+    public String toString() {
+        return "Position{" +
+                "latidude=" + latidude +
+                ", longitude=" + longitude +
+                '}';
+    }
 }

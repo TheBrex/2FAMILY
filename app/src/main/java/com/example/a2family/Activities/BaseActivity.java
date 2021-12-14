@@ -47,7 +47,7 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
-    public void exitMenu() {
+    public void bottoMenu() {
         //Crea il bottom menu e avvia il fragment nel momento in cui vine cliccata l'incona del submenu
         if(getSupportActionBar()!=null){
             getSupportActionBar().hide();
