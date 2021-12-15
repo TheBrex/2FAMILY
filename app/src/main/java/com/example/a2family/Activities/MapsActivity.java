@@ -38,6 +38,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 
@@ -101,13 +102,9 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                 LatLng pos = new LatLng(latitude, longitude);
                 Position dbPos = new Position(latitude,longitude);
 
-                //marker.remove();
-                //marker = mMap.addMarker(m.position(pos).title("Sei qui"));
 
                 //metodo che aggiorna i marker degli utenti sulla mappa
                 updateDBlocation(dbPos);
-
-
 
             }
         };
@@ -125,7 +122,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 
     private void updateDBlocation(Position pos) {
 
-        databaseReference= firebaseDatabase.getReference().child("Users").child(getUserIdFromFile()).child("position");
+        databaseReference= firebaseDatabase.getReference().child("Families").child(getFamilyIdFromFile()).child("members").child(getUserIdFromFile()).child("position");
         //ad ogni modifica della posizione pusho le mie coordinate nel database
         databaseReference.setValue(pos).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -133,9 +130,9 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                // Log.d("Info", pos.toString());
             }
         });
-        //TODO: prendere in considerazione solo gli utenti che fanno parte dell'attuale gruppo famiglia dell'utente loggato
+        //TODO: prendere in considerazione solo gli utenti che fanno parte dell'attuale gruppo famiglia dell'utente loggato ( COMPLETED )
         //mi metto in ascolto delle modifiche riguardanti gli utenti per intercettare le nuove posizioni
-        firebaseDatabase.getReference().child("Users").addChildEventListener(new ChildEventListener() {
+        firebaseDatabase.getReference().child("Families").child(getFamilyIdFromFile()).child("members").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
@@ -156,7 +153,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                     }
                     else{
                         //se il marker non esiste allora procedo a crearne uno nuovo con il corrispettivo Id e lo inserisco nella mia MarkerHashMap
-                        m = m.position(userLocation).title(snapshot.child("name").getValue(String.class));
+                        m = m.position(userLocation).title(snapshot.child("name").getValue(String.class).toUpperCase(Locale.ROOT));
                         marker = mMap.addMarker(m);
                         markerMap.put(snapshot.getKey(), marker);
                     }
@@ -183,10 +180,9 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 
     @SuppressLint("MissingPermission")
     private void startLocationUpdates() {
-
-        updateGPS();
+        //updateGPS();
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MapsActivity.this);
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
-
     }
 
 
@@ -207,10 +203,11 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 
 
     private void updateGPS() {
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MapsActivity.this);
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            //
+            startLocationUpdates();
             fusedLocationProviderClient.getLastLocation().addOnCompleteListener(MapsActivity.this, new OnCompleteListener<Location>() {
+                @SuppressLint("MissingPermission")
                 @Override
                 public void onComplete(@NonNull Task<Location> task) {
                     if (task.isSuccessful() && task.getResult() != null) {
@@ -254,11 +251,12 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
             return;
         }
         mMap.setMyLocationEnabled(true);
-
-        //imposto i marker con l'ultima posizione conosciuta
-        //firebaseDatabase.getReference().child(getFamilyIdFromFile()).
-
         //comincia ad aggiornare la posizione e ricevere quella degli altri membri
         startLocationUpdates();
+
+
+
+
+        //updateGPS();
     }
 }
