@@ -242,7 +242,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                 }
             });
         } else {
-                //richiedi permessi
+                //richiedi permesse
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_FINE_LOCATION);
                 }
