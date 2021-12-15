@@ -6,10 +6,12 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
 import com.example.a2family.Classes.Position;
@@ -25,10 +27,17 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 
@@ -43,11 +52,15 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
-    GoogleApi mGoogleApi;
+
     //variabile per memorizzare se stiamo tracciando la posizione o no
-    private boolean updateOn = false;
     private FloatingActionButton power;
 
+    private Marker marker ;
+    private MarkerOptions m=new MarkerOptions();
+    private Position dbPosition ;
+
+    private HashMap<String, Marker > markerMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +75,16 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
 
-        mapFragment.getMapAsync(this);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
 
+        this.dbPosition=new Position();
         this.power = (FloatingActionButton) findViewById(R.id.power);
         //set propriety location
         locationRequest = LocationRequest.create()
-                .setInterval(MapsActivity.DEFAULT_UPDATE_INTERVAL * 5)
-                .setFastestInterval(MapsActivity.DEFAULT_UPDATE_INTERVAL * 3)
+                .setInterval(MapsActivity.DEFAULT_UPDATE_INTERVAL * 10)
+                .setFastestInterval(MapsActivity.DEFAULT_UPDATE_INTERVAL * 5)
                 .setPriority(locationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
         //richiamata ogni qual volta l'intervallo scade
@@ -78,9 +94,20 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                 super.onLocationResult(locationResult);
                 Location location = locationResult.getLastLocation();
                 Position position = new Position(location.getLatitude(), location.getLongitude());
-                Toast.makeText(MapsActivity.this, position.toString(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(MapsActivity.this, position.toString(), Toast.LENGTH_LONG).show();
+
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
+                LatLng pos = new LatLng(latitude, longitude);
+                Position dbPos = new Position(latitude,longitude);
+
+                //marker.remove();
+                //marker = mMap.addMarker(m.position(pos).title("Sei qui"));
+
+                updateDBlocation(dbPos);
+
+
+
             }
         };
 
@@ -90,10 +117,64 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
             public void onClick(View v) {
                 locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
                 Toast.makeText(MapsActivity.this, "attivato", Toast.LENGTH_LONG).show();
+                Log.d("info", markerMap.toString());
+            }
+        });
+    }
+
+    private void updateDBlocation(Position pos) {
+
+        databaseReference= firebaseDatabase.getReference().child("Users").child(getUserIdFromFile()).child("position");
+        databaseReference.setValue(pos).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+               // Log.d("Info", pos.toString());
             }
         });
 
-        startLocationUpdates();
+        firebaseDatabase.getReference().child("Users").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if(snapshot.getValue()!= null) {
+
+                    //Log.d("info", snapshot.getKey());
+                    LatLng userLocation = new LatLng(snapshot.child("position").child("latitude").getValue(Double.class), snapshot.child("position").child("longitude").getValue(Double.class));
+                    Marker previousMarker=markerMap.get(snapshot.getKey());
+                    if(previousMarker!= null){
+                        previousMarker.setPosition(userLocation);
+                    }
+                    else{
+                        m = m.position(userLocation).title(snapshot.child("name").getValue(String.class));
+                        marker = mMap.addMarker(m);
+                        markerMap.put(snapshot.getKey(), marker);
+                    }
+
+
+
+
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @SuppressLint("MissingPermission")
@@ -116,6 +197,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                 } else {
                     Toast.makeText(this, "Questa funzionalità richiede l'accesso alla posizione per poter funzionare correttamente", Toast.LENGTH_LONG).show();
                 }
+                break;
         }
     }
 
@@ -130,12 +212,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                     if (task.isSuccessful() && task.getResult() != null) {
                         Position position = new Position(task.getResult().getLatitude(), task.getResult().getLongitude());
 
-                        latitude = task.getResult().getLatitude();
-                        longitude = task.getResult().getLongitude();
-                        LatLng pos = new LatLng(latitude, longitude);
-                        mMap.addMarker(new MarkerOptions().position(pos).title("Marker in Sydney"));
                     }
-                    else{}
                 }
             });
         } else {
@@ -174,8 +251,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         }
         mMap.setMyLocationEnabled(true);
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        startLocationUpdates();
     }
 }

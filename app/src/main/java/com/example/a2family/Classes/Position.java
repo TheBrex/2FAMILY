@@ -2,27 +2,27 @@ package com.example.a2family.Classes;
 
 public class Position {
 
-    protected double latidude;
+    protected double latitude;
     protected double longitude;
 
     public Position() {
     }
 
-    public Position(double latidude, double longitude) {
-        this.latidude = latidude;
+    public Position(double latitude, double longitude) {
+        this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    public void setLatidude(float latidude) {
-        this.latidude = latidude;
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
     }
 
     public void setLongitude(float longitude) {
         this.longitude = longitude;
     }
 
-    public double getLatidude() {
-        return latidude;
+    public double getLatitude() {
+        return latitude;
     }
 
     public double getLongitude() {
@@ -32,7 +32,7 @@ public class Position {
     @Override
     public String toString() {
         return "Position{" +
-                "latidude=" + latidude +
+                "latidude=" + latitude +
                 ", longitude=" + longitude +
                 '}';
     }
