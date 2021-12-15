@@ -67,8 +67,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         this.power = (FloatingActionButton) findViewById(R.id.power);
         //set propriety location
         locationRequest = LocationRequest.create()
-                .setInterval(MapsActivity.DEFAULT_UPDATE_INTERVAL * 30)
-                .setFastestInterval(MapsActivity.DEFAULT_UPDATE_INTERVAL * 10)
+                .setInterval(MapsActivity.DEFAULT_UPDATE_INTERVAL * 5)
+                .setFastestInterval(MapsActivity.DEFAULT_UPDATE_INTERVAL * 3)
                 .setPriority(locationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
         //richiamata ogni qual volta l'intervallo scade
