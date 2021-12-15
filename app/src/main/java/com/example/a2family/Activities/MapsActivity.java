@@ -87,7 +87,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                 .setFastestInterval(MapsActivity.DEFAULT_UPDATE_INTERVAL * 5)
                 .setPriority(locationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
-        //richiamata ogni qual volta l'intervallo scade
+        //richiamata ogni qual volta l'intervallo scade per ricevere la posizione aggiornata e procedere agli aggiornamenti
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(@NonNull LocationResult locationResult) {
@@ -104,6 +104,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                 //marker.remove();
                 //marker = mMap.addMarker(m.position(pos).title("Sei qui"));
 
+                //metodo che aggiorna i marker degli utenti sulla mappa
                 updateDBlocation(dbPos);
 
 
@@ -125,37 +126,40 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     private void updateDBlocation(Position pos) {
 
         databaseReference= firebaseDatabase.getReference().child("Users").child(getUserIdFromFile()).child("position");
+        //ad ogni modifica della posizione pusho le mie coordinate nel database
         databaseReference.setValue(pos).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                // Log.d("Info", pos.toString());
             }
         });
-
+        //TODO: prendere in considerazione solo gli utenti che fanno parte dell'attuale gruppo famiglia dell'utente loggato
+        //mi metto in ascolto delle modifiche riguardanti gli utenti per intercettare le nuove posizioni
         firebaseDatabase.getReference().child("Users").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
             }
 
+            //Gestiamo il caso in cui venga percepita una modifica
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                //Se il figlio modificato è diverso da NULL
                 if(snapshot.getValue()!= null) {
-
-                    //Log.d("info", snapshot.getKey());
+                    //converto i parametri che memorizzano la latitudine e logitudine dell'utente in coordinate
                     LatLng userLocation = new LatLng(snapshot.child("position").child("latitude").getValue(Double.class), snapshot.child("position").child("longitude").getValue(Double.class));
+                    //Vado alla ricerca nella MarkerHashMap del Marker corrispondente all'utente attraverso il suo ID ottenuto con snapShot.getKey()
                     Marker previousMarker=markerMap.get(snapshot.getKey());
                     if(previousMarker!= null){
+                        //se esiste tale marker allora modifico le sue coordinate e verrà cosi aggiornato nella mappa
                         previousMarker.setPosition(userLocation);
                     }
                     else{
+                        //se il marker non esiste allora procedo a crearne uno nuovo con il corrispettivo Id e lo inserisco nella mia MarkerHashMap
                         m = m.position(userLocation).title(snapshot.child("name").getValue(String.class));
                         marker = mMap.addMarker(m);
                         markerMap.put(snapshot.getKey(), marker);
                     }
-
-
-
 
                 }
             }
@@ -250,7 +254,11 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
             return;
         }
         mMap.setMyLocationEnabled(true);
-        // Add a marker in Sydney and move the camera
+
+        //imposto i marker con l'ultima posizione conosciuta
+        //firebaseDatabase.getReference().child(getFamilyIdFromFile()).
+
+        //comincia ad aggiornare la posizione e ricevere quella degli altri membri
         startLocationUpdates();
     }
 }
