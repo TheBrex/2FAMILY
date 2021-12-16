@@ -33,6 +33,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -141,12 +142,22 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                     //Vado alla ricerca nella MarkerHashMap del Marker corrispondente all'utente attraverso il suo ID ottenuto con snapShot.getKey()
                     Marker previousMarker=markerMap.get(snapshot.getKey());
                     if(previousMarker!= null){
+                        if(snapshot.getKey().equals(getUserIdFromFile())) {
+                            previousMarker.setTitle("Ti stai muovendo");
+                        }
+                        else{
+                            previousMarker.setTitle(snapshot.child("name").getValue(String.class).toUpperCase(Locale.ROOT) + " si sta muovendo");
+                        }
                         //se esiste tale marker allora modifico le sue coordinate e verrà cosi aggiornato nella mappa
                         previousMarker.setPosition(userLocation);
                     }
                     else{
-                        //se il marker non esiste allora procedo a crearne uno nuovo con il corrispettivo Id e lo inserisco nella mia MarkerHashMap
-                        m.position(userLocation).title(snapshot.child("name").getValue(String.class).toUpperCase(Locale.ROOT));
+                        if(snapshot.getKey().equals(getUserIdFromFile())) {
+                            m.position(userLocation).title("TU sei QUI !");
+                        }else {
+                            //se il marker non esiste allora procedo a crearne uno nuovo con il corrispettivo Id e lo inserisco nella mia MarkerHashMap
+                            m.position(userLocation).title(snapshot.child("name").getValue(String.class).toUpperCase(Locale.ROOT));
+                        }
                         marker = mMap.addMarker(m);
                         markerMap.put(snapshot.getKey(), marker);
                     }
@@ -218,7 +229,30 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         //  TODO: caricare i marker delle ultime posizioni registrate dai membri della famiglia
-        // TODO: trasformare l'invio della posizione corrente in un servizio in background
+
+        firebaseDatabase.getReference().child("Families").child(getFamilyIdFromFile()).child("members").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //per ogni membro della famiglia
+                for (DataSnapshot member : snapshot.getChildren()
+                ) {
+                    double lastLatitude = member.child("position").child("latitude").getValue(Double.class);
+                    double lastLongitude = member.child("position").child("longitude").getValue(Double.class);
+                    //controllo che le coordinate siano diverse da 0 poichè sono le coordinate di default quando l'utente si registra
+                    if(lastLatitude!=0.0 && lastLongitude!=0.0) {
+                        LatLng lastUserLocation = new LatLng(lastLatitude, lastLongitude);
+                        Marker marker = mMap.addMarker(m.position(lastUserLocation).title(member.child("name").getValue(String.class).toUpperCase() + " è stato visto qui l'ultima volta"));
+                        markerMap.put(member.getKey(), marker);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+                // TODO: trasformare l'invio della posizione corrente in un servizio in background
 
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
