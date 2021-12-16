@@ -11,25 +11,23 @@
     <EditText
         android:id="@+id/name_signUp"
         android:layout_width="284dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:autofillHints="@string/prompt_name"
         android:fontFamily="@font/montserrat_regular"
         android:hint="@string/prompt_name"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/singUP_image"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="@+id/singUP_image"
         app:layout_constraintTop_toBottomOf="@+id/singUP_image"
-        app:layout_constraintVertical_bias="0.0"
         tools:text="@tools:sample/full_names" />
 
     <EditText
         android:id="@+id/password_signUp"
         android:layout_width="285dp"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:autofillHints="@string/prompt_password"
         android:fontFamily="@font/montserrat_regular"
@@ -38,19 +36,17 @@
         android:imeOptions="actionDone"
         android:inputType="textPassword"
         android:selectAllOnFocus="true"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/address"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/address"
         app:layout_constraintTop_toBottomOf="@+id/address"
-        app:layout_constraintVertical_bias="0.0"
         tools:text="@tools:sample/cities" />
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="192dp"
+        android:layout_marginTop="184dp"
         android:layout_marginEnd="24dp"
         android:contentDescription="@string/psw_img"
         app:layout_constraintEnd_toEndOf="@+id/imageView10"
@@ -63,7 +59,7 @@
     <EditText
         android:id="@+id/password_signUpConfirm"
         android:layout_width="285dp"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:autofillHints="@string/prompt_password2"
         android:fontFamily="@font/montserrat_regular"
@@ -91,18 +87,16 @@
         android:fontFamily="@font/montserrat_regular"
         android:text="@string/sign_up"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/email"
         app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="@+id/email"
-        app:layout_constraintTop_toBottomOf="@+id/email"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/email" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="124dp"
+        android:layout_marginTop="112dp"
         android:layout_marginEnd="24dp"
         app:layout_constraintEnd_toEndOf="@+id/imageView2"
         app:layout_constraintHorizontal_bias="0.0"
@@ -120,12 +114,10 @@
         android:hint="@string/prompt_email"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/password_signUpConfirm"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/password_signUpConfirm"
         app:layout_constraintTop_toBottomOf="@+id/password_signUpConfirm"
-        app:layout_constraintVertical_bias="0.0"
         tools:text="@tools:sample/full_names" />
 
     <ProgressBar
@@ -134,58 +126,52 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintEnd_toEndOf="@+id/signup"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="@+id/signup"
+        tools:layout_editor_absoluteY="659dp" />
 
     <EditText
         android:id="@+id/surname"
         android:layout_width="284dp"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:autofillHints="@string/prompt_surname"
         android:fontFamily="@font/montserrat_regular"
         android:hint="@string/prompt_surname"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/name_signUp"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="@+id/name_signUp"
         app:layout_constraintTop_toBottomOf="@+id/name_signUp"
-        app:layout_constraintVertical_bias="0.0"
         tools:text="@tools:sample/full_names" />
 
     <EditText
         android:id="@+id/address"
         android:layout_width="284dp"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:autofillHints="@string/prompt_address"
         android:fontFamily="@font/montserrat_regular"
         android:hint="@string/prompt_address"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/surname"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/surname"
         app:layout_constraintTop_toBottomOf="@+id/surname"
-        app:layout_constraintVertical_bias="0.0"
         tools:text="@tools:sample/full_names" />
 
     <ImageView
         android:id="@+id/imageView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="32dp"
         android:contentDescription="@string/usr_img"
-        app:layout_constraintEnd_toStartOf="@+id/name_signUp"
-        app:layout_constraintHorizontal_bias="0.266"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/new_account"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/new_account"
         app:layout_constraintTop_toBottomOf="@+id/singUP_image"
         app:srcCompat="@drawable/ic_baseline_person_outline_24"
         tools:ignore="ContentDescription,MissingConstraints" />
@@ -193,16 +179,14 @@
     <ImageView
         android:id="@+id/singUP_image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="146dp"
         android:background="@drawable/_9"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/_9" />
 
     <TextView
@@ -226,16 +210,15 @@
         android:id="@+id/new_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
         android:fontFamily="@font/montserrat_regular"
         android:text="Crea un nuovo account"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/singUP_image"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/backLogin"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/singUP_image"
+        app:layout_constraintStart_toStartOf="@+id/backLogin"
         app:layout_constraintTop_toTopOf="@+id/singUP_image"
         app:layout_constraintVertical_bias="0.923" />
 

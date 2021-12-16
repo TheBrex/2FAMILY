@@ -16,13 +16,11 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.a2family.Classes.Position;
 import com.example.a2family.R;
-import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -35,7 +33,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -59,7 +56,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 
     private Marker marker ;
     private MarkerOptions m=new MarkerOptions();
-    private Position dbPosition ;
 
     private HashMap<String, Marker > markerMap = new HashMap<>();
 
@@ -80,7 +76,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
             mapFragment.getMapAsync(this);
         }
 
-        this.dbPosition=new Position();
         this.power = (FloatingActionButton) findViewById(R.id.power);
         //set propriety location
         locationRequest = LocationRequest.create()
@@ -99,9 +94,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
-                LatLng pos = new LatLng(latitude, longitude);
                 Position dbPos = new Position(latitude,longitude);
-
 
                 //metodo che aggiorna i marker degli utenti sulla mappa
                 updateDBlocation(dbPos);
@@ -153,7 +146,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                     }
                     else{
                         //se il marker non esiste allora procedo a crearne uno nuovo con il corrispettivo Id e lo inserisco nella mia MarkerHashMap
-                        m = m.position(userLocation).title(snapshot.child("name").getValue(String.class).toUpperCase(Locale.ROOT));
+                        m.position(userLocation).title(snapshot.child("name").getValue(String.class).toUpperCase(Locale.ROOT));
                         marker = mMap.addMarker(m);
                         markerMap.put(snapshot.getKey(), marker);
                     }
@@ -222,7 +215,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         //  TODO: caricare i marker delle ultime posizioni registrate dai membri della famiglia
         // TODO: trasformare l'invio della posizione corrente in un servizio in background
@@ -236,8 +229,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                 @Override
                 public void onComplete(@NonNull Task<Location> task) {
                     if (task.isSuccessful() && task.getResult() != null) {
-                        Position position = new Position(task.getResult().getLatitude(), task.getResult().getLongitude());
-
+                        //Position position = new Position(task.getResult().getLatitude(), task.getResult().getLongitude());
                     }
                 }
             });
