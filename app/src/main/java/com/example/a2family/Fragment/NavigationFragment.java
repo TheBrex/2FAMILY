@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.a2family.Activities.ChatActivity;
 import com.example.a2family.Activities.LoginActivity;
 import com.example.a2family.Activities.MapsActivity;
 import com.example.a2family.R;
@@ -83,6 +84,12 @@ public class NavigationFragment extends BottomSheetDialogFragment {
                     case R.id.payment:
                         break;
                     case R.id.family_chat:
+                        if(!(getActivity() instanceof ChatActivity)) {
+                            startActivity(new Intent(getActivity(), ChatActivity.class), ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+                            if (navigationView.isShown()) {
+                                dismiss();
+                            }
+                        }
                         break;
                     case R.id.family_tracking:
                         if(!(getActivity() instanceof MapsActivity)) {

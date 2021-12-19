@@ -1,9 +1,12 @@
 package com.example.a2family.Classes;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.util.HashMap;
 
 public class Family {
-
 
     private String name;
     //numero massimo dei componenti
@@ -12,7 +15,7 @@ public class Family {
     private int actualNumberComponents;
     //collection di utenti che compongono la famiglia
     private HashMap<String,User> members = new HashMap<>();
-
+    private HashMap<String,Message> groupChat = new HashMap<>();
 
     //private HashMap<String, item> shoppingList = new HashMap<>();
     //private HashMap<String, task> taskList = new HashMap();
@@ -28,7 +31,6 @@ public class Family {
 
     public Family() {
     }
-
 
     public String getName() {
         return name;
@@ -67,6 +69,7 @@ public class Family {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public int removeMember(User u, String key){
         if(members.remove(key, u)) {
             //rimuovo l'utente u e decremento di 1 i componenti
@@ -84,6 +87,14 @@ public class Family {
 
     public void setMembers(HashMap<String, User> members) {
         this.members = members;
+    }
+
+    public HashMap<String, Message> getGroupChat() {
+        return groupChat;
+    }
+
+    public void setGroupChat(HashMap<String, Message> groupChat) {
+        this.groupChat = groupChat;
     }
 }
 
