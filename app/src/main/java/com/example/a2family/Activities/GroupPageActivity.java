@@ -21,6 +21,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class GroupPageActivity extends BaseActivity {
@@ -46,7 +47,7 @@ public class GroupPageActivity extends BaseActivity {
         bottMenu();
         bottoMenu();
 
-        String userId = getUserIdFromFile();
+        //String userId = getUserIdFromFile();
         String familyId = getFamilyIdFromFile();
         System.out.println(familyId);
         //recupero l'id della famiglia
@@ -84,7 +85,7 @@ public class GroupPageActivity extends BaseActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 String name = snapshot.child("name").getValue(String.class).toUpperCase();
-                String surname = snapshot.child("surname").getValue(String.class).toUpperCase();
+                String surname = Objects.requireNonNull(snapshot.child("surname").getValue(String.class)).toUpperCase();
                 memberList.add(name+" "+surname);
                 adapter.notifyDataSetChanged();
             }

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.a2family.Activities.ChatActivity;
+import com.example.a2family.Activities.GroupPageActivity;
 import com.example.a2family.Activities.LoginActivity;
 import com.example.a2family.Activities.MapsActivity;
 import com.example.a2family.R;
@@ -89,7 +90,11 @@ public class NavigationFragment extends BottomSheetDialogFragment {
                             if (navigationView.isShown()) {
                                 dismiss();
                             }
+                            if(!(getActivity() instanceof GroupPageActivity)){
+                                getActivity().finish();
+                            }
                         }
+
                         break;
                     case R.id.family_tracking:
                         if(!(getActivity() instanceof MapsActivity)) {
@@ -97,7 +102,11 @@ public class NavigationFragment extends BottomSheetDialogFragment {
                             if (navigationView.isShown()) {
                                 dismiss();
                             }
+                            if(!(getActivity() instanceof GroupPageActivity)){
+                                getActivity().finish();
+                            }
                         }
+
                         break;
             }
             return false;

@@ -13,10 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a2family.Adapters.MessageAdapter;
 import com.example.a2family.Classes.Message;
-import com.example.a2family.Classes.User;
 import com.example.a2family.R;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -50,6 +48,8 @@ public class ChatActivity extends BaseActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvMessages.setLayoutManager(linearLayoutManager);
 
+        retriveMessages();
+
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,9 +59,6 @@ public class ChatActivity extends BaseActivity {
                 }
             }
         });
-
-        retriveMessages();
-
     }
 
 
@@ -105,14 +102,14 @@ public class ChatActivity extends BaseActivity {
     }
 
     private void send_message(String message) {
-        Long tsLong = System.currentTimeMillis()/1000;
-        String ts = tsLong.toString();
+        long tsLong = System.currentTimeMillis()/1000;
+        String ts = Long.toString(tsLong);
         sendTextMessage.getText().clear();
         sendTextMessage.setHint("Message");
         firebaseDatabase.getReference().child("Users").child(getUserIdFromFile()).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String name = null;
+                String name;
                 name = snapshot.getValue(String.class);
                 Message m = new Message(getUserIdFromFile(), name , message, ts);
                 firebaseDatabase.getReference().child("Families").child(getFamilyIdFromFile()).child("chat").push().setValue(m).addOnCompleteListener(new OnCompleteListener<Void>() {

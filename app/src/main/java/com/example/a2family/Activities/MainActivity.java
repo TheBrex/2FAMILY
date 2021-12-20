@@ -1,11 +1,9 @@
 package com.example.a2family.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,17 +11,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.example.a2family.Classes.Family;
 import com.example.a2family.Classes.User;
 import com.example.a2family.Interfaces.HelperInterface;
 import com.example.a2family.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import android.content.SharedPreferences;
 
 public class MainActivity extends BaseActivity implements HelperInterface {
 
@@ -85,7 +81,7 @@ public class MainActivity extends BaseActivity implements HelperInterface {
 
 
         if((checkField(familycode, editFamilyCode))==0){
-            return;
+            Log.d("Error", "campi vuoti");
         }
         else {
             progressBar.setVisibility(View.VISIBLE);

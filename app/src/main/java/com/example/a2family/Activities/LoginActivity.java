@@ -1,11 +1,7 @@
 package com.example.a2family.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ActivityOptions;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +10,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.example.a2family.Interfaces.HelperInterface;
 import com.example.a2family.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,7 +19,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends BaseActivity implements HelperInterface {
@@ -125,7 +122,6 @@ public class LoginActivity extends BaseActivity implements HelperInterface {
                                         //reindirizzo nella pagina del gruppo
                                         Intent groupPage = new Intent(LoginActivity.this, GroupPageActivity.class);
                                         startActivity(groupPage,ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this).toBundle());
-                                        finish();
 
                                     }
                                     else{
@@ -133,8 +129,8 @@ public class LoginActivity extends BaseActivity implements HelperInterface {
                                         //significa che l'utente non appartiene ancora ad un gruppo famiglia
                                         Intent mainPage = new Intent(LoginActivity.this, MainActivity.class);
                                         startActivity(mainPage,ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this).toBundle());
-                                        finish();
                                     }
+                                    finish();
                                 }
                             }
                         });

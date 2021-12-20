@@ -7,22 +7,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.a2family.Classes.User;
 import com.example.a2family.Fragment.ExitFragment;
 import com.example.a2family.Fragment.NavigationFragment;
 import com.example.a2family.R;
 import com.google.android.material.bottomappbar.BottomAppBar;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class BaseActivity extends AppCompatActivity {
     // creating a variable for our
@@ -59,11 +53,12 @@ public class BaseActivity extends AppCompatActivity {
         }
         BottomAppBar bottomAppBar = (BottomAppBar) findViewById(R.id.bottom_app_bar);
 
-        NavigationView exitView=(NavigationView) findViewById(R.id.navigationexitview);
+        //NavigationView exitView=(NavigationView) findViewById(R.id.navigationexitview);
         bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
+
                     case R.id.exit:
                         ExitFragment bottomNavFragment = new ExitFragment(null, null);
                         bottomNavFragment.show(getSupportFragmentManager(), "TAG");
@@ -87,7 +82,7 @@ public class BaseActivity extends AppCompatActivity {
 
         SharedPreferences preferences = getSharedPreferences("Settings",MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.clear().commit();
+        editor.clear().apply();
 
         //vado alla pagina di login
         Intent loginPage=new Intent(BaseActivity.this, LoginActivity.class);
@@ -117,14 +112,12 @@ public class BaseActivity extends AppCompatActivity {
 
     public String getFamilyIdFromFile(){
         SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
-        String familyId = preferences.getString("familyId", "defaultvalue");
-        return familyId;
+        return preferences.getString("familyId", "defaultvalue");
     }
 
     public String getUserIdFromFile(){
         SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
-        String userId = preferences.getString("userId", "defaultvalue");
-        return userId;
+        return preferences.getString("userId", "defaultvalue");
     }
 
     public void removeUserIdFromFile(){
