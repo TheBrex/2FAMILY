@@ -130,7 +130,7 @@ public class ExitFragment extends BottomSheetDialogFragment {
             nel momento in cui devo capire se i membri del gruppo sono diventati 0 per poterlo eliminare ( COMPLETED )
             */
             //avvio una transazione per garantire consistenza dei dati
-            databaseReference=databaseReference.child("Families").child(familyId).child("actualNumberComponents");
+            databaseReference=firebaseDatabase.getReference().child("Families").child(familyId).child("actualNumberComponents");
             databaseReference.runTransaction(new Transaction.Handler() {
                 @NonNull
                 @Override
