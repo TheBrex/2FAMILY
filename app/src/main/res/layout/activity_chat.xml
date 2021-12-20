@@ -41,6 +41,8 @@
         android:layout_width="349dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:minHeight="48dp"
+        android:hint = "Message"
         app:layout_constraintBottom_toTopOf="@+id/include"
         app:layout_constraintStart_toStartOf="parent" />
 

@@ -96,7 +96,7 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="116dp"
         android:layout_marginEnd="24dp"
         app:layout_constraintEnd_toEndOf="@+id/imageView2"
         app:layout_constraintHorizontal_bias="0.0"
@@ -125,11 +125,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="25dp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/signup"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="@+id/signup"
-        tools:layout_editor_absoluteY="659dp" />
+        app:layout_constraintTop_toBottomOf="@+id/signup" />
 
     <EditText
         android:id="@+id/surname"
@@ -167,10 +168,10 @@
         android:id="@+id/imageView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="36dp"
         android:contentDescription="@string/usr_img"
         app:layout_constraintEnd_toEndOf="@+id/new_account"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.077"
         app:layout_constraintStart_toStartOf="@+id/new_account"
         app:layout_constraintTop_toBottomOf="@+id/singUP_image"
         app:srcCompat="@drawable/ic_baseline_person_outline_24"

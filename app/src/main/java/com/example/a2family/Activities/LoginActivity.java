@@ -156,10 +156,15 @@ public class LoginActivity extends BaseActivity implements HelperInterface {
         String userId = getUserIdFromFile();
         String familyId = getFamilyIdFromFile();
 
-        if (!familyId.equals("defaultvalue") && !userId.equals("default")) {
+        if (!familyId.equals("defaultvalue") && !userId.equals("defaultvalue")) {
             Intent groupPage = new Intent(LoginActivity.this, GroupPageActivity.class);
             //se l'utente fa gia parte di un gruppo passo il suo valore alla nuova activity
             groupPage.putExtra("familyId", familyId);
+            startActivity(groupPage,ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this).toBundle());
+            finish();
+        }
+        else if(!userId.equals("defaultvalue") ){
+            Intent groupPage = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(groupPage,ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this).toBundle());
             finish();
         }

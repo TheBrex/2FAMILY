@@ -85,12 +85,12 @@ public class MainActivity extends BaseActivity implements HelperInterface {
         }
         else {
             progressBar.setVisibility(View.VISIBLE);
-            databaseReference.child("Users").child(userKey).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            firebaseDatabase.getReference().child("Users").child(userKey).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
                     if (task.isSuccessful()) {
                         User u = task.getResult().getValue(User.class);
-                        databaseReference.child("Families").child(familycode).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        firebaseDatabase.getReference().child("Families").child(familycode).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DataSnapshot> task) {
                                 //controlla che esista effetivamente un gruppo con quel codice
@@ -102,18 +102,19 @@ public class MainActivity extends BaseActivity implements HelperInterface {
                                 else {
                                     //creo l'oggetto famiglia corrispondente al child nel database con il codice "familycode"
                                     Family f = task.getResult().getValue(Family.class);
+                                    //TODO: quando prelevo la famiglia non salva la chat - FIXARE
                                     //aggiungo il nuovo membro all'Oggetto famiglia f
                                     //se l'inserimento va a buon fine
                                     if (f.addMember(u, userKey) == 1) {
 
-                                        databaseReference.child("Families").child(familycode).setValue(f).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        firebaseDatabase.getReference().child("Families").child(familycode).setValue(f).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
                                                     Toast.makeText(MainActivity.this, "Ti sei unito al gruppo", Toast.LENGTH_LONG).show();
 
                                                     //TODO: 3) creare un nuovo elemento nel db che tiene traccia dell'id dell'utente e del gruppo a cui appartiene
-                                                    databaseReference.child("TrackFamily").child(userKey).child("Family").setValue(familycode);
+                                                    firebaseDatabase.getReference().child("TrackFamily").child(userKey).child("Family").setValue(familycode);
 
                                                     /*
                                                     TODO:salvare l'id famiglia dell'utente nel file Setting per non dover
@@ -197,7 +198,7 @@ public class MainActivity extends BaseActivity implements HelperInterface {
                                         //messaggio che mi comunica che la creazione è andata a buon fine
                                         Toast.makeText(MainActivity.this, "Creazione Gruppo completata", Toast.LENGTH_LONG).show();
                                         //TODO: creare un nuovo elemento nel db che tiene traccia dell'id dell'utente e del gruppo a cui appartiene ( COMPLETED )
-                                        databaseReference=firebaseDatabase.getReference("TrackFamily");
+                                        databaseReference=firebaseDatabase.getReference().child("TrackFamily");
                                         databaseReference.child(userKey).child("Family").setValue(familyCode);
                                         //salvo l'id del gruppo all'interno del file Settings
                                         putFamilyIdIntoFile(familyCode);

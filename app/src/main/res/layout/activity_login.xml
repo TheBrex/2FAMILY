@@ -66,14 +66,15 @@
         android:id="@+id/imageView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
         android:layout_marginEnd="24dp"
         android:contentDescription="@string/usr_img"
         app:layout_constraintEnd_toEndOf="@+id/benvenuto"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.097"
         app:layout_constraintStart_toStartOf="@+id/benvenuto"
+        app:layout_constraintTop_toBottomOf="@+id/benvenuto"
         app:srcCompat="@drawable/ic_baseline_person_outline_24"
-        tools:ignore="ContentDescription,MissingConstraints"
-        tools:layout_editor_absoluteY="401dp" />
+        tools:ignore="ContentDescription,MissingConstraints" />
 
     <TextView
         android:id="@+id/notAnAccount"
@@ -151,19 +152,20 @@
         android:id="@+id/imageView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="2dp"
         android:contentDescription="@string/psw_img"
         app:layout_constraintEnd_toEndOf="@+id/benvenuto"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.088"
         app:layout_constraintStart_toStartOf="@+id/benvenuto"
+        app:layout_constraintTop_toBottomOf="@+id/imageView10"
         app:srcCompat="@drawable/ic_outline_lock_24"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="477dp" />
+        tools:ignore="MissingConstraints" />
 
     <ImageView
         android:id="@+id/familyImage"
         android:layout_width="match_parent"
-        android:layout_height="285dp"
+        android:layout_height="wrap_content"
         android:contentDescription="@string/aesthetic"
         app:layout_constraintBottom_toTopOf="@+id/notAnAccount"
         app:layout_constraintEnd_toEndOf="parent"

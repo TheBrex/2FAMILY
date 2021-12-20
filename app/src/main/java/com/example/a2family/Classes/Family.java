@@ -15,7 +15,7 @@ public class Family {
     private int actualNumberComponents;
     //collection di utenti che compongono la famiglia
     private HashMap<String,User> members = new HashMap<>();
-    private HashMap<String,Message> groupChat = new HashMap<>();
+    private HashMap<String,Message> chat = new HashMap<>();
 
     //private HashMap<String, item> shoppingList = new HashMap<>();
     //private HashMap<String, task> taskList = new HashMap();
@@ -89,12 +89,12 @@ public class Family {
         this.members = members;
     }
 
-    public HashMap<String, Message> getGroupChat() {
-        return groupChat;
+    public HashMap<String, Message> getChat() {
+        return chat;
     }
 
-    public void setGroupChat(HashMap<String, Message> groupChat) {
-        this.groupChat = groupChat;
+    public void setChat(HashMap<String, Message> chat) {
+        this.chat = chat;
     }
 }
 
