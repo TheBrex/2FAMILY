@@ -1,6 +1,7 @@
 package com.example.a2family.Activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -66,25 +67,6 @@ public class ChatActivity extends BaseActivity {
 
     private void retriveMessages() {
         String familyID = getFamilyIdFromFile();
-        firebaseDatabase.getReference().child("Families").child(familyID).child("chat").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot message : snapshot.getChildren()){
-                    Message m = message.getValue(Message.class);
-                    messages.add(m);
-                }
-                if( messages.size()>0){
-                    adapter = new MessageAdapter(messages, getUserIdFromFile());
-                    rvMessages.setAdapter(adapter);
-                    rvMessages.scrollToPosition(rvMessages.getAdapter().getItemCount()-1);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
         firebaseDatabase.getReference().child("Families").child(familyID).child("chat").addChildEventListener(new ChildEventListener() {
             @Override
@@ -131,14 +113,13 @@ public class ChatActivity extends BaseActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String name = null;
-
                 name = snapshot.getValue(String.class);
                 Message m = new Message(getUserIdFromFile(), name , message, ts);
                 firebaseDatabase.getReference().child("Families").child(getFamilyIdFromFile()).child("chat").push().setValue(m).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
-
+                            Log.d("Info", message);
                         }
                     }
                 });
