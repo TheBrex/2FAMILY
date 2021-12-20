@@ -102,7 +102,7 @@ public class MainActivity extends BaseActivity implements HelperInterface {
                                 else {
                                     //creo l'oggetto famiglia corrispondente al child nel database con il codice "familycode"
                                     Family f = task.getResult().getValue(Family.class);
-                                    //TODO: quando prelevo la famiglia non salva la chat - FIXARE
+                                    //TODO: quando prelevo la famiglia non salva la chat - FIXARE (completed)
                                     //aggiungo il nuovo membro all'Oggetto famiglia f
                                     //se l'inserimento va a buon fine
                                     if (f.addMember(u, userKey) == 1) {
