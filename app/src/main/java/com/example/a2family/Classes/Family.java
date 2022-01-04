@@ -19,7 +19,7 @@ public class Family {
 
     //private HashMap<String, item> shoppingList = new HashMap<>();
     //private HashMap<String, task> taskList = new HashMap();
-    //private HashMap<String, payment> paymentList = new HashMap<>();
+    private HashMap<String, Event> eventList = new HashMap<>();
 
 
     public Family(String name, int maxNumberComponents) {
@@ -95,6 +95,14 @@ public class Family {
 
     public void setChat(HashMap<String, Message> chat) {
         this.chat = chat;
+    }
+
+    public HashMap<String, Event> getEventList() {
+        return eventList;
+    }
+
+    public void setEventList(HashMap<String, Event> eventList) {
+        this.eventList = eventList;
     }
 }
 

@@ -241,7 +241,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                     //controllo che le coordinate siano diverse da 0 poichè sono le coordinate di default quando l'utente si registra
                     if(lastLatitude!=0.0 && lastLongitude!=0.0) {
                         LatLng lastUserLocation = new LatLng(lastLatitude, lastLongitude);
-                        Marker marker = mMap.addMarker(m.position(lastUserLocation).title(member.child("name").getValue(String.class).toUpperCase() + " è stato visto qui l'ultima volta"));
+                        Marker marker = mMap.addMarker(m.position(lastUserLocation).title(member.child("name").getValue(String.class).toUpperCase() + " è stato/a visto qui l'ultima volta"));
                         markerMap.put(member.getKey(), marker);
                     }
                 }

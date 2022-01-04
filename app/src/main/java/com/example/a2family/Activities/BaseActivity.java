@@ -12,13 +12,14 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.a2family.Fragment.ExitFragment;
 import com.example.a2family.Fragment.NavigationFragment;
+import com.example.a2family.Interfaces.HelperInterface;
 import com.example.a2family.R;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity implements HelperInterface {
     // creating a variable for our
     // Firebase Database.
     protected FirebaseAuth mAuth=FirebaseAuth.getInstance();

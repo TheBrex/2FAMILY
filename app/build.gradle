@@ -53,6 +53,7 @@ dependencies {
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'com.mikhaellopez:circularimageview:4.3.0'
     implementation 'com.google.android.gms:play-services-maps:18.0.1'
-    // Dependency FirebaseUI for Firebase Realtime Database
-    implementation 'com.firebaseui:firebase-ui-database:6.2.1'
+    implementation 'com.applandeo:material-calendar-view:1.7.0'
+
+
 }

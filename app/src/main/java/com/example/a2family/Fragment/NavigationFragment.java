@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.a2family.Activities.CalendarActivity;
 import com.example.a2family.Activities.ChatActivity;
 import com.example.a2family.Activities.GroupPageActivity;
 import com.example.a2family.Activities.LoginActivity;
@@ -83,6 +84,15 @@ public class NavigationFragment extends BottomSheetDialogFragment {
                     case R.id.to_do:
                         break;
                     case R.id.payment:
+                        if(!(getActivity() instanceof CalendarActivity)){
+                            startActivity(new Intent(getActivity(), CalendarActivity.class),ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+                            if (navigationView.isShown()) {
+                                dismiss();
+                            }
+                            if(!(getActivity() instanceof GroupPageActivity)){
+                                getActivity().finish();
+                            }
+                        }
                         break;
                     case R.id.family_chat:
                         if(!(getActivity() instanceof ChatActivity)) {
