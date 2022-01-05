@@ -49,6 +49,9 @@ public class GroceryListActivity extends BaseActivity {
 
         this.adapter=new ProductAdapter(this, this.products);
 
+        //richiamo i fragment per i submenu
+        bottMenu();
+        bottoMenu();
         updateGroceryList();
 
 
