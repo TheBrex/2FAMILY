@@ -14,10 +14,10 @@
         android:title="To Do list"/>
 
     <item
-        android:id="@+id/payment"
+        android:id="@+id/events"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_calendar_month_24"
-        android:title="Incoming Payment"/>
+        android:title="Incoming Events"/>
 
     <item
         android:id="@+id/family_tracking"

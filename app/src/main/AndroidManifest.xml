@@ -23,9 +23,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.2FAMILY">
         <activity
-            android:name=".Activities.AddCalendarActivity"
-            android:windowSoftInputMode="adjustPan"
+            android:name=".Activities.GroceryListActivity"
             android:exported="true" />
+        <activity
+            android:name=".Activities.AddCalendarActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activities.CalendarActivity"
             android:exported="true" />

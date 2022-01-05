@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.a2family.Activities.CalendarActivity;
 import com.example.a2family.Activities.ChatActivity;
+import com.example.a2family.Activities.GroceryListActivity;
 import com.example.a2family.Activities.GroupPageActivity;
 import com.example.a2family.Activities.LoginActivity;
 import com.example.a2family.Activities.MapsActivity;
@@ -80,10 +81,19 @@ public class NavigationFragment extends BottomSheetDialogFragment {
                 int id = item.getItemId();
                 switch (id){
                     case R.id.shopping:
+                        if(!(getActivity() instanceof GroceryListActivity)){
+                            startActivity(new Intent(getActivity(), GroceryListActivity.class),ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+                            if (navigationView.isShown()) {
+                                dismiss();
+                            }
+                            if(!(getActivity() instanceof GroupPageActivity)){
+                                getActivity().finish();
+                            }
+                        }
                         break;
                     case R.id.to_do:
                         break;
-                    case R.id.payment:
+                    case R.id.events:
                         if(!(getActivity() instanceof CalendarActivity)){
                             startActivity(new Intent(getActivity(), CalendarActivity.class),ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                             if (navigationView.isShown()) {

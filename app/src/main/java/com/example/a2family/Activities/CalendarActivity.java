@@ -64,7 +64,6 @@ public class CalendarActivity extends BaseActivity {
         initializeCalendar(getFamilyIdFromFile());
         this.adapter=new ArrayAdapter<String>(this, R.layout.list_event, R.id.description_event ,this.eventDescription);
 
-
         calendarView.setOnDayClickListener(new OnDayClickListener() {
             @Override
             public void onDayClick(EventDay eventDay) {
@@ -217,6 +216,4 @@ public class CalendarActivity extends BaseActivity {
         });
     }
 
-    private void newEvent() {
-    }
 }

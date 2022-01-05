@@ -19,7 +19,7 @@ public class Family {
     private HashMap<String,User> members = new HashMap<>();
     private HashMap<String,Message> chat = new HashMap<>();
 
-    //private HashMap<String, item> shoppingList = new HashMap<>();
+    private HashMap<String, Product> groceryList = new HashMap<>();
     //private HashMap<String, task> taskList = new HashMap();
     private HashMap<String, HashMap<String,Event> > events = new HashMap<>();
 

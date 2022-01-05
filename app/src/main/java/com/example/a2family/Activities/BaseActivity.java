@@ -23,7 +23,7 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
     // creating a variable for our
     // Firebase Database.
     protected FirebaseAuth mAuth=FirebaseAuth.getInstance();
-    protected FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    protected static FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     // creating a variable for our Database
     // Reference for Firebase.
     protected DatabaseReference databaseReference=firebaseDatabase.getReference().getRoot();
