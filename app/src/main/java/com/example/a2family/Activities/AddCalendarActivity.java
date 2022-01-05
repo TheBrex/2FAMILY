@@ -55,12 +55,13 @@ public class AddCalendarActivity extends BaseActivity {
                 final Calendar c = Calendar.getInstance();
                 Hour = c.get(Calendar.HOUR_OF_DAY);
                 Minute = c.get(Calendar.MINUTE);
-
+                //nel momento in cui viene cliccata la textbox si apre il timepicker
                 TimePickerDialog timePickerDialog = new TimePickerDialog(AddCalendarActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         Hour=hourOfDay;
                         Minute=minute;
+                        //una volta scelta l'ora chiama Update text che formatta la stringa visualizzata nella textbox
                         UpdateText(hourOfDay, minute, timePicker);
                     }
                 }, Hour, Minute, true);

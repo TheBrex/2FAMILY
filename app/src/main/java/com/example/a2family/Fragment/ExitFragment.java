@@ -139,7 +139,7 @@ public class ExitFragment extends BottomSheetDialogFragment {
                         //leggo il numero attuale dei componenti
                         int familyComponents = Integer.parseInt(currentData.getValue().toString());
                         //rimuovo l'utente dai membri della famiglia nel db
-                        System.out.println(familyComponents);
+                        //System.out.println(familyComponents);
                         databaseReference.getParent().child("members").child(userId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -163,7 +163,7 @@ public class ExitFragment extends BottomSheetDialogFragment {
                         else {
                             Log.d("Info", "Rimozione utente completata");
                             //rimuovo id utente e id famiglia dal file
-                            ((BaseActivity)activity).removeUserIdFromFile();
+                            //((BaseActivity)activity).removeUserIdFromFile();
                             ((BaseActivity)activity).removeFamilyIdFromFile();
                             //rimuovo l'utente dal gruppo famiglia
                             firebaseDatabase.getReference().getRoot().child("TrackFamily").child(userId).removeValue();

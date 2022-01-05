@@ -4,6 +4,8 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Family {
@@ -19,7 +21,7 @@ public class Family {
 
     //private HashMap<String, item> shoppingList = new HashMap<>();
     //private HashMap<String, task> taskList = new HashMap();
-    private HashMap<String, Event> eventList = new HashMap<>();
+    private HashMap<String, HashMap<String,Event> > events = new HashMap<>();
 
 
     public Family(String name, int maxNumberComponents) {
@@ -97,12 +99,12 @@ public class Family {
         this.chat = chat;
     }
 
-    public HashMap<String, Event> getEventList() {
-        return eventList;
+    public HashMap<String, HashMap<String, Event>> getEvents() {
+        return events;
     }
 
-    public void setEventList(HashMap<String, Event> eventList) {
-        this.eventList = eventList;
+    public void setEvents(HashMap<String, HashMap<String, Event>> events) {
+        this.events = events;
     }
 }
 

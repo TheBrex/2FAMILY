@@ -163,9 +163,9 @@ public class LoginActivity extends BaseActivity implements HelperInterface {
             startActivity(groupPage,ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this).toBundle());
             finish();
         }
-        else if(!userId.equals("defaultvalue") ){
+        else if(!userId.equals("defaultvalue") ) {
             Intent groupPage = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(groupPage,ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this).toBundle());
+            startActivity(groupPage, ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this).toBundle());
             finish();
         }
 
