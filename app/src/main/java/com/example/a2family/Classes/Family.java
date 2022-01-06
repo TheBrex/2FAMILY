@@ -106,5 +106,13 @@ public class Family {
     public void setEvents(HashMap<String, HashMap<String, Event>> events) {
         this.events = events;
     }
+
+    public HashMap<String, Product> getGroceryList() {
+        return groceryList;
+    }
+
+    public void setGroceryList(HashMap<String, Product> groceryList) {
+        this.groceryList = groceryList;
+    }
 }
 

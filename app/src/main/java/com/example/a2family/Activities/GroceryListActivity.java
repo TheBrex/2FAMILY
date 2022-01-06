@@ -59,13 +59,18 @@ public class GroceryListActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 String d = productName.getText().toString();
-                int quantity = Integer.parseInt(quantityDialog.getText().toString());
-                Product p = new Product(d,quantity);
-                if(d!=null && d.length()>0 && quantity>0){
-                    addProduct(p);
+                String q = quantityDialog.getText().toString().trim();
+                if(q.length()>0) {
+                    int quantity = Integer.parseInt(q);
+                    Product p = new Product(d, quantity);
+                    if (d != null && d.length() > 0 && quantity > 0) {
+                        addProduct(p);
+                    } else {
+                        Toast.makeText(GroceryListActivity.this, "Inserisci un prodotto e una quantità", Toast.LENGTH_LONG).show();
+                    }
                 }
-                else{
-                    Toast.makeText(GroceryListActivity.this, "Inserisci un prodotto e una quantità", Toast.LENGTH_LONG).show();
+                else {
+                    insertProduct.requestFocus();
                 }
             }
         });
@@ -85,7 +90,9 @@ public class GroceryListActivity extends BaseActivity {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+                Product p = snapshot.getValue(Product.class);
+                products.set(products.indexOf(p), p);
+                listView.setAdapter(adapter);
             }
 
             @Override
@@ -145,6 +152,29 @@ public class GroceryListActivity extends BaseActivity {
             }
         });
     }
+
+    public void buyProduct(Product p){
+
+        if(!(p.isBought())) {
+            Query q = BaseActivity.firebaseDatabase.getReference().child("Families").child(getFamilyIdFromFile()).child("groceryList").orderByChild("unique").equalTo(p.getUnique());
+            q.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot product : snapshot.getChildren()) {
+                        p.setBought(true);
+                        product.getRef().setValue(p);
+                        Toast.makeText(GroceryListActivity.this, "Prodotto acquistato", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+    }
+
 
 
 

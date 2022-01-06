@@ -77,12 +77,18 @@ public class ProductAdapter extends BaseAdapter {
             productquantity.setText("Quantità: "+ String.valueOf(arrayList.get(position).getQuantity()));
 
             ImageView bought = convertView.findViewById(R.id.bought);
+            if(arrayList.get(position).isBought()){
+                bought.setVisibility(View.INVISIBLE);
+            }
+
             ImageView remove = convertView.findViewById(R.id.remove);
 
             bought.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    if (context instanceof GroceryListActivity) {
+                        ((GroceryListActivity) context).buyProduct(arrayList.get(position));
+                    }
                 }
             });
 

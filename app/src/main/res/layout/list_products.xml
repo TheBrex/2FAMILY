@@ -15,7 +15,7 @@
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="28sp"
@@ -24,10 +24,10 @@
 
     <TextView
         android:id="@+id/itemquantity"
-        android:layout_width="wrap_content"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginRight="56sp"
+        android:layout_marginRight="28sp"
         android:layout_toLeftOf="@id/bought"
         android:textColor="#000"
         android:textSize="20sp" />

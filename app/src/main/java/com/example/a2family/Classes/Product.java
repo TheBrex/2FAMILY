@@ -6,6 +6,7 @@ import java.util.Objects;
 public class Product {
     private String description;
     private int quantity;
+    private boolean bought;
     private String unique;
 
     public Product() {
@@ -14,6 +15,7 @@ public class Product {
     public Product(String description, int quantity) {
         this.description = description;
         this.quantity = quantity;
+        this.bought=false;
         this.unique = String.valueOf(Calendar.getInstance().getTimeInMillis()+ quantity)+""+description;
     }
 
@@ -41,6 +43,14 @@ public class Product {
         this.unique = unique;
     }
 
+    public boolean isBought() {
+        return bought;
+    }
+
+    public void setBought(boolean bought) {
+        this.bought = bought;
+    }
+
     @Override
     public String toString() {
         return ""+description +"    Quantita: "+quantity;
@@ -51,11 +61,8 @@ public class Product {
         if (this == o) return true;
         if (!(o instanceof Product)) return false;
         Product product = (Product) o;
-        return getQuantity() == product.getQuantity() && this.description.equals(((Product) o).getDescription());
+        return this.unique.equals(((Product) o).getUnique());
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getDescription(), getQuantity());
-    }
+
 }
