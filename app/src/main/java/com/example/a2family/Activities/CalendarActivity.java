@@ -1,5 +1,6 @@
 package com.example.a2family.Activities;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -31,8 +32,6 @@ import java.util.List;
 public class CalendarActivity extends BaseActivity {
 
     private List<EventDay> events = new ArrayList<EventDay>();
-
-
     private ArrayList<String> eventDescription = new ArrayList<>();
     private ArrayAdapter<String> adapter;
 
@@ -128,7 +127,7 @@ public class CalendarActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent EditCalendar = new Intent(CalendarActivity.this, AddCalendarActivity.class);
-                startActivity(EditCalendar);
+                startActivity(EditCalendar, ActivityOptions.makeSceneTransitionAnimation(CalendarActivity.this).toBundle());
                 finish();
             }
         });

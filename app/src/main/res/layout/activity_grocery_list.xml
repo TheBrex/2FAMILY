@@ -47,7 +47,20 @@
         app:layout_constraintBottom_toTopOf="@+id/include"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/grocery">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/product_name"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="7dp"
+            android:fontFamily="@font/montserrat_extrabold"
+            android:gravity="center"
+            android:text="Quantità e Prodotto"
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/product_name"
@@ -68,8 +81,8 @@
             android:layout_marginLeft="8sp"
             android:layout_toLeftOf="@+id/product_name"
             android:ems="2"
-            android:inputType="number"
-            android:hint="N" />
+            android:hint="N"
+            android:inputType="number" />
 
         <ImageView
             android:id="@+id/confirm_product"

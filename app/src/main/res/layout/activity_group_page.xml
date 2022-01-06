@@ -19,7 +19,7 @@
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300sp"
         android:layout_gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -30,7 +30,7 @@
     <ListView
         android:id="@+id/member_list"
         android:layout_width="match_parent"
-        android:layout_height="215dp"
+        android:layout_height="300sp"
         android:divider="@null"
         android:scrollbars="vertical"
         app:layout_constraintEnd_toEndOf="@+id/your_family"
@@ -48,7 +48,6 @@
         android:text="Codice famiglia : "
         android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="@+id/member_list"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="@+id/member_list"
         app:layout_constraintTop_toBottomOf="@+id/member_list" />
 
