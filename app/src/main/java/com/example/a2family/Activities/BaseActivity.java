@@ -7,15 +7,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.a2family.Classes.User;
 import com.example.a2family.Fragment.ExitFragment;
 import com.example.a2family.Fragment.NavigationFragment;
 import com.example.a2family.Interfaces.HelperInterface;
 import com.example.a2family.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -27,6 +32,8 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
     // creating a variable for our Database
     // Reference for Firebase.
     protected DatabaseReference databaseReference=firebaseDatabase.getReference().getRoot();
+    protected User me ;
+
 
 
     public void bottMenu(){
@@ -109,6 +116,18 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("userId",mAuth.getCurrentUser().getUid());
         editor.apply();
+
+        firebaseDatabase.getReference().child("Users").child(ID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful()){
+                    User u = task.getResult().getValue(User.class);
+                    putUserNameIntoFile(u.getName());
+                }
+            }
+        });
+
+
     }
 
     public String getFamilyIdFromFile(){
@@ -130,6 +149,19 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
         SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
         preferences.edit().remove("familyId").apply();
     }
+
+    public void putUserNameIntoFile(String username){
+        SharedPreferences preferences = getSharedPreferences("Settings",MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("username", username);
+        editor.apply();
+    }
+
+    public String getUsernameFromFile(){
+        SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
+        return preferences.getString("username", "defaultvalue");
+    }
+
 
 
 

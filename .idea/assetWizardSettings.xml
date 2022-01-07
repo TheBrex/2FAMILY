@@ -23,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/playlist_add_check/baseline_playlist_add_check_24.xml" />
+                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/star/baseline_star_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -33,8 +33,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="388e3c" />
-                            <entry key="outputName" value="ic_baseline_playlist_add_check_24" />
+                            <entry key="color" value="ffde00" />
+                            <entry key="outputName" value="ic_baseline_star_24" />
                             <entry key="sourceFile" value="C:\Users\Marco\AndroidStudioProjects\2FAMILY" />
                           </map>
                         </option>

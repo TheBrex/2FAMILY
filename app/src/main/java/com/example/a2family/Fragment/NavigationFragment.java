@@ -18,6 +18,7 @@ import com.example.a2family.Activities.GroceryListActivity;
 import com.example.a2family.Activities.GroupPageActivity;
 import com.example.a2family.Activities.LoginActivity;
 import com.example.a2family.Activities.MapsActivity;
+import com.example.a2family.Activities.ToDoActivity;
 import com.example.a2family.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -92,6 +93,15 @@ public class NavigationFragment extends BottomSheetDialogFragment {
                         }
                         break;
                     case R.id.to_do:
+                        if(!(getActivity() instanceof ToDoActivity)){
+                            startActivity(new Intent(getActivity(), ToDoActivity.class),ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+                            if (navigationView.isShown()) {
+                                dismiss();
+                            }
+                            if(!(getActivity() instanceof GroupPageActivity)){
+                                getActivity().finish();
+                            }
+                        }
                         break;
                     case R.id.events:
                         if(!(getActivity() instanceof CalendarActivity)){

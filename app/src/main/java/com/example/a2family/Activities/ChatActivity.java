@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a2family.Adapters.MessageAdapter;
 import com.example.a2family.Classes.Message;
+import com.example.a2family.Classes.TaskToDo;
 import com.example.a2family.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -85,7 +86,6 @@ public class ChatActivity extends BaseActivity {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
             }
 
             @Override

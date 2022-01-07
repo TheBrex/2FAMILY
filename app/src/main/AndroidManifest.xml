@@ -23,6 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.2FAMILY">
         <activity
+            android:name=".Activities.ToDoActivity"
+            android:exported="true" />
+        <activity
             android:name=".Activities.GroceryListActivity"
             android:exported="true" />
         <activity
