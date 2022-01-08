@@ -18,7 +18,7 @@ public class Family {
     private HashMap<String,Message> chat = new HashMap<>();
 
     private HashMap<String, Product> groceryList = new HashMap<>();
-    private HashMap<String, TaskToDo> taskList = new HashMap();
+    private HashMap<String, TaskToDo> tasksToDo = new HashMap();
     private HashMap<String, HashMap<String,Event> > events = new HashMap<>();
 
 
@@ -113,12 +113,12 @@ public class Family {
         this.groceryList = groceryList;
     }
 
-    public HashMap<String, TaskToDo> getTaskList() {
-        return taskList;
+    public HashMap<String, TaskToDo> getTasksToDo() {
+        return tasksToDo;
     }
 
-    public void setTaskList(HashMap<String, TaskToDo> taskList) {
-        this.taskList = taskList;
+    public void setTasksToDo(HashMap<String, TaskToDo> tasksToDo) {
+        this.tasksToDo = tasksToDo;
     }
 }
 

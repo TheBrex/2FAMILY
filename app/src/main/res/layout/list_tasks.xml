@@ -65,6 +65,7 @@
             android:id="@+id/star"
             android:layout_width="28sp"
             android:layout_height="28sp"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/task"
             android:src="@drawable/ic_baseline_star_border_24"
@@ -72,8 +73,10 @@
 
         <TextView
             android:id="@+id/done_by"
-            android:layout_width="100dp"
-            android:layout_height="40sp"
+            android:layout_width="110dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="36dp"
             android:layout_marginTop="90sp"
             android:layout_toRightOf="@+id/task_description"
             android:gravity="center"
