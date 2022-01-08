@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 
 import com.example.a2family.Activities.CalendarActivity;
 import com.example.a2family.Activities.GroceryListActivity;
+import com.example.a2family.Activities.ToDoActivity;
 import com.example.a2family.Classes.Event;
 import com.example.a2family.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -85,7 +86,11 @@ public class DeleteEventFragment extends BottomSheetDialogFragment {
                 int id = item.getItemId();
                 switch (id){
                     case R.id.delete_event:
-                        deleteEvent();
+                        if(getActivity() instanceof CalendarActivity)
+                            deleteEvent();
+                        if(getActivity() instanceof ToDoActivity)
+                            ((ToDoActivity)getActivity()).deleteTask(DeleteEventFragment.this.getArguments().getString("unique"));
+
                         if (navigationView.isShown()) {
                             dismiss();
                         }

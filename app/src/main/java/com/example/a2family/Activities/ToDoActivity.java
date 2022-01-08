@@ -6,11 +6,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a2family.Adapters.TaskAdapter;
 import com.example.a2family.Classes.TaskToDo;
+import com.example.a2family.Fragment.AddTaskFragment;
 import com.example.a2family.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,11 +32,17 @@ public class ToDoActivity extends BaseActivity {
     private RecyclerView rvTasks;
     private TaskAdapter adapter;
     private FloatingActionButton addEvent;
+    public String myUsername;
+    public String myID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_do);
+
+        myUsername=getUsernameFromFile();
+        myID = getUserIdFromFile();
 
         //richiamo i fragment per i submenu
         bottMenu();
@@ -45,25 +53,18 @@ public class ToDoActivity extends BaseActivity {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvTasks.setLayoutManager(linearLayoutManager);
-
-        updateTaskList();
-
         adapter=new TaskAdapter(taskToDos, this);
 
-        ArrayList<TaskToDo> f = new ArrayList<>();
-        f.add(new TaskToDo("task 1", "desc task1"));
-        f.add(new TaskToDo("task 2", "desc task2"));
-        f.add(new TaskToDo("task 3", "desc task3"));
-        f.add(new TaskToDo("task 4", "desc task4"));
-        f.add(new TaskToDo("task 5", "desc task5"));
 
 
-
+        updateTaskList();
 
         addEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addTask(f);
+
+                AddTaskFragment newFragment = new AddTaskFragment();
+                newFragment.show(getSupportFragmentManager(),"AddTask");
             }
         });
 
@@ -87,6 +88,7 @@ public class ToDoActivity extends BaseActivity {
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 TaskToDo p = snapshot.getValue(TaskToDo.class);
                 taskToDos.set(taskToDos.indexOf(p), p);
+                rvTasks.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }
 
@@ -94,6 +96,7 @@ public class ToDoActivity extends BaseActivity {
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 TaskToDo t = snapshot.getValue(TaskToDo.class);
                 taskToDos.remove(t);
+                rvTasks.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }
 
@@ -109,28 +112,28 @@ public class ToDoActivity extends BaseActivity {
         });
     }
 
-    private void addTask(ArrayList<TaskToDo> tasks) {
-        for (TaskToDo t : tasks
-        ) {
-            firebaseDatabase.getReference().child("Families").child(getFamilyIdFromFile()).child("tasksToDo").push().setValue(t).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(ToDoActivity.this, "Hai aggiunto una commissione", Toast.LENGTH_LONG).show();
-                    }
+    public void addTask(TaskToDo task) {
+
+        firebaseDatabase.getReference().child("Families").child(getFamilyIdFromFile()).child("tasksToDo").push().setValue(task).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(ToDoActivity.this, "Hai aggiunto una commissione", Toast.LENGTH_LONG).show();
                 }
-            });
-        }
+            }
+        });
     }
 
     public void completeTaskStatus(TaskToDo t){
         t.setDone(true);
         t.setWhoComplete(getUsernameFromFile());
+        t.setWhoCompleteID(getUserIdFromFile());
         modifyTask(t);
     }
     public void uncompleteTaskStatus(TaskToDo t){
         t.setDone(false);
         t.setWhoComplete("");
+        t.setWhoCompleteID("");
         modifyTask(t);
     }
 
@@ -149,6 +152,25 @@ public class ToDoActivity extends BaseActivity {
 
             }
         });
+    }
+
+    public void deleteTask(String unique){
+        Query q = firebaseDatabase.getReference().child("Families").child(getFamilyIdFromFile()).child("tasksToDo").orderByChild("unique").equalTo(unique);
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot task: snapshot.getChildren()) {
+                    task.getRef().removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
     }
 
 

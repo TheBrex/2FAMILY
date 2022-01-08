@@ -1,0 +1,55 @@
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#f5f5f5"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/green"
+        android:scaleType="center"
+        android:fontFamily= "@font/montserrat_semibold"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:text = "NUOVA COMMISSIONE"
+        />
+    <EditText
+        android:id="@+id/title_task"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:hint="Titolo Commissione" />
+    <EditText
+        android:id="@+id/description_task"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="sans-serif"
+        android:hint="Descrizione"/>
+
+    <Button
+        android:id="@+id/add_task"
+        android:layout_width="285dp"
+        android:layout_height="50dp"
+        android:layout_gravity="start"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#0079A7"
+        android:enabled="true"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="Aggiungi"
+        android:textColor="@color/white" />
+
+</LinearLayout>
+

@@ -8,17 +8,24 @@ public class TaskToDo {
    private String description;
    private Boolean done;
    private String whoComplete;
+    private String whoCompleteID;
    private String unique ;
+   private String createdBy;
+   private String createdByID;
+
 
     public TaskToDo() {
     }
 
-    public TaskToDo(String title, String description) {
+    public TaskToDo(String title, String description, String createdBy, String createdByID) {
         this.title = title;
         this.description = description;
         this.done = done;
         this.whoComplete = "";
+        this.whoCompleteID="";
         this.unique=""+Calendar.getInstance().getTimeInMillis()+title;
+        this.createdBy = createdBy;
+        this.createdByID = createdByID;
     }
 
     public String getTitle() {
@@ -59,6 +66,30 @@ public class TaskToDo {
 
     public void setUnique(String unique) {
         this.unique = unique;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getCreatedByID() {
+        return createdByID;
+    }
+
+    public void setCreatedByID(String createdByID) {
+        this.createdByID = createdByID;
+    }
+
+    public String getWhoCompleteID() {
+        return whoCompleteID;
+    }
+
+    public void setWhoCompleteID(String whoCompleteID) {
+        this.whoCompleteID = whoCompleteID;
     }
 
     @Override

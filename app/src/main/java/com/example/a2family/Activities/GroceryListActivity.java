@@ -9,8 +9,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a2family.Adapters.ProductAdapter;
+import com.example.a2family.Adapters.TaskAdapter;
 import com.example.a2family.Classes.Product;
 import com.example.a2family.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,9 +28,9 @@ import java.util.ArrayList;
 
 public class GroceryListActivity extends BaseActivity {
 
-    private  ListView listView;
-    private  ArrayList<Product> products = new ArrayList<>();
-    private  ProductAdapter adapter;
+    private RecyclerView rvProducts;
+    private ArrayList<Product> products = new ArrayList<>();
+    private ProductAdapter adapter;
     private EditText productName;
     private EditText quantityDialog;
     private ImageView insertProduct;
@@ -39,12 +42,15 @@ public class GroceryListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grocery_list);
 
-        this.listView=(ListView) findViewById(R.id.grocery);
+        this.rvProducts=(RecyclerView) findViewById(R.id.grocery);
         this.productName = (EditText) findViewById(R.id.product_name);
         this.insertProduct = (ImageView) findViewById(R.id.confirm_product);
         this.quantityDialog = (EditText) findViewById(R.id.quantity);
 
-        this.adapter=new ProductAdapter(this, this.products);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rvProducts.setLayoutManager(linearLayoutManager);
+
+        adapter=new ProductAdapter(products, this);
 
         //richiamo i fragment per i submenu
         bottMenu();
@@ -77,26 +83,33 @@ public class GroceryListActivity extends BaseActivity {
     }
 
     private void updateGroceryList() {
+        //this.adapter=new ProductAdapter(this, this.products);
         firebaseDatabase.getReference().child("Families").child(getFamilyIdFromFile()).child("groceryList").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Product p = snapshot.getValue(Product.class);
                 products.add(p);
-                listView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                rvProducts.setAdapter(adapter);
+
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Product p = snapshot.getValue(Product.class);
                 products.set(products.indexOf(p), p);
-                listView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                rvProducts.setAdapter(adapter);
+
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 Product p = snapshot.getValue(Product.class);
                 products.remove(p);
-                listView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                rvProducts.setAdapter(adapter);
+
             }
 
             @Override
@@ -109,7 +122,7 @@ public class GroceryListActivity extends BaseActivity {
 
             }
         });
-        listView.setAdapter(adapter);
+        rvProducts.setAdapter(adapter);
 
     }
 

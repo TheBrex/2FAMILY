@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a2family.Activities.GroceryListActivity;
 import com.example.a2family.Classes.Product;
@@ -26,16 +27,77 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class ProductAdapter extends BaseAdapter {
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
-    ArrayList<Product> arrayList;
+    ArrayList<Product> productArrayList;
     Context context;
-
     protected FirebaseAuth mAuth=FirebaseAuth.getInstance();
     protected FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     // creating a variable for our Database
     // Reference for Firebase.
     protected DatabaseReference databaseReference=firebaseDatabase.getReference().getRoot();
+
+    public ProductAdapter(ArrayList<Product> productArrayList, Context context) {
+        this.productArrayList = productArrayList;
+        this.context = context;
+    }
+
+    @NonNull
+    @Override
+    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_products, parent, false);
+        ProductAdapter.ProductViewHolder productViewHolder = new ProductAdapter.ProductViewHolder(v);
+        return productViewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
+        holder.itemView.setTag(productArrayList.get(position));
+        Product p = productArrayList.get(position);
+        holder.number.setText(String.valueOf(holder.getAdapterPosition()+1));
+        holder.name.setText(p.getDescription());
+        holder.quantity.setText("Quantità: "+String.valueOf(p.getQuantity()));
+        holder.remove.setImageResource(R.drawable.ic_baseline_close_24);
+
+        if(p.isBought()){
+            holder.bought.setVisibility(View.INVISIBLE);
+        }
+        else{
+            holder.bought.setVisibility(View.VISIBLE);
+        }
+
+
+        holder.bought.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(context instanceof GroceryListActivity){
+                    ((GroceryListActivity)context).buyProduct(productArrayList.get(holder.getAdapterPosition()));
+                    holder.bought();
+                }
+            }
+        });
+
+        holder.remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(context instanceof GroceryListActivity){
+                    ((GroceryListActivity)context).removeProduct(productArrayList.get(holder.getAdapterPosition()));
+                }
+            }
+        });
+
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return productArrayList.size();
+    }
+
+
+
+    /*
+
 
 
     public ProductAdapter(Context context, ArrayList<Product> products){
@@ -106,6 +168,31 @@ public class ProductAdapter extends BaseAdapter {
 
     }
 
+*/
+
+    public class ProductViewHolder extends RecyclerView.ViewHolder {
+        private TextView number;
+        private TextView name;
+        private TextView quantity;
+        private ImageView bought;
+        private ImageView remove;
+
+
+        public ProductViewHolder(@NonNull View itemView) {
+            super(itemView);
+            this.number=(TextView) itemView.findViewById(R.id.number);
+            this.name=(TextView) itemView.findViewById(R.id.name);
+            this.quantity=(TextView) itemView.findViewById(R.id.itemquantity);
+            this.bought=(ImageView) itemView.findViewById(R.id.bought);
+            this.remove=(ImageView) itemView.findViewById(R.id.remove);
+        }
+
+        private void bought(){
+            this.bought.setVisibility(View.INVISIBLE);
+        }
+
+
+    }
 
 
 

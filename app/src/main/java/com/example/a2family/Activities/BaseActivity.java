@@ -32,7 +32,6 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
     // creating a variable for our Database
     // Reference for Firebase.
     protected DatabaseReference databaseReference=firebaseDatabase.getReference().getRoot();
-    protected User me ;
 
 
 
@@ -126,6 +125,7 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
                 }
             }
         });
+
 
 
     }

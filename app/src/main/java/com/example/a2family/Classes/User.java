@@ -20,8 +20,12 @@ public class User {
     public User() {
     }
 
-    public User(String mario, String rossi){
-
+    public User(User o){
+        this.name=o.name;
+        this.surname=o.surname;
+        this.address=o.address;
+        this.email=o.email;
+        this.position=o.position;
     }
 
     public String getName() {
@@ -74,4 +78,5 @@ public class User {
                 ", position=" + position +
                 '}';
     }
+
 }
