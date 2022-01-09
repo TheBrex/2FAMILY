@@ -56,7 +56,6 @@ public class ToDoActivity extends BaseActivity {
         adapter=new TaskAdapter(taskToDos, this);
 
 
-
         updateTaskList();
 
         addEvent.setOnClickListener(new View.OnClickListener() {

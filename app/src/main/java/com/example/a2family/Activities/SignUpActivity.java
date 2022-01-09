@@ -101,6 +101,7 @@ public class SignUpActivity extends BaseActivity implements HelperInterface {
                 public void onComplete(@NonNull Task<AuthResult> task) {
 
                     if (task.isSuccessful()) {
+                        sendEmail();
                         User user = new User(name, surname, address, email);
 
                         // riferimento a "Users" nel realTime database
@@ -139,6 +140,24 @@ public class SignUpActivity extends BaseActivity implements HelperInterface {
                 }
             });
         }
+    }
+
+
+    private void sendEmail(){
+        mAuth.getCurrentUser().sendEmailVerification()
+                .addOnCompleteListener(this, new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+
+                        if (task.isSuccessful()) {
+                            Toast.makeText(SignUpActivity.this, "E' stata inviata una mail per confermare la registrazione ", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(SignUpActivity.this,
+                                    "C'è stato un problema nell'invio dell' email di conferma registrazione",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 
 

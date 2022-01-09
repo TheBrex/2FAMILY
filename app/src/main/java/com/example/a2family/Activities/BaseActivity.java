@@ -1,5 +1,6 @@
 package com.example.a2family.Activities;
 
+import android.accounts.Account;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,7 +33,6 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
     // creating a variable for our Database
     // Reference for Firebase.
     protected DatabaseReference databaseReference=firebaseDatabase.getReference().getRoot();
-
 
 
     public void bottMenu(){
@@ -76,6 +76,13 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
                             finish();
                             //TODO aggiungere animazione
                         }
+                        break;
+                    case R.id.account:
+                        if(!(BaseActivity.this instanceof AccountActivity)){
+                            Intent account = new Intent(BaseActivity.this, AccountActivity.class);
+                            startActivity(account, ActivityOptions.makeSceneTransitionAnimation(BaseActivity.this).toBundle());
+                        }
+                        break;
                 }
                 return false;
             }
@@ -161,10 +168,6 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
         SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
         return preferences.getString("username", "defaultvalue");
     }
-
-
-
-
 
 
 }

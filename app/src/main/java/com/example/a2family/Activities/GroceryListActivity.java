@@ -91,7 +91,7 @@ public class GroceryListActivity extends BaseActivity {
                 products.add(p);
                 adapter.notifyDataSetChanged();
                 rvProducts.setAdapter(adapter);
-
+                rvProducts.scrollToPosition(rvProducts.getAdapter().getItemCount()-1);
             }
 
             @Override

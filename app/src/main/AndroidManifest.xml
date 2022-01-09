@@ -23,20 +23,29 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.2FAMILY">
         <activity
+            android:name=".Activities.AccountActivity"
+            android:screenOrientation="portrait"
+            android:exported="true" />
+        <activity
             android:name=".Activities.ToDoActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".Activities.GroceryListActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".Activities.AddCalendarActivity"
+            android:screenOrientation="portrait"
             android:exported="true"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activities.CalendarActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".Activities.ChatActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

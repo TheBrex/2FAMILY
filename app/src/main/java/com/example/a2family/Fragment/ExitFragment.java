@@ -2,6 +2,7 @@ package com.example.a2family.Fragment;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -56,11 +57,15 @@ public class ExitFragment extends BottomSheetDialogFragment {
     // creating a variable for our Database
     // Reference for Firebase.
     protected DatabaseReference databaseReference=firebaseDatabase.getReference().getRoot();
+    protected String deleteMe;
 
 
-    public ExitFragment(Object o, Object o1) {
-        // Required empty public constructor
+    public ExitFragment(Object o,   Object o1) {
+        if(o instanceof String){
+            this.deleteMe=(String)o;
+        }
     }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -116,10 +121,9 @@ public class ExitFragment extends BottomSheetDialogFragment {
         return view;
     }
 
-    private void exitGroup() {
+    public void exitGroup() {
         Activity activity = getActivity();
         if(activity instanceof BaseActivity){
-
             //prendo lo user id e il familyId che riguardano l'utente che vuole uscire dal gruppo
             String familyId=((BaseActivity)activity).getFamilyIdFromFile();
             String userId=((BaseActivity)activity).getUserIdFromFile();
@@ -154,7 +158,7 @@ public class ExitFragment extends BottomSheetDialogFragment {
                                     Log.d("Info", "Eliminazione gruppo completata");
                                     //TODO : rimuovere il riferimento dell'utente da "trackFamily" e rimuove l'id dal file ( COMPLETED )
                                     firebaseDatabase.getReference().getRoot().child("TrackFamily").child(userId).removeValue();
-                                    ((GroupPageActivity)activity).removeUserIdFromFile();
+                                    //((GroupPageActivity)activity).removeUserIdFromFile();
                                     ((GroupPageActivity)activity).removeFamilyIdFromFile();
                                 }
                             });
