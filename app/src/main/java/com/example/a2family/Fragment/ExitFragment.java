@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.a2family.Activities.AccountActivity;
 import com.example.a2family.Activities.BaseActivity;
 import com.example.a2family.Activities.GroupPageActivity;
 import com.example.a2family.Activities.MainActivity;
@@ -57,13 +58,11 @@ public class ExitFragment extends BottomSheetDialogFragment {
     // creating a variable for our Database
     // Reference for Firebase.
     protected DatabaseReference databaseReference=firebaseDatabase.getReference().getRoot();
-    protected String deleteMe;
+    protected Activity activity;
 
 
     public ExitFragment(Object o,   Object o1) {
-        if(o instanceof String){
-            this.deleteMe=(String)o;
-        }
+
     }
 
 
@@ -94,6 +93,12 @@ public class ExitFragment extends BottomSheetDialogFragment {
         }
     }
 
+
+
+    public void passActivity(@NonNull Activity activity) {
+        this.activity = (Activity) activity;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -106,6 +111,7 @@ public class ExitFragment extends BottomSheetDialogFragment {
                 int id = item.getItemId();
                 switch (id){
                     case R.id.exit_group:
+                        ExitFragment.this.passActivity(getActivity());
                         exitGroup();
                         break;
                     case R.id.exit_account:
@@ -122,8 +128,8 @@ public class ExitFragment extends BottomSheetDialogFragment {
     }
 
     public void exitGroup() {
-        Activity activity = getActivity();
-        if(activity instanceof BaseActivity){
+        //Activity activity = getActivity();
+        if(activity instanceof BaseActivity ){
             //prendo lo user id e il familyId che riguardano l'utente che vuole uscire dal gruppo
             String familyId=((BaseActivity)activity).getFamilyIdFromFile();
             String userId=((BaseActivity)activity).getUserIdFromFile();
@@ -152,14 +158,15 @@ public class ExitFragment extends BottomSheetDialogFragment {
                         });
 
                         if (familyComponents - 1 <= 0) {
+
                             databaseReference.getParent().removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     Log.d("Info", "Eliminazione gruppo completata");
                                     //TODO : rimuovere il riferimento dell'utente da "trackFamily" e rimuove l'id dal file ( COMPLETED )
-                                    firebaseDatabase.getReference().getRoot().child("TrackFamily").child(userId).removeValue();
+                                    firebaseDatabase.getReference().child("TrackFamily").child(userId).getRef().removeValue();
                                     //((GroupPageActivity)activity).removeUserIdFromFile();
-                                    ((GroupPageActivity)activity).removeFamilyIdFromFile();
+
                                 }
                             });
                         }
@@ -170,7 +177,12 @@ public class ExitFragment extends BottomSheetDialogFragment {
                             //((BaseActivity)activity).removeUserIdFromFile();
                             ((BaseActivity)activity).removeFamilyIdFromFile();
                             //rimuovo l'utente dal gruppo famiglia
-                            firebaseDatabase.getReference().getRoot().child("TrackFamily").child(userId).removeValue();
+                            firebaseDatabase.getReference().child("TrackFamily").child(userId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    System.out.println("eliminato");
+                                }
+                            });
                             int fc= familyComponents-1;
                             //setto il valore nuovo dei componenti del gruppo
                             System.out.println(databaseReference.get().toString());
@@ -183,9 +195,12 @@ public class ExitFragment extends BottomSheetDialogFragment {
                 @Override
                 public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
                     //avvio intanto la mainActivity
-                    Intent mainPage = new Intent(activity, MainActivity.class);
-                    startActivity(mainPage, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle());
-                    activity.finish();
+                    if(activity instanceof GroupPageActivity) {
+                        ((GroupPageActivity)activity).removeFamilyIdFromFile();
+                        Intent mainPage = new Intent(activity, MainActivity.class);
+                        startActivity(mainPage, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle());
+                        activity.finish();
+                    }
                 }
             });
         }

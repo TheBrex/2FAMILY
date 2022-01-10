@@ -1,5 +1,7 @@
 package com.example.a2family.Activities;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +18,8 @@ import com.example.a2family.Fragment.ExitFragment;
 import com.example.a2family.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 
 public class AccountActivity extends BaseActivity {
@@ -24,7 +28,6 @@ public class AccountActivity extends BaseActivity {
     private TextView email;
     private TextView address;
     private TextView changePassword;
-    private TextView deleteAccount;
     private User me;
 
     @Override
@@ -41,7 +44,6 @@ public class AccountActivity extends BaseActivity {
         this.email=(TextView) findViewById(R.id.profile_email);
         this.address=(TextView) findViewById(R.id.address);
         this.changePassword=(TextView) findViewById(R.id.change_password);
-        this.deleteAccount=(TextView) findViewById(R.id.delete_account);
 
 
         changePassword.setOnClickListener(new View.OnClickListener() {
@@ -52,32 +54,17 @@ public class AccountActivity extends BaseActivity {
             }
         });
 
+        /*
         deleteAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 deleteAccount();
             }
         });
+        */
 
 
-    }
-
-    private void deleteAccount() {
-
-        new AlertDialog.Builder(this)
-                .setTitle("Eliminazione Account")
-                .setMessage("Sei sicuro di voler eliminare definivamente il tuo account?")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        FragmentManager manager = getSupportFragmentManager();
-                        ExitFragment bottomNavFragment = new ExitFragment("DeleteAccount",null);
-                        //TODO: fixare -- getActivity() nel fragment ritorna null
-                        bottomNavFragment.exitGroup();
-                        AccountActivity.this.signOut();
-
-                    }})
-                .setNegativeButton(android.R.string.no, null).show();
     }
 
     private void changePassword() {
@@ -113,6 +100,54 @@ public class AccountActivity extends BaseActivity {
         });
 
     }
+
+
+        /*
+    private void deleteAccount() {
+
+        new AlertDialog.Builder(this)
+                .setTitle("Eliminazione Account")
+                .setMessage("Sei sicuro di voler eliminare definivamente il tuo account?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                        ExitFragment bottomNavFragment = new ExitFragment("DeleteAccount",null);
+                        //TODO: fixare -- getActivity() nel fragment ritorna null
+                        bottomNavFragment.passActivity(AccountActivity.this);
+                        Bundle b = new Bundle();
+                        b.putString("userkey", getUserIdFromFile());
+                        bottomNavFragment.setArguments(b);
+                        bottomNavFragment.exitGroup();
+
+                    }})
+                .setNegativeButton(android.R.string.no, null).show();
+    }
+
+
+
+    public void removeUserFromDB(String userId) {
+        System.out.println("ciao");
+        firebaseDatabase.getReference().child("Users").child(userId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()) {
+                    AuthCredential credential = EmailAuthProvider.getCredential("user@example.com", "password1234");
+                    mAuth.getCurrentUser().reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            mAuth.getCurrentUser().delete();
+                            AccountActivity.this.signOut();
+                        }
+                    });
+
+                }
+            }
+        });
+    }
+
+
+     */
 
 
 

@@ -168,31 +168,7 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
 
-
-                    <TextView
-                        android:id="@+id/delete_account"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_regular"
-                        android:text="ELIMINA ACCOUNT"
-                        android:textColor="@color/blue"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:textStyle="bold"
-                        android:textSize="15sp" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="15dp" />
-
-                </LinearLayout>
 
 
             </LinearLayout>

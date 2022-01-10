@@ -122,16 +122,8 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("userId",mAuth.getCurrentUser().getUid());
         editor.apply();
+        putUserNameIntoFile(ID);
 
-        firebaseDatabase.getReference().child("Users").child(ID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.isSuccessful()){
-                    User u = task.getResult().getValue(User.class);
-                    putUserNameIntoFile(u.getName());
-                }
-            }
-        });
 
 
 
@@ -157,11 +149,22 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
         preferences.edit().remove("familyId").apply();
     }
 
-    public void putUserNameIntoFile(String username){
-        SharedPreferences preferences = getSharedPreferences("Settings",MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("username", username);
-        editor.apply();
+    public void putUserNameIntoFile(String ID){
+        firebaseDatabase.getReference().child("Users").child(ID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful()){
+                    if(task.getResult().getValue()!=null) {
+                        User u = task.getResult().getValue(User.class);
+                        SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("username", u.getName());
+                        editor.apply();
+                    }
+                }
+            }
+        });
+
     }
 
     public String getUsernameFromFile(){
