@@ -1,0 +1,181 @@
+@startuml
+class com.example.a2family.Activities.CalendarActivity {
+- List<EventDay> events
+- ArrayList<String> eventDescription
+- ArrayAdapter<String> adapter
+- FloatingActionButton editEvent
+- CalendarView calendarView
+- ListView listView
+- TextView dateSelectedLabel
++ {static} Calendar c
+# void onCreate(Bundle)
+- String getDescriptionFromItem(String)
+- String getMinuteFromItem(String)
+- String getHourFromItem(String)
+- void initializeCalendar(String)
+}
+class com.example.a2family.Activities.ToDoActivity {
+- ArrayList<TaskToDo> taskToDos
+- RecyclerView rvTasks
+- TaskAdapter adapter
+- FloatingActionButton addEvent
++ String myUsername
++ String myID
+# void onCreate(Bundle)
+- void updateTaskList()
++ void addTask(TaskToDo)
++ void completeTaskStatus(TaskToDo)
++ void uncompleteTaskStatus(TaskToDo)
+- void modifyTask(TaskToDo)
++ void deleteTask(String)
+}
+class com.example.a2family.Activities.GroupPageActivity {
+- ListView member
+- TextView logOut
+- TextView family
+- ImageView copy
+- ListView listView
+- ArrayList<String> memberList
+- ArrayAdapter<String> adapter
+- ProgressBar progressBar
+# void onCreate(Bundle)
+- void initializeList(String)
+}
+class com.example.a2family.Activities.MainActivity {
+- EditText editFamilyCode
+- EditText editFamilyNumber
+- Button joinButton
+- Button createButton
+- TextView logout
+- ProgressBar progressBar
+# void onCreate(Bundle)
+- void joinGroup()
+- void createGroup()
+}
+class com.example.a2family.Activities.AccountActivity {
+- TextView nameSurname
+- TextView email
+- TextView address
+- TextView changePassword
+# void onCreate(Bundle)
+- void changePassword()
+- void initializeData()
+}
+class com.example.a2family.Activities.BaseActivity {
+# FirebaseAuth mAuth
+# {static} FirebaseDatabase firebaseDatabase
+# DatabaseReference databaseReference
++ void bottMenu()
++ void bottoMenu()
++ void signOut()
++ void putFamilyIdIntoFile(String)
++ void putUserIdIntoFile(String)
++ String getFamilyIdFromFile()
++ String getUserIdFromFile()
++ void removeUserIdFromFile()
++ void removeFamilyIdFromFile()
++ void putUserNameIntoFile(String)
++ String getUsernameFromFile()
++ void putSurnameIntoFile(String)
++ String getSurnameFromFile()
++ void putEmailIntoFile(String)
++ void putAddressIntoFile(String)
++ String getEmailFromFile()
++ String getAddressFromFile()
++ void getUser(String)
+}
+class com.example.a2family.Activities.MapsActivity {
+- {static} int PERMISSION_FINE_LOCATION
++ {static} int DEFAULT_UPDATE_INTERVAL
+- GoogleMap mMap
+- double latitude
+- double longitude
+- FusedLocationProviderClient fusedLocationProviderClient
+- LocationRequest locationRequest
+- LocationCallback locationCallback
+- FloatingActionButton power
+- Marker marker
+- MarkerOptions m
+- HashMap<String,Marker> markerMap
+# void onCreate(Bundle)
+- void updateDBlocation(Position)
+- void startLocationUpdates()
++ void onRequestPermissionsResult(int,String[],int[])
++ void onMapReady(GoogleMap)
+}
+class com.example.a2family.Activities.GroceryListActivity {
+- RecyclerView rvProducts
+- ArrayList<Product> products
+- ProductAdapter adapter
+- EditText productName
+- EditText quantityDialog
+- ImageView insertProduct
+# void onCreate(Bundle)
+- void updateGroceryList()
+- void addProduct(Product)
++ void removeProduct(Product)
++ void buyProduct(Product)
+}
+class com.example.a2family.Activities.AddCalendarActivity {
+- CalendarView datePicker
+- Button addEventButton
+- EditText eventDescription
+- ImageView deleteEvent
+- EditText timePicker
+- int Hour
+- int Minute
+# void onCreate(Bundle)
+- void UpdateText(int,int,EditText)
+- void addNewEvent()
+}
+class com.example.a2family.Activities.ChatActivity {
+- ArrayList<Message> messages
+- ImageButton send
+- EditText sendTextMessage
+- RecyclerView rvMessages
+- MessageAdapter adapter
+# void onCreate(Bundle)
+- void retriveMessages()
+- void send_message(String)
+}
+class com.example.a2family.Activities.LoginActivity {
+- Button loginButton
+- TextView editSignUp
+- EditText editEmail
+- EditText editPsw
+- ProgressBar progressBar
+- TextView forgotPassword
+# void onCreate(Bundle)
+- void resetPassword()
+- void login()
++ void onStart()
+}
+class com.example.a2family.Activities.SignUpActivity {
+- EditText editName
+- TextView backButton
+- Button signUpButton
+- ProgressBar progressBar
+# void onCreate(Bundle)
+- void signUpUser()
+- void sendEmail()
+}
+
+
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.CalendarActivity
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.ToDoActivity
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.GroupPageActivity
+com.example.a2family.Interfaces.HelperInterface <|.. com.example.a2family.Activities.MainActivity
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.MainActivity
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.AccountActivity
+com.example.a2family.Interfaces.HelperInterface <|.. com.example.a2family.Activities.BaseActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.example.a2family.Activities.BaseActivity
+com.google.android.gms.maps.OnMapReadyCallback <|.. com.example.a2family.Activities.MapsActivity
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.MapsActivity
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.GroceryListActivity
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.AddCalendarActivity
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.ChatActivity
+com.example.a2family.Interfaces.HelperInterface <|.. com.example.a2family.Activities.LoginActivity
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.LoginActivity
+com.example.a2family.Interfaces.HelperInterface <|.. com.example.a2family.Activities.SignUpActivity
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.SignUpActivity
+@enduml

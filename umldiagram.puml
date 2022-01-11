@@ -1,0 +1,440 @@
+@startuml
+interface com.example.a2family.Interfaces.HelperInterface {
+~ int checkField(String,EditText)
+~ int checkEmail(String,EditText)
+~ int checkPassword(String,String,EditText,EditText)
+}
+class com.example.a2family.Classes.User {
+- String name
+- Position position
++ String getName()
++ String getSurname()
++ String getAddress()
++ String getEmail()
++ void setName(String)
++ void setSurname(String)
++ void setAddress(String)
++ void setEmail(String)
++ Position getPosition()
++ void setPosition(Position)
++ String toString()
+}
+class com.example.a2family.Activities.ToDoActivity {
+- ArrayList<TaskToDo> taskToDos
+- RecyclerView rvTasks
+- TaskAdapter adapter
+- FloatingActionButton addEvent
++ String myUsername
++ String myID
+# void onCreate(Bundle)
+- void updateTaskList()
++ void addTask(TaskToDo)
++ void completeTaskStatus(TaskToDo)
++ void uncompleteTaskStatus(TaskToDo)
+- void modifyTask(TaskToDo)
++ void deleteTask(String)
+}
+class com.example.a2family.Adapters.MessageAdapter {
+- ArrayList<Message> messageArrayList
+- Context context
+- String userID
+- {static} int VIEW_ME
+- {static} int VIEW_YOU
++ RecyclerView.ViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(RecyclerView.ViewHolder,int)
++ void update(ArrayList<Message>)
++ int getItemViewType(int)
++ int getItemCount()
+}
+class com.example.a2family.Adapters.MessageAdapter.ViewHolderMe {
+- TextView messageText
+- TextView time
++ TextView getMessageText()
++ void setMessageText(TextView)
+}
+class com.example.a2family.Adapters.MessageAdapter.ViewHolderYou {
+- TextView username
+- TextView messageText
+- TextView time
+- View avatar
++ TextView getUsername()
++ void setUsername(TextView)
++ TextView getMessageText()
++ void setMessageText(TextView)
++ View getAvatar()
++ void setAvatar(View)
+}
+class com.example.a2family.Fragment.NavigationFragment {
+- {static} String ARG_PARAM1
+- {static} String ARG_PARAM2
+- String mParam1
+- String mParam2
++ {static} ExitFragment newInstance(String,String)
++ void onCreate(Bundle)
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
+}
+class com.example.a2family.Activities.AccountActivity {
+- TextView nameSurname
+- TextView email
+- TextView address
+- TextView changePassword
+# void onCreate(Bundle)
+- void changePassword()
+- void initializeData()
+}
+class com.example.a2family.Classes.Message {
+- String messageUserID
+- String messageUserName
+- String messageText
+- String timestamp
++ String getMessageUserID()
++ String getMessageUserName()
++ String getMessageText()
++ String getTimestamp()
++ void setMessageUserID(String)
++ void setMessageUserName(String)
++ void setMessageText(String)
++ void setTimestamp(String)
++ String toString()
+}
+class com.example.a2family.Classes.Family {
+- String name
+- int maxNumberComponents
+- int actualNumberComponents
+- HashMap<String,User> members
+- HashMap<String,Message> chat
+- HashMap<String,Product> groceryList
+- HashMap<String,TaskToDo> tasksToDo
+- HashMap<String,HashMap<String,Event>> events
++ String getName()
++ void setName(String)
++ int getMaxNumberComponents()
++ void setMaxNumberComponents(int)
++ int getActualNumberComponents()
++ void setActualNumberComponents(int)
++ int addMember(User,String)
++ int removeMember(User,String)
++ HashMap<String,User> getMembers()
++ void setMembers(HashMap<String,User>)
++ HashMap<String,Message> getChat()
++ void setChat(HashMap<String,Message>)
++ HashMap<String,HashMap<String,Event>> getEvents()
++ void setEvents(HashMap<String,HashMap<String,Event>>)
++ HashMap<String,Product> getGroceryList()
++ void setGroceryList(HashMap<String,Product>)
++ HashMap<String,TaskToDo> getTasksToDo()
++ void setTasksToDo(HashMap<String,TaskToDo>)
+}
+class com.example.a2family.Activities.AddCalendarActivity {
+- CalendarView datePicker
+- Button addEventButton
+- EditText eventDescription
+- ImageView deleteEvent
+- EditText timePicker
+- int Hour
+- int Minute
+# void onCreate(Bundle)
+- void UpdateText(int,int,EditText)
+- void addNewEvent()
+}
+class com.example.a2family.Adapters.ProductAdapter {
+~ ArrayList<Product> productArrayList
+~ Context context
+# FirebaseAuth mAuth
+# FirebaseDatabase firebaseDatabase
+# DatabaseReference databaseReference
++ ProductViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(ProductViewHolder,int)
++ int getItemCount()
+}
+class com.example.a2family.Adapters.ProductAdapter.ProductViewHolder {
+- TextView number
+- TextView name
+- TextView quantity
+- ImageView bought
+- ImageView remove
+- void bought()
+}
+class com.example.a2family.Activities.SignUpActivity {
+- EditText editName
+- TextView backButton
+- Button signUpButton
+- ProgressBar progressBar
+# void onCreate(Bundle)
+- void signUpUser()
+- void sendEmail()
+}
+class com.example.a2family.Classes.Event {
+- long milliseconds
+- String eventDescription
+- int hour
+- int minute
++ Long getMilliseconds()
++ void setMilliseconds(long)
++ String getEventDescription()
++ void setEventDescription(String)
++ int getHour()
++ void setHour(int)
++ int getMinute()
++ void setMinute(int)
+}
+class com.example.a2family.Fragment.ExitFragment {
+- {static} String ARG_PARAM1
+- {static} String ARG_PARAM2
+- String mParam1
+- String mParam2
+# FirebaseAuth mAuth
+# FirebaseDatabase firebaseDatabase
+# DatabaseReference databaseReference
+# Activity activity
++ {static} ExitFragment newInstance(String,String)
++ void onCreate(Bundle)
++ void passActivity(Activity)
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void exitGroup()
+}
+class com.example.a2family.Classes.Position {
+# double latitude
+# double longitude
++ void setLatitude(float)
++ void setLongitude(float)
++ double getLatitude()
++ double getLongitude()
++ String toString()
+}
+class com.example.a2family.Fragment.AddTaskFragment {
+- EditText title
+- EditText description
+- Button addTask
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
+}
+class com.example.a2family.Activities.CalendarActivity {
+- List<EventDay> events
+- ArrayList<String> eventDescription
+- ArrayAdapter<String> adapter
+- FloatingActionButton editEvent
+- CalendarView calendarView
+- ListView listView
+- TextView dateSelectedLabel
++ {static} Calendar c
+# void onCreate(Bundle)
+- String getDescriptionFromItem(String)
+- String getMinuteFromItem(String)
+- String getHourFromItem(String)
+- void initializeCalendar(String)
+}
+class com.example.a2family.Adapters.TaskAdapter {
+- ArrayList<TaskToDo> taskToDoArrayList
+- Context mContex
+# FirebaseAuth mAuth
++ TaskAdapter.TaskViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(TaskViewHolder,int)
++ int getItemCount()
+}
+class com.example.a2family.Adapters.TaskAdapter.TaskViewHolder {
+- TextView title
+- TextView description
+- TextView doneBy
+- ImageView status
+- ImageView star
+- TextView created_by
+- void changeStatus(ImageView)
+}
+class com.example.a2family.Activities.GroupPageActivity {
+- ListView member
+- TextView logOut
+- TextView family
+- ImageView copy
+- ListView listView
+- ArrayList<String> memberList
+- ArrayAdapter<String> adapter
+- ProgressBar progressBar
+# void onCreate(Bundle)
+- void initializeList(String)
+}
+class com.example.a2family.ExampleInstrumentedTest {
++ void useAppContext()
+}
+class com.example.a2family.ExampleUnitTest {
++ void addition_isCorrect()
+}
+class com.example.a2family.Activities.MainActivity {
+- EditText editFamilyCode
+- EditText editFamilyNumber
+- Button joinButton
+- Button createButton
+- TextView logout
+- ProgressBar progressBar
+# void onCreate(Bundle)
+- void joinGroup()
+- void createGroup()
+}
+class com.example.a2family.Activities.BaseActivity {
+# FirebaseAuth mAuth
+# {static} FirebaseDatabase firebaseDatabase
+# DatabaseReference databaseReference
++ void bottMenu()
++ void bottoMenu()
++ void signOut()
++ void putFamilyIdIntoFile(String)
++ void putUserIdIntoFile(String)
++ String getFamilyIdFromFile()
++ String getUserIdFromFile()
++ void removeUserIdFromFile()
++ void removeFamilyIdFromFile()
++ void putUserNameIntoFile(String)
++ String getUsernameFromFile()
++ void putSurnameIntoFile(String)
++ String getSurnameFromFile()
++ void putEmailIntoFile(String)
++ void putAddressIntoFile(String)
++ String getEmailFromFile()
++ String getAddressFromFile()
++ void getUser(String)
+}
+class com.example.a2family.Activities.MapsActivity {
+- {static} int PERMISSION_FINE_LOCATION
++ {static} int DEFAULT_UPDATE_INTERVAL
+- GoogleMap mMap
+- double latitude
+- double longitude
+- FusedLocationProviderClient fusedLocationProviderClient
+- LocationRequest locationRequest
+- LocationCallback locationCallback
+- FloatingActionButton power
+- Marker marker
+- MarkerOptions m
+- HashMap<String,Marker> markerMap
+# void onCreate(Bundle)
+- void updateDBlocation(Position)
+- void startLocationUpdates()
++ void onRequestPermissionsResult(int,String[],int[])
++ void onMapReady(GoogleMap)
+}
+class com.example.a2family.Activities.GroceryListActivity {
+- RecyclerView rvProducts
+- ArrayList<Product> products
+- ProductAdapter adapter
+- EditText productName
+- EditText quantityDialog
+- ImageView insertProduct
+# void onCreate(Bundle)
+- void updateGroceryList()
+- void addProduct(Product)
++ void removeProduct(Product)
++ void buyProduct(Product)
+}
+class com.example.a2family.Classes.Product {
+- String description
+- int quantity
+- boolean bought
+- String unique
++ String getDescription()
++ void setDescription(String)
++ int getQuantity()
++ void setQuantity(int)
++ String getUnique()
++ void setUnique(String)
++ boolean isBought()
++ void setBought(boolean)
++ String toString()
++ boolean equals(Object)
+}
+class com.example.a2family.Activities.ChatActivity {
+- ArrayList<Message> messages
+- ImageButton send
+- EditText sendTextMessage
+- RecyclerView rvMessages
+- MessageAdapter adapter
+# void onCreate(Bundle)
+- void retriveMessages()
+- void send_message(String)
+}
+class com.example.a2family.Fragment.DeleteEventFragment {
+- {static} String ARG_PARAM1
+- {static} String ARG_PARAM2
+- String mParam1
+- String mParam2
+# FirebaseAuth mAuth
+# FirebaseDatabase firebaseDatabase
+# DatabaseReference databaseReference
++ {static} DeleteEventFragment newInstance(String,String)
++ void onCreate(Bundle)
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
+- void deleteEvent()
+}
+class com.example.a2family.Activities.LoginActivity {
+- Button loginButton
+- TextView editSignUp
+- EditText editEmail
+- EditText editPsw
+- ProgressBar progressBar
+- TextView forgotPassword
+# void onCreate(Bundle)
+- void resetPassword()
+- void login()
++ void onStart()
+}
+class com.example.a2family.Classes.TaskToDo {
+- String title
+- String description
+- Boolean done
+- String whoComplete
+- String whoCompleteID
+- String unique
+- String createdBy
+- String createdByID
++ String getTitle()
++ void setTitle(String)
++ String getDescription()
++ void setDescription(String)
++ Boolean getDone()
++ void setDone(Boolean)
++ String getWhoComplete()
++ void setWhoComplete(String)
++ String getUnique()
++ void setUnique(String)
++ String getCreatedBy()
++ void setCreatedBy(String)
++ String getCreatedByID()
++ void setCreatedByID(String)
++ String getWhoCompleteID()
++ void setWhoCompleteID(String)
++ boolean equals(Object)
++ int hashCode()
+}
+
+
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.ToDoActivity
+com.example.a2family.Adapters.Adapter <|-- com.example.a2family.Adapters.MessageAdapter
+com.example.a2family.Adapters.MessageAdapter +.. com.example.a2family.Adapters.MessageAdapter.ViewHolderMe
+com.example.a2family.Adapters.ViewHolder <|-- com.example.a2family.Adapters.MessageAdapter.ViewHolderMe
+com.example.a2family.Adapters.MessageAdapter +.. com.example.a2family.Adapters.MessageAdapter.ViewHolderYou
+com.example.a2family.Adapters.ViewHolder <|-- com.example.a2family.Adapters.MessageAdapter.ViewHolderYou
+com.google.android.material.bottomsheet.BottomSheetDialogFragment <|-- com.example.a2family.Fragment.NavigationFragment
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.AccountActivity
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.AddCalendarActivity
+com.example.a2family.Adapters.Adapter <|-- com.example.a2family.Adapters.ProductAdapter
+com.example.a2family.Adapters.ProductAdapter +.. com.example.a2family.Adapters.ProductAdapter.ProductViewHolder
+com.example.a2family.Adapters.ViewHolder <|-- com.example.a2family.Adapters.ProductAdapter.ProductViewHolder
+com.example.a2family.Interfaces.HelperInterface <|.. com.example.a2family.Activities.SignUpActivity
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.SignUpActivity
+com.google.android.material.bottomsheet.BottomSheetDialogFragment <|-- com.example.a2family.Fragment.ExitFragment
+androidx.fragment.app.DialogFragment <|-- com.example.a2family.Fragment.AddTaskFragment
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.CalendarActivity
+com.example.a2family.Adapters.Adapter <|-- com.example.a2family.Adapters.TaskAdapter
+com.example.a2family.Adapters.TaskAdapter +.. com.example.a2family.Adapters.TaskAdapter.TaskViewHolder
+com.example.a2family.Adapters.ViewHolder <|-- com.example.a2family.Adapters.TaskAdapter.TaskViewHolder
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.GroupPageActivity
+com.example.a2family.Interfaces.HelperInterface <|.. com.example.a2family.Activities.MainActivity
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.MainActivity
+com.example.a2family.Interfaces.HelperInterface <|.. com.example.a2family.Activities.BaseActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.example.a2family.Activities.BaseActivity
+com.google.android.gms.maps.OnMapReadyCallback <|.. com.example.a2family.Activities.MapsActivity
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.MapsActivity
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.GroceryListActivity
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.ChatActivity
+com.google.android.material.bottomsheet.BottomSheetDialogFragment <|-- com.example.a2family.Fragment.DeleteEventFragment
+com.example.a2family.Interfaces.HelperInterface <|.. com.example.a2family.Activities.LoginActivity
+com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.LoginActivity
+@enduml

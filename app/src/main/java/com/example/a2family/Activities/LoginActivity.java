@@ -98,19 +98,23 @@ public class LoginActivity extends BaseActivity implements HelperInterface {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String txt= email.getText().toString().trim();
-                        mAuth.sendPasswordResetEmail(txt).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()){
-                                    Toast.makeText(LoginActivity.this, "E' stata inviata un' email per il reset della password", Toast.LENGTH_LONG).show();
+                        if(txt.equals("") || txt==null){
+                            return;
+                        }
+                        else {
+                            mAuth.sendPasswordResetEmail(txt).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(LoginActivity.this, "E' stata inviata un' email per il reset della password", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        Toast.makeText(LoginActivity.this, "C'è stato un problema nell'invio dell' email", Toast.LENGTH_LONG).show();
+                                    }
                                 }
-                                else {
-                                    Toast.makeText(LoginActivity.this, "C'è stato un problema nell'invio dell' email", Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
-
+                            });
+                        }
                     }})
+
                 .setNegativeButton(android.R.string.no, null).show();
 
     }

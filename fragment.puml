@@ -1,0 +1,51 @@
+@startuml
+class com.example.a2family.Fragment.DeleteEventFragment {
+- {static} String ARG_PARAM1
+- {static} String ARG_PARAM2
+- String mParam1
+- String mParam2
+# FirebaseAuth mAuth
+# FirebaseDatabase firebaseDatabase
+# DatabaseReference databaseReference
++ {static} DeleteEventFragment newInstance(String,String)
++ void onCreate(Bundle)
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
+- void deleteEvent()
+}
+class com.example.a2family.Fragment.ExitFragment {
+- {static} String ARG_PARAM1
+- {static} String ARG_PARAM2
+- String mParam1
+- String mParam2
+# FirebaseAuth mAuth
+# FirebaseDatabase firebaseDatabase
+# DatabaseReference databaseReference
+# Activity activity
++ {static} ExitFragment newInstance(String,String)
++ void onCreate(Bundle)
++ void passActivity(Activity)
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void exitGroup()
+}
+class com.example.a2family.Fragment.NavigationFragment {
+- {static} String ARG_PARAM1
+- {static} String ARG_PARAM2
+- String mParam1
+- String mParam2
++ {static} ExitFragment newInstance(String,String)
++ void onCreate(Bundle)
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
+}
+class com.example.a2family.Fragment.AddTaskFragment {
+- EditText title
+- EditText description
+- Button addTask
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
+}
+
+
+com.google.android.material.bottomsheet.BottomSheetDialogFragment <|-- com.example.a2family.Fragment.DeleteEventFragment
+com.google.android.material.bottomsheet.BottomSheetDialogFragment <|-- com.example.a2family.Fragment.ExitFragment
+com.google.android.material.bottomsheet.BottomSheetDialogFragment <|-- com.example.a2family.Fragment.NavigationFragment
+androidx.fragment.app.DialogFragment <|-- com.example.a2family.Fragment.AddTaskFragment
+@enduml

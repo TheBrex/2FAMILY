@@ -186,7 +186,7 @@ public class MainActivity extends BaseActivity implements HelperInterface {
 
             progressBar.setVisibility(View.VISIBLE);
 
-            databaseReference.child("Users").child(userKey).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            firebaseDatabase.getReference().child("Users").child(userKey).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
                     if (task.isSuccessful()) {
@@ -203,7 +203,7 @@ public class MainActivity extends BaseActivity implements HelperInterface {
                             databaseReference = firebaseDatabase.getReference("Families");
                             //salvo la chiave univoca che viene generata attraverso il push sul database senza effettivamente modificare il database
                             String familyCode = databaseReference.push().getKey();
-                            //ora inserisco il gruppo famiglia con l'id ricavato attraverso push().getKey() che genera un ID univoco con il timestamp setValue setta i campi
+                            //ora inserisco il gruppo famiglia con l'id ricavato attraverso push().getKey() che genera un ID univoco con il timestamp e setValue setta i campi
                             databaseReference.child(familyCode).setValue(f).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
