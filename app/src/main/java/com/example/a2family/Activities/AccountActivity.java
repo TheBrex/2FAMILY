@@ -38,13 +38,13 @@ public class AccountActivity extends BaseActivity {
         bottoMenu();
         bottMenu();
 
-        getUser(getUserIdFromFile());
 
         this.nameSurname= (TextView) findViewById(R.id.name_surname);
         this.email=(TextView) findViewById(R.id.profile_email);
         this.address=(TextView) findViewById(R.id.address);
         this.changePassword=(TextView) findViewById(R.id.change_password);
 
+        initializeData();
 
         changePassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,25 +81,14 @@ public class AccountActivity extends BaseActivity {
     }
 
     private void initializeData() {
-        this.nameSurname.setText(me.getName().substring(0,1).toUpperCase()+ me.getName().substring(1).toLowerCase()+" "+me.getSurname().substring(0,1).toUpperCase()+me.getSurname().substring(1).toLowerCase());
-        this.email.setText(me.getEmail());
-        this.address.setText(me.getAddress());
+        String name = getUsernameFromFile();
+        String surname = getSurnameFromFile();
+        this.nameSurname.setText(name.substring(0,1).toUpperCase()+ name.substring(1).toLowerCase()+" "+surname.substring(0,1).toUpperCase()+surname.substring(1).toLowerCase());
+        this.email.setText(getEmailFromFile());
+        this.address.setText(getAddressFromFile().toUpperCase());
     }
 
-    private void getUser(String UID){
-        User[] u = {new User()};
-        firebaseDatabase.getReference().child("Users").child(UID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.isSuccessful()){
-                    u[0] = new User(task.getResult().getValue(User.class));
-                    me = new User(u[0]);
-                    initializeData();
-                }
-            }
-        });
 
-    }
 
 
         /*

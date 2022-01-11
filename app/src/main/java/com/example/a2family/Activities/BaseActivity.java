@@ -125,8 +125,6 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
         putUserNameIntoFile(ID);
 
 
-
-
     }
 
     public String getFamilyIdFromFile(){
@@ -171,6 +169,57 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
         SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
         return preferences.getString("username", "defaultvalue");
     }
+    public void putSurnameIntoFile(String surname) {
+        SharedPreferences preferences = getSharedPreferences("Settings",MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("userSurname",surname);
+        editor.apply();
+    }
+    public String getSurnameFromFile(){
+        SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
+        return preferences.getString("userSurname", "defaultvalue");
+    }
 
 
+    public void putEmailIntoFile(String email){
+        SharedPreferences preferences = getSharedPreferences("Settings",MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("userEmail",email);
+        editor.apply();
+    }
+
+    public void putAddressIntoFile(String address) {
+            SharedPreferences preferences = getSharedPreferences("Settings",MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("userAddress",address);
+            editor.apply();
+    }
+    public String getEmailFromFile(){
+        SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
+        return preferences.getString("userEmail", "defaultvalue");
+    }
+    public String getAddressFromFile(){
+        SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
+        return preferences.getString("userAddress", "defaultvalue");
+    }
+
+
+
+
+    public void getUser(String UID) {
+        User[] u = {new User()};
+        firebaseDatabase.getReference().child("Users").child(UID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    u[0] = new User(task.getResult().getValue(User.class));
+                    putUserIdIntoFile(mAuth.getCurrentUser().getUid());
+                    putEmailIntoFile(u[0].getEmail());
+                    putAddressIntoFile(u[0].getAddress());
+                    putUserNameIntoFile(u[0].getName());
+                    putSurnameIntoFile(u[0].getSurname());
+                }
+            }
+        });
+    }
 }

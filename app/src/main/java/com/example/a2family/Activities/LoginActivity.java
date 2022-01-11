@@ -142,8 +142,9 @@ public class LoginActivity extends BaseActivity implements HelperInterface {
                         if(mAuth.getCurrentUser().isEmailVerified()) {
                             //salvo l'id dell'utente loggato nel file Settings accessibile esclusivamente dall'app
                             //in questo modo non c'è la necessità di passare per il database
-                            putUserIdIntoFile(mAuth.getCurrentUser().getUid());
-
+                            getUser(mAuth.getCurrentUser().getUid());
+                            //putUserIdIntoFile(mAuth.getCurrentUser().getUid());
+                            //putEmailIntoFile(mAuth.getCurrentUser().getEmail());
 
                             //TODO: se l'utente è già in un gruppo famiglia, redirectarlo alla pagina del gruppo ( COMPLETED )
                             //TODO: fix Trackfamily "Family" value different from familyId when create familygroup ( COMPLETED )
