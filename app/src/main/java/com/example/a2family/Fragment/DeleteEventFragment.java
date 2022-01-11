@@ -107,8 +107,8 @@ public class DeleteEventFragment extends BottomSheetDialogFragment {
         String familyID = DeleteEventFragment.this.getArguments().getString("familyId");
         System.out.println(itemToDelete);
 
-        String hour=DeleteEventFragment.this.getArguments().getString("hour");
-        String minute=DeleteEventFragment.this.getArguments().getString("minute");
+        int hour=Integer.parseInt(DeleteEventFragment.this.getArguments().getString("hour"));
+        int minute=Integer.parseInt(DeleteEventFragment.this.getArguments().getString("minute"));
 
         Query q = firebaseDatabase.getReference().child("Families").child(familyID).child("events").child(String.valueOf(CalendarActivity.c.getTimeInMillis())).orderByChild("eventDescription").equalTo(itemToDelete);
         q.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -116,7 +116,7 @@ public class DeleteEventFragment extends BottomSheetDialogFragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot event: snapshot.getChildren()) {
 
-                    if(hour.equals(event.child("hour").getValue(Integer.class).toString()) && minute.equals(event.child("minute").getValue(Integer.class).toString())) {
+                    if(hour==(event.child("hour").getValue(Integer.class)) && minute==(event.child("minute").getValue(Integer.class))) {
                         event.getRef().removeValue();
                         Toast.makeText(getContext(), "Eliminazione completata", Toast.LENGTH_LONG).show();
                     }

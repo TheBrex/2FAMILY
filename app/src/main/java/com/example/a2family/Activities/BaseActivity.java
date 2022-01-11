@@ -1,6 +1,5 @@
 package com.example.a2family.Activities;
 
-import android.accounts.Account;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -82,6 +81,8 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
                             Intent account = new Intent(BaseActivity.this, AccountActivity.class);
                             startActivity(account, ActivityOptions.makeSceneTransitionAnimation(BaseActivity.this).toBundle());
                         }
+                        break;
+                    default:
                         break;
                 }
                 return false;
@@ -202,7 +203,6 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
         SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
         return preferences.getString("userAddress", "defaultvalue");
     }
-
 
 
 

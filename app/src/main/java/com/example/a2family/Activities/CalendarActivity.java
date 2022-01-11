@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.annimon.stream.function.Consumer;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
@@ -83,6 +84,8 @@ public class CalendarActivity extends BaseActivity {
                         String eventMinute = String.valueOf(snapshot.child("minute").getValue(Integer.class));
                         String eventDesc = snapshot.child("eventDescription").getValue(String.class);
                         rawItemClickedDescription = eventDesc;
+                        if(eventHour.length()<2) eventHour="0"+eventHour;
+                        if(eventMinute.length()<2) eventMinute="0"+eventMinute;
                         eventDescription.add(eventHour+":"+eventMinute + " --- "+ eventDesc);
                         adapter.notifyDataSetChanged();
 
@@ -102,9 +105,10 @@ public class CalendarActivity extends BaseActivity {
                         String eventHour = String.valueOf(snapshot.child("hour").getValue(Integer.class));
                         String eventMinute = String.valueOf(snapshot.child("minute").getValue(Integer.class));
                         String eventDesc = snapshot.child("eventDescription").getValue(String.class);
+                        if(eventHour.length()<2) eventHour="0"+eventHour;
+                        if(eventMinute.length()<2) eventMinute="0"+eventMinute;
                         eventDescription.remove(eventHour+":"+eventMinute + " --- "+ eventDesc);
                         adapter.notifyDataSetChanged();
-
                         initializeCalendar(getFamilyIdFromFile());
 
                     }
@@ -137,7 +141,6 @@ public class CalendarActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                System.out.println(parent.getItemAtPosition(position).toString());
                 DeleteEventFragment deleteEventFragment = new DeleteEventFragment();
 
                 String item=(String) parent.getItemAtPosition(position);
@@ -214,5 +217,6 @@ public class CalendarActivity extends BaseActivity {
             }
         });
     }
+
 
 }

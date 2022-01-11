@@ -1,26 +1,14 @@
 package com.example.a2family.Activities;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.a2family.Classes.User;
-import com.example.a2family.Fragment.ExitFragment;
 import com.example.a2family.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
-import com.google.firebase.database.DataSnapshot;
 
 public class AccountActivity extends BaseActivity {
 
@@ -28,7 +16,6 @@ public class AccountActivity extends BaseActivity {
     private TextView email;
     private TextView address;
     private TextView changePassword;
-    private User me;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +78,7 @@ public class AccountActivity extends BaseActivity {
 
 
 
-        /*
+    /*
     private void deleteAccount() {
 
         new AlertDialog.Builder(this)

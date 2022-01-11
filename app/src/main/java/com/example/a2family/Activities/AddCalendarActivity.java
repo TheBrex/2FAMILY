@@ -79,12 +79,12 @@ public class AddCalendarActivity extends BaseActivity {
         if(hourOfDay<10 && minute>10){
             timePicker.setText("0"+Hour+":"+minute);
 
-        };
-        if(hourOfDay>10 && minute<10){
+        }
+        if(hourOfDay>=10 && minute<10){
             timePicker.setText(Hour+":0"+minute);
 
         }
-        if(hourOfDay>10 && minute>10) {
+        if(hourOfDay>=10 && minute>=10) {
             timePicker.setText(Hour+":"+minute);
 
         }
@@ -97,9 +97,9 @@ public class AddCalendarActivity extends BaseActivity {
         Calendar selectedDate= datePicker.getFirstSelectedDate();
         //crea un nuovo evento con i millisecondi corrispondenti alla data selezionata e la descrizione
         Event newEvent = new Event(selectedDate.getTimeInMillis(), eventDescription, Hour, Minute);
-        int error = checkField(this.eventDescription.getText().toString(), this.eventDescription);
-        error = checkField(this.timePicker.getText().toString(), this.eventDescription);
-        if(error==0){
+        int error_description = checkField(this.eventDescription.getText().toString(), this.eventDescription);
+        int error_time = checkField(this.timePicker.getText().toString(), this.eventDescription);
+        if(error_description==0 || error_time==0){
             return;
         }
         //pusha l'evento del database e ritorna alla pagina di visualizzazone del calendario
