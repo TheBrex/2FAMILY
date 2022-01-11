@@ -113,7 +113,7 @@ public class MainActivity extends BaseActivity implements HelperInterface {
                                                 if (task.isSuccessful()) {
                                                     Toast.makeText(MainActivity.this, "Ti sei unito al gruppo", Toast.LENGTH_LONG).show();
 
-                                                    //TODO: 3) creare un nuovo elemento nel db che tiene traccia dell'id dell'utente e del gruppo a cui appartiene
+                                                    //TODO: 3) creare un nuovo elemento nel db che tiene traccia dell'id dell'utente e del gruppo a cui appartiene (COMPLETED)
                                                     firebaseDatabase.getReference().child("TrackFamily").child(userKey).child("Family").setValue(familycode);
 
                                                     /*
@@ -164,8 +164,21 @@ public class MainActivity extends BaseActivity implements HelperInterface {
 
         //se il campo non è vuoto
         if (checkField(familyMember, editFamilyNumber) == 1) {
-            int intFamilyMember = Integer.parseInt(familyMember);
 
+            Integer intFamilyMember;
+            try {
+                intFamilyMember = Integer.parseInt(familyMember);
+            } catch (Exception e) {
+                editFamilyNumber.requestFocus();
+                editFamilyNumber.setError("Inserisci un numero di componenti valido! ");
+                return;
+            }
+
+            if (intFamilyMember <= 0 || intFamilyMember == null ) {
+                editFamilyNumber.requestFocus();
+                editFamilyNumber.setError("Inserisci un numero di componenti maggiore di 0 ! ");
+                return;
+            }
             //chiave che identiifica l'utente loggato
             String userKey = mAuth.getCurrentUser().getUid();
             //getta lo user loggato attraverso l'id di autenticazione
@@ -176,7 +189,7 @@ public class MainActivity extends BaseActivity implements HelperInterface {
             databaseReference.child("Users").child(userKey).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    if(task.isSuccessful()) {
+                    if (task.isSuccessful()) {
                         //crea un'istanza della classe User con l'oggetto snapshot trovato a cui corrisponde la userKey
                         User u = task.getResult().getValue(User.class);
 
@@ -185,11 +198,11 @@ public class MainActivity extends BaseActivity implements HelperInterface {
                         //in fase di creazione
                         Family f = new Family(u.getSurname(), intFamilyMember);
                         //aggiungo l'utente che sta creando la famiglia al gruppo
-                        if(f.addMember(u, mAuth.getCurrentUser().getUid()) == 1) {
+                        if (f.addMember(u, mAuth.getCurrentUser().getUid()) == 1) {
                             //metto il riferimento alla voce Families nel DB
                             databaseReference = firebaseDatabase.getReference("Families");
                             //salvo la chiave univoca che viene generata attraverso il push sul database senza effettivamente modificare il database
-                            String familyCode=databaseReference.push().getKey();
+                            String familyCode = databaseReference.push().getKey();
                             //ora inserisco il gruppo famiglia con l'id ricavato attraverso push().getKey() che genera un ID univoco con il timestamp setValue setta i campi
                             databaseReference.child(familyCode).setValue(f).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -198,7 +211,7 @@ public class MainActivity extends BaseActivity implements HelperInterface {
                                         //messaggio che mi comunica che la creazione è andata a buon fine
                                         Toast.makeText(MainActivity.this, "Creazione Gruppo completata", Toast.LENGTH_LONG).show();
                                         //TODO: creare un nuovo elemento nel db che tiene traccia dell'id dell'utente e del gruppo a cui appartiene ( COMPLETED )
-                                        databaseReference=firebaseDatabase.getReference().child("TrackFamily");
+                                        databaseReference = firebaseDatabase.getReference().child("TrackFamily");
                                         databaseReference.child(userKey).child("Family").setValue(familyCode);
                                         //salvo l'id del gruppo all'interno del file Settings
                                         putFamilyIdIntoFile(familyCode);
@@ -207,11 +220,11 @@ public class MainActivity extends BaseActivity implements HelperInterface {
                                          TODO: reindirizzare l'utente nella pagina del gruppo famiglia ( COMPLETED )
                                         */
                                         //creo l'oggetto intent che mi porta alla pagina principale del gruppo
-                                        Intent groupPage=new Intent(MainActivity.this, GroupPageActivity.class);
+                                        Intent groupPage = new Intent(MainActivity.this, GroupPageActivity.class);
                                         //passo il codice famiglia alla nuova activity che sto lanciando, in questo modo non c'è bisogno
                                         //di rileggerlo dal file nella prossima activity
                                         groupPage.putExtra("familyId", familyCode);
-                                        startActivity(groupPage,ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
+                                        startActivity(groupPage, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
                                         finish();
 
                                     } else {
@@ -221,12 +234,10 @@ public class MainActivity extends BaseActivity implements HelperInterface {
 
                                 }
                             });
-                        }
-                        else{
+                        } else {
                             Toast.makeText(MainActivity.this, "Creazione Gruppo fallita, Riprovare", Toast.LENGTH_LONG).show();
                         }
-                    }
-                    else{
+                    } else {
                         Toast.makeText(MainActivity.this, "Creazione Gruppo fallita, Riprovare", Toast.LENGTH_LONG).show();
                     }
                     progressBar.setVisibility(View.GONE);

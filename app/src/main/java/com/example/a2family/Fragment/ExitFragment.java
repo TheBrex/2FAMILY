@@ -165,7 +165,7 @@ public class ExitFragment extends BottomSheetDialogFragment {
                                     Log.d("Info", "Eliminazione gruppo completata");
                                     //TODO : rimuovere il riferimento dell'utente da "trackFamily" e rimuove l'id dal file ( COMPLETED )
                                     firebaseDatabase.getReference().child("TrackFamily").child(userId).getRef().removeValue();
-                                    //((GroupPageActivity)activity).removeUserIdFromFile();
+                                    ((BaseActivity)activity).removeFamilyIdFromFile();
 
                                 }
                             });
@@ -173,8 +173,7 @@ public class ExitFragment extends BottomSheetDialogFragment {
                         //se i membri sono > 0 aggiorno il valore dei componenti attuali
                         else {
                             Log.d("Info", "Rimozione utente completata");
-                            //rimuovo id utente e id famiglia dal file
-                            //((BaseActivity)activity).removeUserIdFromFile();
+                            //rimuovo id famiglia dal file
                             ((BaseActivity)activity).removeFamilyIdFromFile();
                             //rimuovo l'utente dal gruppo famiglia
                             firebaseDatabase.getReference().child("TrackFamily").child(userId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -196,7 +195,7 @@ public class ExitFragment extends BottomSheetDialogFragment {
                 public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
                     //avvio intanto la mainActivity
 
-                        ((GroupPageActivity)activity).removeFamilyIdFromFile();
+                        ((BaseActivity)activity).removeFamilyIdFromFile();
                         Intent mainPage = new Intent(activity, MainActivity.class);
                         startActivity(mainPage, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle());
                         activity.finish();
