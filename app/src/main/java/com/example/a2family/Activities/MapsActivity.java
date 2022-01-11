@@ -82,7 +82,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         locationRequest = LocationRequest.create()
                 .setInterval(MapsActivity.DEFAULT_UPDATE_INTERVAL * 10)
                 .setFastestInterval(MapsActivity.DEFAULT_UPDATE_INTERVAL * 5)
-                .setPriority(locationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+                .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
         //richiamata ogni qual volta l'intervallo scade per ricevere la posizione aggiornata e procedere agli aggiornamenti
         locationCallback = new LocationCallback() {
@@ -208,12 +208,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     }
 
 
-    private void updateGPS() {
-
-
-    }
-
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -228,7 +222,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
-        //  TODO: caricare i marker delle ultime posizioni registrate dai membri della famiglia
+        //  TODO: caricare i marker delle ultime posizioni registrate dai membri della famiglia(Completed)
 
         firebaseDatabase.getReference().child("Families").child(getFamilyIdFromFile()).child("members").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

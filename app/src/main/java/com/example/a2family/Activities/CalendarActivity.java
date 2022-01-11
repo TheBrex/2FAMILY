@@ -12,12 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.annimon.stream.function.Consumer;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.example.a2family.Fragment.DeleteEventFragment;
-import com.example.a2family.Fragment.ExitFragment;
 import com.example.a2family.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.ChildEventListener;
@@ -25,7 +23,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -41,7 +38,7 @@ public class CalendarActivity extends BaseActivity {
     private ListView listView;
     private TextView dateSelectedLabel;
     public static Calendar c;
-    private String rawItemClickedDescription;
+
 
 
     @Override
@@ -62,7 +59,7 @@ public class CalendarActivity extends BaseActivity {
 
         //inizializzo l'array di stringhe dove gli elementi hanno il layot definito in list_item.xml
         initializeCalendar(getFamilyIdFromFile());
-        this.adapter=new ArrayAdapter<String>(this, R.layout.list_event, R.id.description_event ,this.eventDescription);
+        this.adapter=new ArrayAdapter<>(this, R.layout.list_event, R.id.description_event ,this.eventDescription);
 
         calendarView.setOnDayClickListener(new OnDayClickListener() {
             @Override
@@ -74,6 +71,7 @@ public class CalendarActivity extends BaseActivity {
                 eventDescription.clear();
                 adapter.notifyDataSetChanged();
                 //Caricare nella listView gli eventi relativi a quel giorno
+
                 String eventKey = String.valueOf(eventDay.getCalendar().getTimeInMillis());
                 firebaseDatabase.getReference().child("Families").child(getFamilyIdFromFile()).child("events").child(eventKey).addChildEventListener(new ChildEventListener() {
                     @Override
@@ -83,7 +81,7 @@ public class CalendarActivity extends BaseActivity {
                         String eventHour = String.valueOf(snapshot.child("hour").getValue(Integer.class));
                         String eventMinute = String.valueOf(snapshot.child("minute").getValue(Integer.class));
                         String eventDesc = snapshot.child("eventDescription").getValue(String.class);
-                        rawItemClickedDescription = eventDesc;
+
                         if(eventHour.length()<2) eventHour="0"+eventHour;
                         if(eventMinute.length()<2) eventMinute="0"+eventMinute;
                         eventDescription.add(eventHour+":"+eventMinute + " --- "+ eventDesc);

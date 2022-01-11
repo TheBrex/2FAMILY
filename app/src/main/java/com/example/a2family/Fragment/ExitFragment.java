@@ -195,12 +195,11 @@ public class ExitFragment extends BottomSheetDialogFragment {
                 @Override
                 public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
                     //avvio intanto la mainActivity
-                    if(activity instanceof GroupPageActivity) {
+
                         ((GroupPageActivity)activity).removeFamilyIdFromFile();
                         Intent mainPage = new Intent(activity, MainActivity.class);
                         startActivity(mainPage, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle());
                         activity.finish();
-                    }
                 }
             });
         }
