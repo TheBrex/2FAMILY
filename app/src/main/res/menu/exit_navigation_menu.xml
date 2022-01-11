@@ -4,13 +4,13 @@
         android:id="@+id/exit_group"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_exit_to_app_24"
-        android:title="Exit Group"
+        android:title="@string/esci_dal_gruppo"
         />
 
     <item
         android:id="@+id/exit_account"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_logout_24"
-        android:title="Logout"/>
+        android:title="@string/logout"/>
 
 </menu>

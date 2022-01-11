@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:fontFamily="@font/montserrat_semibold"
-        android:text="Codice famiglia : "
+        android:text="@string/family_code_"
         android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="@+id/member_list"
         app:layout_constraintStart_toStartOf="@+id/member_list"
@@ -93,16 +93,15 @@
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="97dp"
-        android:layout_height="31dp"
+        android:layout_width="wrap_content"
+        android:layout_height="40sp"
         android:contentDescription="@string/logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
         app:layout_constraintTop_toBottomOf="@+id/imageView3"
         app:layout_constraintVertical_bias="0.01"
-        app:srcCompat="@drawable/text2"
-        tools:ignore="MissingConstraints" />
+        app:srcCompat="@drawable/text2" />
 
     <TextView
         android:id="@+id/your_family"

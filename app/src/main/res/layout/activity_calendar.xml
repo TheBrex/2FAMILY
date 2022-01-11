@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Data selezionata"
+        android:text="@string/selected_date"
         android:visibility="invisible"
         android:fontFamily="@font/montserrat_semibold"
         android:textColor="@color/black"

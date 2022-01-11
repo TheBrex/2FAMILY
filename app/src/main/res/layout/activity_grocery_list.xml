@@ -59,7 +59,7 @@
             android:layout_marginBottom="7dp"
             android:fontFamily="@font/montserrat_extrabold"
             android:gravity="center"
-            android:text="Quantità e Prodotto"
+            android:text="@string/product_quantity"
             android:textSize="20sp" />
 
         <EditText

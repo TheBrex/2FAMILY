@@ -94,7 +94,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="88dp"
         android:fontFamily="@font/montserrat_regular"
-        android:text="Hai dimenticato la password?"
+        android:text="@string/forgot_password"
         android:textColor="@color/blue"
         android:clickable="true"
         android:focusable="true"

@@ -4,31 +4,31 @@
         android:id="@+id/shopping"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_shopping_basket_24"
-        android:title="Shopping List"
+        android:title="@string/lista_della_spesa"
         />
 
     <item
         android:id="@+id/to_do"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_checklist_24"
-        android:title="To Do list"/>
+        android:title="@string/commissioni_familiari"/>
 
     <item
         android:id="@+id/events"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_calendar_month_24"
-        android:title="Incoming Events"/>
+        android:title="@string/appuntamenti_e_reminder"/>
 
     <item
         android:id="@+id/family_tracking"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_location_on_24"
-        android:title="Track Your Family Members"/>
+        android:title="@string/trova_i_membri_della_tua_famiglia"/>
 
     <item
         android:id="@+id/family_chat"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_chat_24"
-        android:title="Family Chat"/>
+        android:title="@string/chat_di_famiglia"/>
 
 </menu>
