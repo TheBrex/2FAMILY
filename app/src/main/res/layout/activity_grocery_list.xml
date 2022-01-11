@@ -14,7 +14,7 @@
         android:background="@color/blue"
         android:fontFamily="@font/montserrat_semibold"
         android:gravity="center"
-        android:text="LISTA DELLA SPESA"
+        android:text="@string/grocery_list_title"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="18dp"

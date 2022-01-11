@@ -108,7 +108,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-                Toast.makeText(MapsActivity.this, "attivato", Toast.LENGTH_LONG).show();
+                Toast.makeText(MapsActivity.this, "Alta accuratezza attivata", Toast.LENGTH_LONG).show();
                 Log.d("info", markerMap.toString());
             }
         });
