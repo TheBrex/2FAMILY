@@ -199,6 +199,8 @@ public class ExitFragment extends BottomSheetDialogFragment {
                 public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
                         //avvio intanto la mainActivity
                         ((BaseActivity)activity).removeFamilyIdFromFile();
+                        //se stavo condividendo la posizione blocco la condivisione
+                        BaseActivity.stopLocationUpdates();
                         Intent mainPage = new Intent(activity, MainActivity.class);
                         //termino tutte le activity tranne quella che sto lanciando
                         mainPage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

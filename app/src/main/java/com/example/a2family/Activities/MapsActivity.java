@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 
 import com.example.a2family.Classes.Position;
@@ -42,15 +44,14 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 
     private static final int PERMISSION_FINE_LOCATION = 99;
     public static final int DEFAULT_UPDATE_INTERVAL = 1000;
+    public static int ON_OFF = 0;
     private GoogleMap mMap;
 
     private double latitude;
     private double longitude;
 
-    //API google per servizio localizzazione
-    private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest locationRequest;
-    private LocationCallback locationCallback;
+
 
     //variabile per memorizzare se stiamo tracciando la posizione o no
     private FloatingActionButton power;
@@ -78,6 +79,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         }
 
         this.power = (FloatingActionButton) findViewById(R.id.power);
+        this.power.setBackgroundTintList(AppCompatResources.getColorStateList(MapsActivity.this, R.color.purple_700));
         //imposta le proprietà dell'oggetto locationRequest ( tempo di aggiornamento della posizione, priorità del gps)
         locationRequest = LocationRequest.create()
                 .setInterval(MapsActivity.DEFAULT_UPDATE_INTERVAL * 10)
@@ -108,9 +110,22 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         power.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-                Toast.makeText(MapsActivity.this, "Alta accuratezza attivata", Toast.LENGTH_LONG).show();
+
                 Log.d("info", markerMap.toString());
+                if(ON_OFF == 0){
+                    ON_OFF=1;
+                    power.setBackgroundTintList(AppCompatResources.getColorStateList(MapsActivity.this, R.color.green));
+                    locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                    Toast.makeText(MapsActivity.this, "Condivisione della posizione attivata", Toast.LENGTH_LONG).show();
+                    startLocationUpdates();
+                }
+                else{
+                    ON_OFF=0;
+                    power.setBackgroundTintList(AppCompatResources.getColorStateList(MapsActivity.this, R.color.grey));
+                    Toast.makeText(MapsActivity.this, "Condivisione della posizione disattivata", Toast.LENGTH_LONG).show();
+                    stopLocationUpdates();
+                }
+
             }
         });
     }
@@ -189,7 +204,11 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MapsActivity.this);
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
+
     }
+
+
+
 
 
     //metodo che specifica il comportamento una volta concessi o meno i permessi
@@ -201,6 +220,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
             case PERMISSION_FINE_LOCATION:
                 if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mMap.setMyLocationEnabled(true);
+                    ON_OFF=1;
                     startLocationUpdates();
                 } else {
                     Toast.makeText(this, "Questa funzionalità richiede l'accesso alla posizione per poter funzionare correttamente", Toast.LENGTH_LONG).show();
@@ -251,6 +271,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
+            ON_OFF=1;
             startLocationUpdates();
             fusedLocationProviderClient.getLastLocation().addOnCompleteListener(MapsActivity.this, new OnCompleteListener<Location>() {
                 @SuppressLint("MissingPermission")

@@ -16,6 +16,10 @@ import com.example.a2family.Fragment.ExitFragment;
 import com.example.a2family.Fragment.NavigationFragment;
 import com.example.a2family.Interfaces.HelperInterface;
 import com.example.a2family.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -32,7 +36,13 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
     // creating a variable for our Database
     // Reference for Firebase.
     protected DatabaseReference databaseReference=firebaseDatabase.getReference().getRoot();
+    //API google per servizio localizzazione
+    protected static FusedLocationProviderClient fusedLocationProviderClient;
+    protected static LocationCallback locationCallback;
 
+    public FusedLocationProviderClient getFusedLocationProviderClient() {
+        return fusedLocationProviderClient;
+    }
 
     public void bottMenu(){
         //Crea il bottom menu e avvia il fragment nel momento in cui vine cliccata l'incona del submenu
@@ -94,6 +104,8 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
 
     public void signOut() {
         mAuth.signOut();
+
+        stopLocationUpdates();
 
         SharedPreferences preferences = getSharedPreferences("Settings",MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -212,4 +224,11 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
             }
         });
     }
+
+    public static void stopLocationUpdates(){
+        if(fusedLocationProviderClient != null) {
+            fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+        }
+    }
+
 }

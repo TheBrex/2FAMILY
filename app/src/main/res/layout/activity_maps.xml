@@ -25,7 +25,7 @@
         style="@style/Widget.MaterialComponents.FloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/purple_700"
+
 
         android:src="@drawable/ic_baseline_power_settings_new_24"
         android:visibility="visible"
