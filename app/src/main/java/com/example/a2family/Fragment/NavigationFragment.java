@@ -128,7 +128,9 @@ public class NavigationFragment extends BottomSheetDialogFragment {
                         break;
                     case R.id.family_tracking:
                         if(!(getActivity() instanceof MapsActivity)) {
-                            startActivity(new Intent(getActivity(), MapsActivity.class), ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+                            Intent mapsPage = new Intent(getActivity(), MapsActivity.class);
+                            mapsPage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(mapsPage, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                             if (navigationView.isShown()) {
                                 dismiss();
                             }

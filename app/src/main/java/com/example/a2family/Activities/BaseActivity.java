@@ -39,6 +39,7 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
     //API google per servizio localizzazione
     protected static FusedLocationProviderClient fusedLocationProviderClient;
     protected static LocationCallback locationCallback;
+    protected static LocationRequest locationRequest;
 
     public FusedLocationProviderClient getFusedLocationProviderClient() {
         return fusedLocationProviderClient;
@@ -228,6 +229,11 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
     public static void stopLocationUpdates(){
         if(fusedLocationProviderClient != null) {
             fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+            locationCallback = null;
+        }
+        else{
+            fusedLocationProviderClient=null;
+            locationCallback=null;
         }
     }
 

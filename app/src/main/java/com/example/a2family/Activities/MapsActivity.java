@@ -50,7 +50,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     private double latitude;
     private double longitude;
 
-    private LocationRequest locationRequest;
+
 
 
     //variabile per memorizzare se stiamo tracciando la posizione o no
@@ -86,25 +86,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                 .setFastestInterval(MapsActivity.DEFAULT_UPDATE_INTERVAL * 5)
                 .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
-        //richiamata ogni qual volta l'intervallo scade per ricevere la posizione aggiornata e procedere agli aggiornamenti
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(@NonNull LocationResult locationResult) {
-                super.onLocationResult(locationResult);
-                //prende l'ultima posizione registrata
-                Location location = locationResult.getLastLocation();
-                //crea un oggetto corrispondente di tipo Position
-                Position position = new Position(location.getLatitude(), location.getLongitude());
 
-                latitude = location.getLatitude();
-                longitude = location.getLongitude();
-                Position dbPos = new Position(latitude,longitude);
-
-                //metodo che aggiorna i marker degli utenti sulla mappa
-                updateDBlocation(dbPos);
-
-            }
-        };
 
 
         power.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +96,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                 Log.d("info", markerMap.toString());
                 if(ON_OFF == 0){
                     ON_OFF=1;
-                    power.setBackgroundTintList(AppCompatResources.getColorStateList(MapsActivity.this, R.color.green));
+                    power.setBackgroundTintList(AppCompatResources.getColorStateList(MapsActivity.this, R.color.purple_700));
                     locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
                     Toast.makeText(MapsActivity.this, "Condivisione della posizione attivata", Toast.LENGTH_LONG).show();
                     startLocationUpdates();
@@ -202,6 +184,25 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     private void startLocationUpdates() {
         //updateGPS();
 
+        //richiamata ogni qual volta l'intervallo scade per ricevere la posizione aggiornata e procedere agli aggiornamenti
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(@NonNull LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                //prende l'ultima posizione registrata
+                Location location = locationResult.getLastLocation();
+                //crea un oggetto corrispondente di tipo Position
+                Position position = new Position(location.getLatitude(), location.getLongitude());
+
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+                Position dbPos = new Position(latitude,longitude);
+
+                //metodo che aggiorna i marker degli utenti sulla mappa
+                updateDBlocation(dbPos);
+
+            }
+        };
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MapsActivity.this);
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
 
