@@ -37,13 +37,8 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
     // Reference for Firebase.
     protected DatabaseReference databaseReference=firebaseDatabase.getReference().getRoot();
     //API google per servizio localizzazione
-    protected static FusedLocationProviderClient fusedLocationProviderClient;
-    protected static LocationCallback locationCallback;
-    protected static LocationRequest locationRequest;
 
-    public FusedLocationProviderClient getFusedLocationProviderClient() {
-        return fusedLocationProviderClient;
-    }
+
 
     public void bottMenu(){
         //Crea il bottom menu e avvia il fragment nel momento in cui vine cliccata l'incona del submenu
@@ -91,6 +86,10 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
                         if(!(BaseActivity.this instanceof AccountActivity)){
                             Intent account = new Intent(BaseActivity.this, AccountActivity.class);
                             startActivity(account, ActivityOptions.makeSceneTransitionAnimation(BaseActivity.this).toBundle());
+                            if(!(BaseActivity.this instanceof GroupPageActivity)){
+                                finish();
+                            }
+
                         }
                         break;
                     default:
@@ -106,7 +105,7 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
     public void signOut() {
         mAuth.signOut();
 
-        stopLocationUpdates();
+        MapsActivity.stopLocationUpdates();
 
         SharedPreferences preferences = getSharedPreferences("Settings",MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -226,15 +225,6 @@ public class BaseActivity extends AppCompatActivity implements HelperInterface {
         });
     }
 
-    public static void stopLocationUpdates(){
-        if(fusedLocationProviderClient != null) {
-            fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-            locationCallback = null;
-        }
-        else{
-            fusedLocationProviderClient=null;
-            locationCallback=null;
-        }
-    }
+
 
 }

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -50,6 +51,9 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     private double latitude;
     private double longitude;
 
+    protected static FusedLocationProviderClient fusedLocationProviderClient;
+    protected static LocationCallback locationCallback;
+    protected static LocationRequest locationRequest;
 
 
 
@@ -87,7 +91,25 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                 .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
 
+        //richiamata ogni qual volta l'intervallo scade per ricevere la posizione aggiornata e procedere agli aggiornamenti
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(@NonNull LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                //prende l'ultima posizione registrata
+                Location location = locationResult.getLastLocation();
+                //crea un oggetto corrispondente di tipo Position
+                Position position = new Position(location.getLatitude(), location.getLongitude());
 
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+                Position dbPos = new Position(latitude,longitude);
+
+                //metodo che aggiorna i marker degli utenti sulla mappa
+                updateDBlocation(dbPos);
+
+            }
+        };
 
         power.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +133,9 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
             }
         });
     }
+
+
+
 
     private void updateDBlocation(Position pos) {
 
@@ -184,28 +209,16 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     private void startLocationUpdates() {
         //updateGPS();
 
-        //richiamata ogni qual volta l'intervallo scade per ricevere la posizione aggiornata e procedere agli aggiornamenti
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(@NonNull LocationResult locationResult) {
-                super.onLocationResult(locationResult);
-                //prende l'ultima posizione registrata
-                Location location = locationResult.getLastLocation();
-                //crea un oggetto corrispondente di tipo Position
-                Position position = new Position(location.getLatitude(), location.getLongitude());
-
-                latitude = location.getLatitude();
-                longitude = location.getLongitude();
-                Position dbPos = new Position(latitude,longitude);
-
-                //metodo che aggiorna i marker degli utenti sulla mappa
-                updateDBlocation(dbPos);
-
-            }
-        };
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MapsActivity.this);
-        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
 
+    }
+
+    public static void stopLocationUpdates(){
+        if(fusedLocationProviderClient != null) {
+            fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+        }
+        fusedLocationProviderClient=null;
     }
 
 

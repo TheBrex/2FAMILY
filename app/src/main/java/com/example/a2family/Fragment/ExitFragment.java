@@ -22,6 +22,7 @@ import com.example.a2family.Activities.AccountActivity;
 import com.example.a2family.Activities.BaseActivity;
 import com.example.a2family.Activities.GroupPageActivity;
 import com.example.a2family.Activities.MainActivity;
+import com.example.a2family.Activities.MapsActivity;
 import com.example.a2family.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -200,7 +201,7 @@ public class ExitFragment extends BottomSheetDialogFragment {
                         //avvio intanto la mainActivity
                         ((BaseActivity)activity).removeFamilyIdFromFile();
                         //se stavo condividendo la posizione blocco la condivisione
-                        BaseActivity.stopLocationUpdates();
+                        MapsActivity.stopLocationUpdates();
                         Intent mainPage = new Intent(activity, MainActivity.class);
                         //termino tutte le activity tranne quella che sto lanciando
                         mainPage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

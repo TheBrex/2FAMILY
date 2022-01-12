@@ -129,7 +129,9 @@ public class NavigationFragment extends BottomSheetDialogFragment {
                     case R.id.family_tracking:
                         if(!(getActivity() instanceof MapsActivity)) {
                             Intent mapsPage = new Intent(getActivity(), MapsActivity.class);
-                            mapsPage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            mapsPage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            //stoppo l'update della posizione dell'istanza precendente prima di avviarne una nuova
+                            MapsActivity.stopLocationUpdates();
                             startActivity(mapsPage, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                             if (navigationView.isShown()) {
                                 dismiss();
