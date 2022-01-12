@@ -10,9 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.a2family.Activities.CalendarActivity;
-import com.example.a2family.Activities.GroceryListActivity;
 import com.example.a2family.Activities.ToDoActivity;
-import com.example.a2family.Classes.Event;
 import com.example.a2family.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -84,6 +82,9 @@ public class DeleteEventFragment extends BottomSheetDialogFragment {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
+                //poichè il fragment è utilizzato sia per eliminare gli eventi che i task, ogni qual volta che viene premuto l'item
+                //che conferma l'eliminazione devo controllare se l'activity su cui è creato il fragment appartiene o a CalendarActivity oppure a ToDOActivity
+                //e richiamare metodi differenti
                 switch (id){
                     case R.id.delete_event:
                         if(getActivity() instanceof CalendarActivity)
@@ -103,19 +104,19 @@ public class DeleteEventFragment extends BottomSheetDialogFragment {
     }
 
     private void deleteEvent() {
+        //prende i valori passati tramite Bundle dalla CalendarActivity
         String itemToDelete = DeleteEventFragment.this.getArguments().getString("item_toDelete");
         String familyID = DeleteEventFragment.this.getArguments().getString("familyId");
-        System.out.println(itemToDelete);
-
+        //trasformo le stringe corrispondenti a ore e minuti in interi
         int hour=Integer.parseInt(DeleteEventFragment.this.getArguments().getString("hour"));
         int minute=Integer.parseInt(DeleteEventFragment.this.getArguments().getString("minute"));
-
+        //eseguo una query sul database per individuare l'evento da eliminare attraverso la stringa che rappresenta i millisecondi di un determinato giorno
         Query q = firebaseDatabase.getReference().child("Families").child(familyID).child("events").child(String.valueOf(CalendarActivity.c.getTimeInMillis())).orderByChild("eventDescription").equalTo(itemToDelete);
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot event: snapshot.getChildren()) {
-
+                    //scorro tra i possibili risultati ed elimino quello che corrisponde
                     if(hour==(event.child("hour").getValue(Integer.class)) && minute==(event.child("minute").getValue(Integer.class))) {
                         event.getRef().removeValue();
                         Toast.makeText(getContext(), "Eliminazione completata", Toast.LENGTH_LONG).show();

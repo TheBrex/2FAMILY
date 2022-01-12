@@ -59,19 +59,22 @@ public class CalendarActivity extends BaseActivity {
 
         //inizializzo l'array di stringhe dove gli elementi hanno il layot definito in list_item.xml
         initializeCalendar(getFamilyIdFromFile());
+        //inizializzo l'adapter per la visualizzazione della lista degli eventi per ogni giornata
         this.adapter=new ArrayAdapter<>(this, R.layout.list_event, R.id.description_event ,this.eventDescription);
-
+        //nel momento in cui viene selezionato un giorno devo caricare e visualizzare gli eventi registrati per quella giornata
         calendarView.setOnDayClickListener(new OnDayClickListener() {
             @Override
             public void onDayClick(EventDay eventDay) {
+                //mi getto un oggetto Calendar che rappresenta il giorno selezionato
                 c = eventDay.getCalendar();
+                //inizializzo la label con la data che ho selezionato e la rendo visibile
                 dateSelectedLabel.setText("Data : " + c.get(Calendar.DAY_OF_MONTH) + "-"+ (c.get(Calendar.MONTH)+1) +"-"+c.get(Calendar.YEAR));
                 dateSelectedLabel.setVisibility(View.VISIBLE);
-
+                //pulisco la collection di eventi potenzialmente caricati per altri giorni
                 eventDescription.clear();
                 adapter.notifyDataSetChanged();
                 //Caricare nella listView gli eventi relativi a quel giorno
-
+                //estrapolo i millisecondi del giorno che ho selezionato e la utilizzo come chiave per registrare tutti gli eventi in quella giornata
                 String eventKey = String.valueOf(eventDay.getCalendar().getTimeInMillis());
                 firebaseDatabase.getReference().child("Families").child(getFamilyIdFromFile()).child("events").child(eventKey).addChildEventListener(new ChildEventListener() {
                     @Override
@@ -81,10 +84,12 @@ public class CalendarActivity extends BaseActivity {
                         String eventHour = String.valueOf(snapshot.child("hour").getValue(Integer.class));
                         String eventMinute = String.valueOf(snapshot.child("minute").getValue(Integer.class));
                         String eventDesc = snapshot.child("eventDescription").getValue(String.class);
-
+                        //formatto le stringe
                         if(eventHour.length()<2) eventHour="0"+eventHour;
                         if(eventMinute.length()<2) eventMinute="0"+eventMinute;
+                        //aggiungo l'evento alla collection di eventi
                         eventDescription.add(eventHour+":"+eventMinute + " --- "+ eventDesc);
+                        //notifico all'adapter che la collection ha subito una modifica
                         adapter.notifyDataSetChanged();
 
                         //reinizializzo graficamente il calendario
@@ -99,7 +104,8 @@ public class CalendarActivity extends BaseActivity {
 
                     @Override
                     public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
+                        //nel momento in cui un elemento viene eliminato dal database devo aggiornare in tempo reale la visualizzazione
+                        //estrpolo i cambi dell'evento eliminato e li uso per individuare l'evento nella mia collection che andrò a rimuovere
                         String eventHour = String.valueOf(snapshot.child("hour").getValue(Integer.class));
                         String eventMinute = String.valueOf(snapshot.child("minute").getValue(Integer.class));
                         String eventDesc = snapshot.child("eventDescription").getValue(String.class);
@@ -107,6 +113,7 @@ public class CalendarActivity extends BaseActivity {
                         if(eventMinute.length()<2) eventMinute="0"+eventMinute;
                         eventDescription.remove(eventHour+":"+eventMinute + " --- "+ eventDesc);
                         adapter.notifyDataSetChanged();
+                        //reinizializzo graficamente il calendario
                         initializeCalendar(getFamilyIdFromFile());
 
                     }
@@ -125,6 +132,7 @@ public class CalendarActivity extends BaseActivity {
             }
         });
 
+        //una volta cliccato sul button per aggiungere l'evento avvia la nuova activity
         editEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,14 +155,18 @@ public class CalendarActivity extends BaseActivity {
                 String minute= getMinuteFromItem(item);
                 String description= getDescriptionFromItem(item);
 
-                //devo passare al bottom sheet fragment l'adapter, la posizione dell'elemento cliccato, e l'array di event description
+                //devo passare al bottom sheet fragment, la posizione dell'elemento cliccato e tutti i valori dell'evento
+                //per poterlo individuare ed eliminare dal fragment
+                //creo un bundle per memorizzare le informazioni che poi saranno accessibily dal fragment
                 Bundle bundle = new Bundle();
                 bundle.putString("item_toDelete", description );
                 bundle.putInt("position", position);
                 bundle.putString("familyId", getFamilyIdFromFile());
                 bundle.putString("minute", minute);
                 bundle.putString("hour", hour);
+
                 deleteEventFragment.setArguments(bundle);
+                //visualizzo il fragment
                 deleteEventFragment.show(getSupportFragmentManager(), "TAG");
 
             }

@@ -55,19 +55,23 @@ public class AccountActivity extends BaseActivity {
     }
 
     private void changePassword() {
+        //crea un nuovo dialog al click del cambio password
         new AlertDialog.Builder(this)
                 .setTitle("Cambio Password")
                 .setMessage("Sei sicuro di voler cambiare la password? Se confermi verrà inviata una mail e effettuato il logout")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
+                        //una volta cliccato su yes verrà inviata una mail all'utente attualmente loggato per il reset della password
                         mAuth.sendPasswordResetEmail(mAuth.getCurrentUser().getEmail());
+                        //logout
                         AccountActivity.this.signOut();
                     }})
                 .setNegativeButton(android.R.string.no, null).show();
     }
 
     private void initializeData() {
+        //inizializza i campi nel layout della pagina del profilo utente
         String name = getUsernameFromFile();
         String surname = getSurnameFromFile();
         this.nameSurname.setText(name.substring(0,1).toUpperCase()+ name.substring(1).toLowerCase()+" "+surname.substring(0,1).toUpperCase()+surname.substring(1).toLowerCase());

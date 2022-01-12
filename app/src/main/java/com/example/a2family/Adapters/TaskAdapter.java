@@ -58,6 +58,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             holder.status.setImageResource(R.drawable.ic_baseline_done_all_24);
         }
 
+        //quando viene cliccato un elemento nella tasklist faccio apparire il fragment(sottomenu) per l'eliminazione solo se
+        //l'id del creatore del task è uguale a quello dell'utente attualmente loggato ed eventualmente passa al fragment i valori
+        //utili all'individuazione dell'elemento selezionato all'interno del DB
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,6 +74,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 }
             }
         });
+
 
 
         holder.star.setOnClickListener(new View.OnClickListener() {

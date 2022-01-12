@@ -55,16 +55,22 @@ public class GroceryListActivity extends BaseActivity {
         //richiamo i fragment per i submenu
         bottMenu();
         bottoMenu();
+
+
         updateGroceryList();
 
-
+        //listener sul button aggiungi prodotto
         insertProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //getto le stringhe corrispondenti al prodotto e alla quantità
                 String d = productName.getText().toString();
                 String q = quantityDialog.getText().toString().trim();
-                if(q.length()>0) {
+                //se la quantità è effettivamente un numero
+                if(q.length()>0 && q.matches("-?(0|[1-9]\\d*)")) {
+                    //getta la quantityìà
                     int quantity = Integer.parseInt(q);
+                    //crea un prodotto con i valori inseriti
                     Product p = new Product(d, quantity);
                     if (d != null && d.length() > 0 && quantity > 0) {
                         addProduct(p);

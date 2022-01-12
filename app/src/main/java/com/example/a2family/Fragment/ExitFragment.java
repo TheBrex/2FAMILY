@@ -111,6 +111,7 @@ public class ExitFragment extends BottomSheetDialogFragment {
                 int id = item.getItemId();
                 switch (id){
                     case R.id.exit_group:
+                        //metodo che passa l'activity al fragment da cui questo è stato generato
                         ExitFragment.this.passActivity(getActivity());
                         exitGroup();
                         break;
@@ -156,7 +157,7 @@ public class ExitFragment extends BottomSheetDialogFragment {
                                 Toast.makeText(activity, "Sei uscito dal Gruppo", Toast.LENGTH_LONG).show();
                             }
                         });
-
+                        //se il numero dei componenti tolto quello corrente che sta uscendo è = a 0 allora il gruppo famiglia va eliminato
                         if (familyComponents - 1 <= 0) {
 
                             databaseReference.getParent().removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -164,7 +165,9 @@ public class ExitFragment extends BottomSheetDialogFragment {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     Log.d("Info", "Eliminazione gruppo completata");
                                     //TODO : rimuovere il riferimento dell'utente da "trackFamily" e rimuove l'id dal file ( COMPLETED )
+                                    //rimuovo anche il riferimento che tiene traccia del gruppo famiglia a cui appartiene uno User
                                     firebaseDatabase.getReference().child("TrackFamily").child(userId).getRef().removeValue();
+                                    //rimuovo l'id famiglia dal file
                                     ((BaseActivity)activity).removeFamilyIdFromFile();
 
                                 }
@@ -185,6 +188,7 @@ public class ExitFragment extends BottomSheetDialogFragment {
                             int fc= familyComponents-1;
                             //setto il valore nuovo dei componenti del gruppo
                             System.out.println(databaseReference.get().toString());
+                            //aggiorno il nodo interessato dalla transazione con il nuovo numero di componenti
                             currentData.setValue(fc);
 
                         }
@@ -193,10 +197,11 @@ public class ExitFragment extends BottomSheetDialogFragment {
                 }
                 @Override
                 public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
-                    //avvio intanto la mainActivity
-
+                        //avvio intanto la mainActivity
                         ((BaseActivity)activity).removeFamilyIdFromFile();
                         Intent mainPage = new Intent(activity, MainActivity.class);
+                        //termino tutte le activity tranne quella che sto lanciando
+                        mainPage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(mainPage, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle());
                         activity.finish();
                 }

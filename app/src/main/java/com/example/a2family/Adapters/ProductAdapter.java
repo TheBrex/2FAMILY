@@ -59,6 +59,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.quantity.setText("Quantità: "+String.valueOf(p.getQuantity()));
         holder.remove.setImageResource(R.drawable.ic_baseline_close_24);
 
+        //se il prodotto è stato acquistato allora setta nasconde l'icona utile per contrassegnare un elemento come acquistato
         if(p.isBought()){
             holder.bought.setVisibility(View.INVISIBLE);
         }
@@ -66,21 +67,25 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             holder.bought.setVisibility(View.VISIBLE);
         }
 
-
+        //quando viene cliccata l'icona per contrassegnare il prodotto come comprato
         holder.bought.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(context instanceof GroceryListActivity){
+                    //richiama il metodo che modifica lo stato di un prodotto nel DB estrapolando l'oggetto tramite la sua posizione all'interno dell'arraylist
                     ((GroceryListActivity)context).buyProduct(productArrayList.get(holder.getAdapterPosition()));
+                    //modifica in locale la visualizzazione
                     holder.bought();
                 }
             }
         });
 
+        //quando viene cliccata l'icona per rimuovere il prodotto
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(context instanceof GroceryListActivity){
+                    //richiama il metodo per la rimozione del prodotto nel BD estrapolando l'oggetto tramite la sua posizione all'interno dell'arraylist
                     ((GroceryListActivity)context).removeProduct(productArrayList.get(holder.getAdapterPosition()));
                 }
             }
@@ -95,80 +100,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
 
-
-    /*
-
-
-
-    public ProductAdapter(Context context, ArrayList<Product> products){
-
-        this.arrayList=products;
-        this.context=context;
-
-    }
-
-    @Override
-    public int getCount() {
-        return arrayList.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return arrayList.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @NonNull
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        if(convertView==null){
-            LayoutInflater layoutInflater =(LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView=layoutInflater.inflate(R.layout.list_products, null);
-
-            TextView number = convertView.findViewById(R.id.number);
-            number.setText(position+1+".");
-
-            TextView product = convertView.findViewById(R.id.name);
-            product.setText(arrayList.get(position).getDescription());
-
-            TextView productquantity = convertView.findViewById(R.id.itemquantity);
-            productquantity.setText("Quantità: "+ String.valueOf(arrayList.get(position).getQuantity()));
-
-            ImageView bought = convertView.findViewById(R.id.bought);
-            if(arrayList.get(position).isBought()){
-                bought.setVisibility(View.INVISIBLE);
-            }
-
-            ImageView remove = convertView.findViewById(R.id.remove);
-
-            bought.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (context instanceof GroceryListActivity) {
-                        ((GroceryListActivity) context).buyProduct(arrayList.get(position));
-                    }
-                }
-            });
-
-            remove.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (context instanceof GroceryListActivity){
-                         ((GroceryListActivity) context).removeProduct(arrayList.get(position));
-                    }
-                }
-            });
-
-        }
-        return convertView;
-
-    }
-
-*/
 
     public class ProductViewHolder extends RecyclerView.ViewHolder {
         private TextView number;

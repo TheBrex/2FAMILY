@@ -95,9 +95,11 @@ public class SignUpActivity extends BaseActivity implements HelperInterface {
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-
+                    //cotrollo che l'operazione abbia avuto esito positivo
                     if (task.isSuccessful()) {
+                        //invio la mail per l'attivazione dell'account
                         sendEmail();
+                        //creo un oggetto User con i dati inseriti in fase di registrazione
                         User user = new User(name, surname, address, email);
 
                         // riferimento a "Users" nel realTime database

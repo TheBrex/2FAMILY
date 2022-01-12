@@ -143,12 +143,11 @@ public class LoginActivity extends BaseActivity implements HelperInterface {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     //controlla se il task va a buon fine
                     if(task.isSuccessful()){
+                        //prima di procedere al reindirizzamentro, controllo che la mail dell'utente sia stata validata
                         if(mAuth.getCurrentUser().isEmailVerified()) {
                             //salvo l'id dell'utente loggato nel file Settings accessibile esclusivamente dall'app
                             //in questo modo non c'è la necessità di passare per il database
                             getUser(mAuth.getCurrentUser().getUid());
-                            //putUserIdIntoFile(mAuth.getCurrentUser().getUid());
-                            //putEmailIntoFile(mAuth.getCurrentUser().getEmail());
 
                             //TODO: se l'utente è già in un gruppo famiglia, redirectarlo alla pagina del gruppo ( COMPLETED )
                             //TODO: fix Trackfamily "Family" value different from familyId when create familygroup ( COMPLETED )
@@ -161,9 +160,8 @@ public class LoginActivity extends BaseActivity implements HelperInterface {
                                     if (task.isSuccessful()) {
                                         //se esiste un child con l'id dell'utente
                                         if (!(task.getResult().getValue() == null)) {
-                                            //salvo l'id dell'utente loggato nel file Settings accessibile esclusivamente dall'app
-                                            //in questo modo non c'è la necessità di passare per il database per recuperarlo
                                             //salvo la stringa corrispondente all'id della famiglia trovato nel db nel fire "Settings"
+                                            //in questo modo non c'è la necessità di passare per il database per recuperarlo
                                             String familyId = task.getResult().child("Family").getValue(String.class);
                                             putFamilyIdIntoFile(familyId);
 
@@ -182,6 +180,7 @@ public class LoginActivity extends BaseActivity implements HelperInterface {
                                 }
                             });
                         }else{
+                            //se la mail non è validata suggerisco il controllo della casella postale
                             Toast.makeText(LoginActivity.this, "Controlla la tua casella email", Toast.LENGTH_LONG).show();
                             progressBar.setVisibility(View.INVISIBLE);
                         }
@@ -201,10 +200,11 @@ public class LoginActivity extends BaseActivity implements HelperInterface {
     @Override
     public void onStart() {
         super.onStart();
-
+        //getto dal file userID e familyID
         String userId = getUserIdFromFile();
         String familyId = getFamilyIdFromFile();
 
+        //se le stringhe sono entrambe diverse dal valore di default allora significa che l'utente appartiene ad un gruppo
         if (!(familyId.equals("defaultvalue")) && !(userId.equals("defaultvalue"))) {
             Intent groupPage = new Intent(LoginActivity.this, GroupPageActivity.class);
             //se l'utente fa gia parte di un gruppo passo il suo valore alla nuova activity
@@ -212,6 +212,7 @@ public class LoginActivity extends BaseActivity implements HelperInterface {
             startActivity(groupPage,ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this).toBundle());
             finish();
         }
+        //se solo lo userId è diverso dal valore di default significa che l'utente esiste ma non appartiene ancora a nessun gruppo
         else if(!userId.equals("defaultvalue") ) {
             Intent groupPage = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(groupPage, ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this).toBundle());

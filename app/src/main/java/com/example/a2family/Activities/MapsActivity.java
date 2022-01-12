@@ -69,7 +69,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         bottMenu();
         bottoMenu();
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        //inizializza il supportMap fragment che corrisponde alla mappa
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
 
@@ -78,7 +78,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         }
 
         this.power = (FloatingActionButton) findViewById(R.id.power);
-        //set propriety location
+        //imposta le proprietà dell'oggetto locationRequest ( tempo di aggiornamento della posizione, priorità del gps)
         locationRequest = LocationRequest.create()
                 .setInterval(MapsActivity.DEFAULT_UPDATE_INTERVAL * 10)
                 .setFastestInterval(MapsActivity.DEFAULT_UPDATE_INTERVAL * 5)
@@ -89,9 +89,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
             @Override
             public void onLocationResult(@NonNull LocationResult locationResult) {
                 super.onLocationResult(locationResult);
+                //prende l'ultima posizione registrata
                 Location location = locationResult.getLastLocation();
+                //crea un oggetto corrispondente di tipo Position
                 Position position = new Position(location.getLatitude(), location.getLongitude());
-                //Toast.makeText(MapsActivity.this, position.toString(), Toast.LENGTH_LONG).show();
 
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
@@ -246,7 +247,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 
             }
         });
-                // TODO: trasformare l'invio della posizione corrente in un servizio in background
 
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -262,7 +262,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                 }
             });
         } else {
-                //richiedi permesse
+                //richiedi permessi
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_FINE_LOCATION);
                 }

@@ -77,7 +77,7 @@ public class GroupPageActivity extends BaseActivity {
 
     }
 
-
+    //inizializza la lista dei membri attraverso un listener sulla lista dei membri della famiglia con Id : familyID
     private void initializeList(String familyId) {
         this.adapter=new ArrayAdapter<String>(this, R.layout.list_item, R.id.member_name ,this.memberList);
         databaseReference=firebaseDatabase.getReference("Families").child(familyId).child("members");

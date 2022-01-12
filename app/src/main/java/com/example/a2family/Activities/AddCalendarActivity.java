@@ -52,13 +52,16 @@ public class AddCalendarActivity extends BaseActivity {
         timePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //prendo l'istanza del giorno corrente attraverso getInstance();
                 final Calendar c = Calendar.getInstance();
+                //inizializzo i campi Hour e Minute estrapolandoli da c
                 Hour = c.get(Calendar.HOUR_OF_DAY);
                 Minute = c.get(Calendar.MINUTE);
                 //nel momento in cui viene cliccata la textbox si apre il timepicker
                 TimePickerDialog timePickerDialog = new TimePickerDialog(AddCalendarActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        //una volta che è stato dato l'ok nel timepicker, assegno i valori ai campi precedentemente inizializzati con ora e minuti correnti
                         Hour=hourOfDay;
                         Minute=minute;
                         //una volta scelta l'ora chiama Update text che formatta la stringa visualizzata nella textbox
@@ -71,6 +74,7 @@ public class AddCalendarActivity extends BaseActivity {
 
     }
 
+    //formatta la stringa da visualizzare nella editext
     private void UpdateText(int hourOfDay, int minute, EditText timePicker) {
         if(hourOfDay<10 && minute<10) {
             timePicker.setText("0" + Hour + ":0" + minute);
@@ -97,6 +101,7 @@ public class AddCalendarActivity extends BaseActivity {
         Calendar selectedDate= datePicker.getFirstSelectedDate();
         //crea un nuovo evento con i millisecondi corrispondenti alla data selezionata e la descrizione
         Event newEvent = new Event(selectedDate.getTimeInMillis(), eventDescription, Hour, Minute);
+        //controlla che siano stati inseriti correttamente entrambi i campi
         int error_description = checkField(this.eventDescription.getText().toString(), this.eventDescription);
         int error_time = checkField(this.timePicker.getText().toString(), this.eventDescription);
         if(error_description==0 || error_time==0){

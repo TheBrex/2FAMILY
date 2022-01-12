@@ -1,9 +1,6 @@
 package com.example.a2family.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +14,9 @@ import com.example.a2family.R;
 
 import java.util.ArrayList;
 
-// Provide a direct reference to each of the views within a data item
-// Used to cache the views within the item layout for fast access
+
 public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    // Store a member variable for the messages
     private ArrayList<Message> messageArrayList;
     private Context context;
     private String userID;
@@ -38,7 +33,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @NonNull
     @Override
-    // Usually involves inflating a layout from XML and returning the holder
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == VIEW_ME) {
             return new ViewHolderMe(LayoutInflater.from(parent.getContext()).inflate(R.layout.my_message, parent, false));
@@ -50,7 +44,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     //metodo che viene richiamato dal LayoutManager per popolare le View con i dati corrispondenti agli oggetti dell'arraylist
-    // Involves populating data into the item through holder
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
@@ -76,7 +69,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         notifyDataSetChanged();
     }
 
-    //dato l'indice dell'oggetto message memorizzato nell'arraylist ritorna 0 se è un messaggio dell'utente, 1 altrimenti
+    //dato l'indice dell'oggetto message, memorizzato nell'arraylist, ritorna 0 se è un messaggio dell'utente, 1 altrimenti
     @Override
     public int getItemViewType(int position) {
         if(messageArrayList.get(position).getMessageUserID().equals(userID)){

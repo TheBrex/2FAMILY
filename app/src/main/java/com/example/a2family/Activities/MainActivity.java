@@ -167,13 +167,16 @@ public class MainActivity extends BaseActivity implements HelperInterface {
 
             Integer intFamilyMember;
             try {
+                //estrapola il valore intero dalla stringa se questa è un numero
                 intFamilyMember = Integer.parseInt(familyMember);
             } catch (Exception e) {
+                //nel caso in cui non sia un numero genera eccezzione e richiede un numero di componenti valido
                 editFamilyNumber.requestFocus();
                 editFamilyNumber.setError("Inserisci un numero di componenti valido! ");
                 return;
             }
 
+            //controlla che il numero di componenti inseriti sia maggiore di 0
             if (intFamilyMember <= 0 || intFamilyMember == null ) {
                 editFamilyNumber.requestFocus();
                 editFamilyNumber.setError("Inserisci un numero di componenti maggiore di 0 ! ");
@@ -224,6 +227,7 @@ public class MainActivity extends BaseActivity implements HelperInterface {
                                         //passo il codice famiglia alla nuova activity che sto lanciando, in questo modo non c'è bisogno
                                         //di rileggerlo dal file nella prossima activity
                                         groupPage.putExtra("familyId", familyCode);
+                                        groupPage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(groupPage, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
                                         finish();
 
