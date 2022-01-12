@@ -19,7 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 
 
-public class SignUpActivity extends BaseActivity implements HelperInterface {
+public class SignUpActivity extends BaseActivity  {
 
 
     private EditText editName, editSurname , editAddress, editPassword, editPasswordConfirm, editEmail;

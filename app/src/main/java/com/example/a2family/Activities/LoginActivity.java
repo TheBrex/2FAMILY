@@ -25,7 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class LoginActivity extends BaseActivity implements HelperInterface {
+public class LoginActivity extends BaseActivity  {
 
     private Button loginButton;
     private TextView editSignUp;

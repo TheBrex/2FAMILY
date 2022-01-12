@@ -21,7 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 
-public class MainActivity extends BaseActivity implements HelperInterface {
+public class MainActivity extends BaseActivity  {
 
     private EditText editFamilyCode;
     private EditText editFamilyNumber;
