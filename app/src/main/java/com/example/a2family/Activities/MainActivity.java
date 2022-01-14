@@ -2,6 +2,7 @@ package com.example.a2family.Activities;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.net.TrafficStats;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.example.a2family.Classes.Family;
 import com.example.a2family.Classes.User;
@@ -20,6 +22,9 @@ import com.example.a2family.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 
 public class MainActivity extends BaseActivity  {
 
@@ -79,7 +84,6 @@ public class MainActivity extends BaseActivity  {
         String familycode = editFamilyCode.getText().toString().trim();
         String userKey=mAuth.getCurrentUser().getUid();
 
-
         if((checkField(familycode, editFamilyCode))==0){
             Log.d("Error", "campi vuoti");
         }
@@ -90,71 +94,59 @@ public class MainActivity extends BaseActivity  {
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
                     if (task.isSuccessful()) {
                         User u = task.getResult().getValue(User.class);
-                        firebaseDatabase.getReference().child("Families").child(familycode).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        databaseReference = firebaseDatabase.getReference().child("Families").child(familycode);
+                        databaseReference.runTransaction(new Transaction.Handler() {
+                            @NonNull
                             @Override
-                            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                //controlla che esista effetivamente un gruppo con quel codice
-                                if (task.getResult().getValue() == null) {
-                                    Toast.makeText(MainActivity.this, "Non esiste un gruppo con questo codice", Toast.LENGTH_LONG).show();
-                                    editFamilyCode.requestFocus();
-                                }
-                                //se esiste
-                                else {
-                                    //creo l'oggetto famiglia corrispondente al child nel database con il codice "familycode"
-                                    Family f = task.getResult().getValue(Family.class);
-                                    //TODO: quando prelevo la famiglia non salva la chat - FIXARE (completed)
-                                    //aggiungo il nuovo membro all'Oggetto famiglia f
-                                    //se l'inserimento va a buon fine
+                            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                                if (currentData.getValue() != null) {
+                                    Family f = currentData.getValue(Family.class);
                                     if (f.addMember(u, userKey) == 1) {
-
-                                        firebaseDatabase.getReference().child("Families").child(familycode).setValue(f).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    Toast.makeText(MainActivity.this, "Ti sei unito al gruppo", Toast.LENGTH_LONG).show();
-
-                                                    //TODO: 3) creare un nuovo elemento nel db che tiene traccia dell'id dell'utente e del gruppo a cui appartiene (COMPLETED)
-                                                    firebaseDatabase.getReference().child("TrackFamily").child(userKey).child("Family").setValue(familycode);
-
-                                                    /*
-                                                    TODO:salvare l'id famiglia dell'utente nel file Setting per non dover
-                                                     passare ogni volta per il database ( COMPLETED )
-                                                     */
-                                                    //salvo nel file Settings una voce che memorizza l'id dell gruppo famiglia di cui l'utente fa parte
-                                                    //in questo modo non devo ricercare ogni volta il gruppo a cui appartiene l'utente
-                                                    putFamilyIdIntoFile(familycode);
-
-                                                /*
-                                                TODO: reindirizzare l'utente nella pagina del gruppo famiglia dopo essersi unito ( COMPLETED )
-                                               */
-                                                    //creo l'oggetto intent che mi porta alla pagina principale del gruppo
-                                                    Intent groupPage = new Intent(MainActivity.this, GroupPageActivity.class);
-                                                    //passo il codice famiglia alla nuova activity che sto lanciando, in questo modo non c'è bisogno
-                                                    //di rileggerlo dal file
-                                                    groupPage.putExtra("familyId", familycode);
-                                                    startActivity(groupPage,ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
-                                                    finish();
-
-                                                } else {
-                                                    Toast.makeText(MainActivity.this, "Non è stato possibile unirsi al gruppo", Toast.LENGTH_LONG).show();
-                                                }
-                                            }
-                                        });
-
-
+                                        currentData.setValue(f);
                                     } else {
                                         Toast.makeText(MainActivity.this, "Non è stato possibile unirsi al gruppo", Toast.LENGTH_LONG).show();
                                     }
+                                    progressBar.setVisibility(View.GONE);
+
                                 }
-                                progressBar.setVisibility(View.GONE);
+                                return Transaction.success(currentData);
+                            }
+
+                            @Override
+                            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+                                if(committed) {
+                                    //TODO: 3) creare un nuovo elemento nel db che tiene traccia dell'id dell'utente e del gruppo a cui appartiene (COMPLETED)
+                                    firebaseDatabase.getReference().child("TrackFamily").child(userKey).child("Family").setValue(familycode);
+                                    /*
+                                    TODO:salvare l'id famiglia dell'utente nel file Setting per non dover
+                                     passare ogni volta per il database ( COMPLETED )
+                                     */
+                                    //salvo nel file Settings una voce che memorizza l'id dell gruppo famiglia di cui l'utente fa parte
+                                    //in questo modo non devo ricercare ogni volta il gruppo a cui appartiene l'utente
+                                    putFamilyIdIntoFile(familycode);
+                                    /*
+                                    TODO: reindirizzare l'utente nella pagina del gruppo famiglia dopo essersi unito ( COMPLETED )
+                                   */
+                                    //creo l'oggetto intent che mi porta alla pagina principale del gruppo
+                                    Intent groupPage = new Intent(MainActivity.this, GroupPageActivity.class);
+                                    //passo il codice famiglia alla nuova activity che sto lanciando, in questo modo non c'è bisogno
+                                    //di rileggerlo dal file
+                                    groupPage.putExtra("familyId", familycode);
+                                    Toast.makeText(MainActivity.this, "Ti sei unito al gruppo", Toast.LENGTH_LONG).show();
+                                    startActivity(groupPage, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
+                                    finish();
+                                }
+                                else{
+                                    Toast.makeText(MainActivity.this, "Non è stato possibile unirsi al gruppo", Toast.LENGTH_LONG).show();
+                                }
                             }
                         });
                     } else {
                         Toast.makeText(MainActivity.this, "Non è stato possibile unirsi al gruppo", Toast.LENGTH_LONG).show();
                     }
-                    progressBar.setVisibility(View.GONE);
                 }
             });
+            progressBar.setVisibility(View.GONE);
         }
     }
 
