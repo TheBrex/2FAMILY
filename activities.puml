@@ -65,6 +65,9 @@ class com.example.a2family.Activities.BaseActivity {
 # FirebaseAuth mAuth
 # {static} FirebaseDatabase firebaseDatabase
 # DatabaseReference databaseReference
+# {static} FusedLocationProviderClient fusedLocationProviderClient
+# {static} LocationCallback locationCallback
++ FusedLocationProviderClient getFusedLocationProviderClient()
 + void bottMenu()
 + void bottoMenu()
 + void signOut()
@@ -83,16 +86,16 @@ class com.example.a2family.Activities.BaseActivity {
 + String getEmailFromFile()
 + String getAddressFromFile()
 + void getUser(String)
++ {static} void stopLocationUpdates()
 }
 class com.example.a2family.Activities.MapsActivity {
 - {static} int PERMISSION_FINE_LOCATION
 + {static} int DEFAULT_UPDATE_INTERVAL
++ {static} int ON_OFF
 - GoogleMap mMap
 - double latitude
 - double longitude
-- FusedLocationProviderClient fusedLocationProviderClient
 - LocationRequest locationRequest
-- LocationCallback locationCallback
 - FloatingActionButton power
 - Marker marker
 - MarkerOptions m
@@ -164,7 +167,6 @@ class com.example.a2family.Activities.SignUpActivity {
 com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.CalendarActivity
 com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.ToDoActivity
 com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.GroupPageActivity
-com.example.a2family.Interfaces.HelperInterface <|.. com.example.a2family.Activities.MainActivity
 com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.MainActivity
 com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.AccountActivity
 com.example.a2family.Interfaces.HelperInterface <|.. com.example.a2family.Activities.BaseActivity
@@ -174,8 +176,6 @@ com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activitie
 com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.GroceryListActivity
 com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.AddCalendarActivity
 com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.ChatActivity
-com.example.a2family.Interfaces.HelperInterface <|.. com.example.a2family.Activities.LoginActivity
 com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.LoginActivity
-com.example.a2family.Interfaces.HelperInterface <|.. com.example.a2family.Activities.SignUpActivity
 com.example.a2family.Activities.BaseActivity <|-- com.example.a2family.Activities.SignUpActivity
 @enduml

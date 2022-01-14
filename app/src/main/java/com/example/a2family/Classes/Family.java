@@ -9,6 +9,7 @@ import java.util.HashMap;
 public class Family {
 
     private String name;
+    private String creatorID;
     //numero massimo dei componenti
     private int maxNumberComponents;
     //numero attuale dei componenti
@@ -22,11 +23,12 @@ public class Family {
     private HashMap<String, HashMap<String,Event> > events = new HashMap<>();
 
 
-    public Family(String name, int maxNumberComponents) {
+    public Family(String name, int maxNumberComponents, String creatorID) {
 
         this.name = name;
         this.actualNumberComponents=0;
         this.maxNumberComponents=maxNumberComponents;
+        this.creatorID = creatorID;
     }
 
     public Family() {
@@ -54,6 +56,14 @@ public class Family {
 
     public void setActualNumberComponents(int actualNumberComponents) {
         this.actualNumberComponents = actualNumberComponents;
+    }
+
+    public String getCreatorID() {
+        return creatorID;
+    }
+
+    public void setCreatorID(String creatorID) {
+        this.creatorID = creatorID;
     }
 
     public int addMember(User u, String key){

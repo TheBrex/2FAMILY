@@ -199,7 +199,7 @@ public class MainActivity extends BaseActivity  {
                         // TODO: inserire utente nella famiglia e creare gruppo sul database (COMPLETED)
                         //crea un oggetto famiglia il cui nome rappresentato dal cognome del creatore, e il numero di conmponenti inseriti
                         //in fase di creazione
-                        Family f = new Family(u.getSurname(), intFamilyMember);
+                        Family f = new Family(u.getSurname(), intFamilyMember, userKey);
                         //aggiungo l'utente che sta creando la famiglia al gruppo
                         if (f.addMember(u, mAuth.getCurrentUser().getUid()) == 1) {
                             //metto il riferimento alla voce Families nel DB
