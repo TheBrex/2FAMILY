@@ -2,7 +2,7 @@
 
 2Family è un'applicazione Android con l'obiettivo di facilitare l'organizzazione dei compiti da svolgere tra conviventi nella stessa abitazione.  
 L'app quindi fa riferimento a membri di una famiglia, coppie, gruppi di amici, o anche semplicemente una persona single, come un' unica soluzione dove poter
-memorizzare tutti gli impegni e mansioni che riguardano la sfera familiare.  
+memorizzare tutti gli impegni e mansioni che riguardano la sfera famigliare.  
 L'applicazione implementa funzionalità condivise in tempo reale tra tutti i membri della stessa famiglia e includono:
 - Lista della spesa
 - Calendario in cui annotare impegni e appuntamenti
